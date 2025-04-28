@@ -1,0 +1,235 @@
+<%- include('partials/header') %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow border-0">
+        <div class="card-header bg-light py-3">
+          <h1 class="h3 mb-0">Apply as Tester</h1>
+        </div>
+        <div class="card-body p-4">
+          <p class="lead mb-4">Join our growing network of skilled testers and help developers create better software.</p>
+          
+          <form id="testerApplication" class="needs-validation" novalidate>
+            <div class="mb-4">
+              <h5>Personal Information</h5>
+              <hr>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="fullName" required>
+                  <div class="invalid-feedback">
+                    Please provide your full name.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="email" required>
+                  <div class="invalid-feedback">
+                    Please provide a valid email address.
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="location" placeholder="City, Country" required>
+                  <div class="invalid-feedback">
+                    Please provide your location.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5>GitHub Experience</h5>
+              <hr>
+              <div class="mb-3">
+                <label for="githubProfile" class="form-label">GitHub Profile URL <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text">github.com/</span>
+                  <input type="text" class="form-control" id="githubProfile" required>
+                  <div class="invalid-feedback">
+                    Please provide your GitHub username.
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="githubExperience" class="form-label">GitHub Experience <span class="text-danger">*</span></label>
+                <select class="form-select" id="githubExperience" required>
+                  <option value="" selected disabled>Select your level of experience</option>
+                  <option value="beginner">Beginner (< 1 year)</option>
+                  <option value="intermediate">Intermediate (1-3 years)</option>
+                  <option value="advanced">Advanced (3+ years)</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select your experience level.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="prExperience" class="form-label">Have you worked with Pull Requests before? <span class="text-danger">*</span></label>
+                <div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="prExperience" id="prYes" value="yes" required>
+                    <label class="form-check-label" for="prYes">Yes</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="prExperience" id="prNo" value="no" required>
+                    <label class="form-check-label" for="prNo">No</label>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please select an option.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5>Testing Experience</h5>
+              <hr>
+              <div class="mb-3">
+                <label for="testingExperience" class="form-label">Testing Experience <span class="text-danger">*</span></label>
+                <select class="form-select" id="testingExperience" required>
+                  <option value="" selected disabled>Select your level of experience</option>
+                  <option value="beginner">Beginner (< 1 year)</option>
+                  <option value="intermediate">Intermediate (1-3 years)</option>
+                  <option value="advanced">Advanced (3-5 years)</option>
+                  <option value="expert">Expert (5+ years)</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select your experience level.
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Testing Skills <span class="text-danger">*</span></label>
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillManual" name="skills[]" value="manual">
+                      <label class="form-check-label" for="skillManual">Manual Testing</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillAutomation" name="skills[]" value="automation">
+                      <label class="form-check-label" for="skillAutomation">Test Automation</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillAPI" name="skills[]" value="api">
+                      <label class="form-check-label" for="skillAPI">API Testing</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillPerformance" name="skills[]" value="performance">
+                      <label class="form-check-label" for="skillPerformance">Performance Testing</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillSecurity" name="skills[]" value="security">
+                      <label class="form-check-label" for="skillSecurity">Security Testing</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="skillMobile" name="skills[]" value="mobile">
+                      <label class="form-check-label" for="skillMobile">Mobile Testing</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="invalid-feedback" id="skillsFeedback">
+                  Please select at least one skill.
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="availability" class="form-label">Availability (hours per week) <span class="text-danger">*</span></label>
+                <select class="form-select" id="availability" required>
+                  <option value="" selected disabled>Select your availability</option>
+                  <option value="5">Up to 5 hours</option>
+                  <option value="10">5-10 hours</option>
+                  <option value="20">10-20 hours</option>
+                  <option value="40">20+ hours</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select your availability.
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5>Additional Information</h5>
+              <hr>
+              <div class="mb-3">
+                <label for="whyJoin" class="form-label">Why do you want to join GetYourTester? <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="whyJoin" rows="3" required></textarea>
+                <div class="invalid-feedback">
+                  Please tell us why you want to join.
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="additionalInfo" class="form-label">Anything else you'd like to share?</label>
+                <textarea class="form-control" id="additionalInfo" rows="2"></textarea>
+              </div>
+            </div>
+            
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+              <label class="form-check-label" for="termsAgreement">
+                I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="text-danger">*</span>
+              </label>
+              <div class="invalid-feedback">
+                You must agree to the terms and conditions.
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Form validation
+  const form = document.getElementById('testerApplication');
+  const skills = document.querySelectorAll('input[name="skills[]"]');
+  
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Check if at least one skill is selected
+    let skillsSelected = false;
+    skills.forEach(skill => {
+      if (skill.checked) {
+        skillsSelected = true;
+      }
+    });
+    
+    if (!skillsSelected) {
+      document.getElementById('skillsFeedback').style.display = 'block';
+    } else {
+      document.getElementById('skillsFeedback').style.display = 'none';
+    }
+    
+    if (!form.checkValidity() || !skillsSelected) {
+      event.stopPropagation();
+    } else {
+      // Show success message (in real app, this would submit to the server)
+      alert('Thank you for your application! We will review it and get back to you soon.');
+      form.reset();
+    }
+    
+    form.classList.add('was-validated');
+  });
+});
+</script>
+
+<%- include('partials/footer') %> 

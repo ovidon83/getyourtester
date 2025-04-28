@@ -1,0 +1,46 @@
+{
+  "name": "get-your-tester",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "GitHub app to connect developers with QA testers",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "github-app",
+    "qa",
+    "testing"
+  ],
+  "author": "GetYourTester Team",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/app": "^15.1.6",
+    "@octokit/auth-app": "^7.2.1",
+    "@octokit/rest": "^21.1.1",
+    "@octokit/webhooks": "^12.0.10",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "smee-client": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

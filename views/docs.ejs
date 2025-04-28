@@ -1,0 +1,220 @@
+<%- include('partials/header') %>
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-3">
+      <nav class="nav flex-column sticky-top pt-3">
+        <h5 class="mb-3">Documentation</h5>
+        <a class="nav-link active" href="#getting-started">Getting Started</a>
+        <a class="nav-link" href="#installation">Installation</a>
+        <a class="nav-link" href="#requesting-tests">Requesting Tests</a>
+        <a class="nav-link" href="#test-reports">Test Reports</a>
+        <a class="nav-link" href="#api-integration">API Integration</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </nav>
+    </div>
+    <div class="col-md-9">
+      <h1 class="mb-4">Documentation</h1>
+      
+      <section id="getting-started" class="mb-5">
+        <h2>Getting Started</h2>
+        <p>GetYourTester is a GitHub app that enables developers to request on-demand testing of pull requests with immediate turnaround.</p>
+        <p>Our platform connects your GitHub repositories with skilled testers who can quickly validate your changes and provide detailed feedback directly in the pull request.</p>
+      </section>
+      
+      <section id="installation" class="mb-5">
+        <h2>Installation</h2>
+        <p>To use GetYourTester, you need to install our GitHub app to your repositories:</p>
+        <ol>
+          <li>Go to <a href="https://github.com/apps/get-your-tester" target="_blank">https://github.com/apps/get-your-tester</a></li>
+          <li>Click on "Install" or "Configure"</li>
+          <li>Select the repositories you want to enable for testing</li>
+          <li>Confirm the installation</li>
+        </ol>
+        <p>Once installed, you'll be able to request tests for any pull request in the selected repositories.</p>
+      </section>
+      
+      <section id="requesting-tests" class="mb-5">
+        <h2>Requesting Tests</h2>
+        <p>There are two ways to request testing for a pull request:</p>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Option 1: Using a Comment Command</h5>
+          </div>
+          <div class="card-body">
+            <p>Add a comment to your pull request with the following command:</p>
+            <div class="code-block mb-3">
+              /test-this
+            </div>
+            <p>You can also specify testing requirements:</p>
+            <div class="code-block">
+              /test-this browsers=chrome,firefox focus=checkout,login
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Option 2: Using the GitHub UI</h5>
+          </div>
+          <div class="card-body">
+            <p>After installing the app, you'll see a "Request Testing" button in the sidebar of your pull requests:</p>
+            <div class="placeholder-ui">
+              <div class="text-center">
+                <i class="bi bi-github fs-3 mb-2"></i><br>
+                [Screenshot: GitHub PR sidebar with "Request Testing" button]
+              </div>
+            </div>
+            <p>Click the button and fill out the testing requirements form.</p>
+          </div>
+        </div>
+      </section>
+      
+      <section id="test-reports" class="mb-5">
+        <h2>Test Reports</h2>
+        <p>Once a tester completes their review, you'll receive a detailed report directly in your pull request:</p>
+        
+        <div class="card mb-3 pr-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://via.placeholder.com/40" alt="Tester" class="rounded-circle me-2">
+              <div>
+                <h6 class="mb-0">Jane Smith (Tester)</h6>
+                <small class="text-muted">Completed testing 2 hours ago</small>
+              </div>
+              <span class="badge bg-success ms-auto">PASSED</span>
+            </div>
+            
+            <h5>Test Report Summary</h5>
+            <ul class="mb-3">
+              <li>Tested on Chrome 112, Firefox 111, Safari 16</li>
+              <li>User flows: Login, Checkout, Product Search</li>
+              <li>No critical issues found</li>
+              <li>2 minor UI improvements suggested</li>
+            </ul>
+            
+            <h6>UI Improvement Suggestions:</h6>
+            <ol>
+              <li>
+                <strong>Checkout button alignment</strong>
+                <p>The checkout button is slightly misaligned on mobile view (iPhone SE)</p>
+                <div class="placeholder-ui" style="height: 100px;">
+                  <div class="text-center">
+                    <i class="bi bi-image fs-4 mb-2"></i><br>
+                    [Screenshot: UI issue with misaligned button]
+                  </div>
+                </div>
+              </li>
+              <li>
+                <strong>Form validation message</strong>
+                <p>Error message for invalid email format could be more descriptive</p>
+              </li>
+            </ol>
+            
+            <div class="mt-3">
+              <a href="#" class="btn btn-sm btn-outline-primary">View Full Report</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card pr-card failed">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://via.placeholder.com/40" alt="Tester" class="rounded-circle me-2">
+              <div>
+                <h6 class="mb-0">Mike Johnson (Tester)</h6>
+                <small class="text-muted">Completed testing 1 day ago</small>
+              </div>
+              <span class="badge bg-danger ms-auto">FAILED</span>
+            </div>
+            
+            <h5>Test Report Summary</h5>
+            <ul class="mb-3">
+              <li>Tested on Chrome 112, Firefox 111</li>
+              <li>User flows: Account Creation, Profile Update</li>
+              <li>1 critical issue found</li>
+              <li>3 minor issues found</li>
+            </ul>
+            
+            <h6>Critical Issues:</h6>
+            <div class="alert alert-danger">
+              <strong>Account Creation Error</strong>
+              <p class="mb-0">Registration process fails when a user selects "Business Account" type. Console shows a JavaScript error related to validation.</p>
+            </div>
+            
+            <div class="mt-3">
+              <a href="#" class="btn btn-sm btn-outline-primary">View Full Report</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section id="api-integration" class="mb-5">
+        <h2>API Integration</h2>
+        <p>GetYourTester offers a REST API for custom integrations with your CI/CD pipeline or development workflow.</p>
+        <p>For detailed API documentation, visit our <a href="/api-docs">API Reference</a>.</p>
+      </section>
+      
+      <section id="faq" class="mb-5">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                How quickly will my pull request be tested?
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Turnaround time depends on your plan. Indie plans get results within 24 hours, Startup within 12 hours, Growth within 8 hours, and Scale within 4 hours. We also offer hourly testing for urgent needs.
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                Who are your testers?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Our testers are experienced QA professionals who go through a rigorous vetting process. They have expertise in various technologies and platforms, and we match them to your projects based on their skill set.
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                How does pricing work?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                We offer subscription plans based on the number of test runs you need per month, with prices ranging from $299 to $1,999. Each test run counts as one complete testing session for a pull request. We also offer hourly testing at $75/hour for more flexibility. Check our <a href="/pricing">pricing page</a> for details.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                When should I choose hourly testing over a subscription?
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Hourly testing is best for complex features that require deeper testing, one-off projects, or when you need more time with a tester to walk through specific scenarios. Subscriptions are more cost-effective for regular testing needs throughout the month.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 
