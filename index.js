@@ -1,65 +1,46 @@
-const express = require('express');
-const path = require('path');
+#!/usr/bin/env node
+
+const app = require('./app');
+const http = require('http');
 const dotenv = require('dotenv');
 
 // Load environment variables
 dotenv.config();
 
-// Initialize Express app
-const app = express();
-const PORT = process.env.PORT || 3000;
+// Set port
+const port = process.env.PORT || 3000;
+app.set('port', port);
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Create HTTP server
+const server = http.createServer(app);
 
-// Set view engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Error handling for server
+server.on('error', (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 
-// Routes
-app.get('/', (req, res) => {
-  res.render('index', { 
-    title: 'GetYourTester - Home',
-    user: null
-  });
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // Handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
 });
-
-// Documentation route
-app.get('/docs', (req, res) => {
-  res.render('docs', {
-    title: 'Documentation - GetYourTester',
-    user: null
-  });
-});
-
-// Pricing route
-app.get('/pricing', (req, res) => {
-  res.render('pricing', {
-    title: 'Pricing - GetYourTester',
-    user: null
-  });
-});
-
-// Apply as Tester route
-app.get('/apply', (req, res) => {
-  res.render('apply', {
-    title: 'Apply as Tester - GetYourTester',
-    user: null
-  });
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'GetYourTester API is running' });
-});
-
-// API routes
-app.use('/api', require('./routes/api'));
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+server.listen(port, () => {
+  console.log(`✅ GetYourTester server running on http://localhost:${port}`);
+  console.log(`📂 Environment: ${process.env.NODE_ENV || 'development'}`);
 }); 

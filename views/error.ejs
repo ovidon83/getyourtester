@@ -1,18 +1,15 @@
-<%- include('partials/header') %>
-
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8 text-center">
-      <div class="mb-4">
-        <span class="display-1 d-block text-danger"><%= error.status || 500 %></span>
-        <div class="mb-4 lead"><%= error.message || 'Something went wrong' %></div>
-        <div class="text-muted mb-5">Sorry, we couldn't process your request at this time.</div>
-      </div>
-      <a href="/" class="btn btn-primary">
-        <i class="bi bi-house me-2"></i>Back to Homepage
-      </a>
+<div class="error-container">
+  <h2>Error: <%= message %></h2>
+  <% if (error.status) { %>
+    <p>Status: <%= error.status %></p>
+  <% } %>
+  
+  <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+    <div class="error-details">
+      <h3>Stack Trace:</h3>
+      <pre><%= error.stack %></pre>
     </div>
-  </div>
-</div>
-
-<%- include('partials/footer') %> 
+  <% } %>
+  
+  <a href="/" class="btn btn-primary">Return to Homepage</a>
+</div> 
