@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | GetYourTester</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4 p-lg-5">
+            <div class="text-center mb-4">
+              <a href="/" class="d-inline-block text-decoration-none">
+                <i class="fas fa-cube text-primary me-2"></i>
+                <span class="h4 fw-bold">GetYourTester</span>
+              </a>
+              <h1 class="h4 mt-3">Admin Login</h1>
+              <p class="text-muted small">Enter your credentials to access the admin dashboard</p>
+            </div>
+            
+            <% if (typeof error !== 'undefined' && error) { %>
+              <div class="alert alert-danger">
+                <%= error %>
+              </div>
+            <% } %>
+            
+            <form action="/auth/login" method="POST">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-envelope text-muted"></i>
+                  </span>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="admin@example.com" required>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-lock text-muted"></i>
+                  </span>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+              </div>
+              
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-sign-in-alt me-2"></i> Login
+                </button>
+              </div>
+            </form>
+            
+            <div class="text-center mt-4">
+              <a href="/" class="text-muted small">
+                <i class="fas fa-arrow-left me-1"></i> Back to Homepage
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

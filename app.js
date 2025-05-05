@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 // Import routes
 const indexRoutes = require('./routes/index');
 const apiRoutes = require('./routes/api');
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 // Load environment variables
 dotenv.config();
@@ -35,6 +37,13 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
+
+// Make auth status available to all views
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isAuthenticated || false;
+  res.locals.user = req.session.user || null;
+  next();
+});
 
 // Layout middleware
 app.use((req, res, next) => {
@@ -78,6 +87,8 @@ app.use((req, res, next) => {
 // Register routes
 app.use('/', indexRoutes);
 app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

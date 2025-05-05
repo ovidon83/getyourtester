@@ -1,15 +1,24 @@
-<div class="error-container">
-  <h2>Error: <%= message %></h2>
-  <% if (error.status) { %>
-    <p>Status: <%= error.status %></p>
-  <% } %>
-  
-  <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
-    <div class="error-details">
-      <h3>Stack Trace:</h3>
-      <pre><%= error.stack %></pre>
+<div class="error-container p-4">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 text-center">
+      <div class="mb-4">
+        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+      </div>
+      <h2 class="mb-3">Error: <%= message %></h2>
+      <% if (error.status) { %>
+        <p class="text-muted">Status: <%= error.status %></p>
+      <% } %>
+      
+      <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+        <div class="error-details mt-4 text-start">
+          <h3 class="h5 mb-3">Stack Trace:</h3>
+          <pre class="bg-light p-3 rounded"><%= error.stack %></pre>
+        </div>
+      <% } %>
+      
+      <div class="mt-4">
+        <a href="/" class="btn btn-primary">Return to Homepage</a>
+      </div>
     </div>
-  <% } %>
-  
-  <a href="/" class="btn btn-primary">Return to Homepage</a>
+  </div>
 </div> 

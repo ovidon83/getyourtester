@@ -48,6 +48,26 @@
                 <i class="fab fa-github me-1"></i> Install
               </a>
             </li>
+            <% if (isAuthenticated) { %>
+              <li class="nav-item ms-2 dropdown">
+                <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-shield me-1"></i> Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+                  <li><a class="dropdown-item" href="/admin/testers">Testers</a></li>
+                  <li><a class="dropdown-item" href="/admin/prs">Pull Requests</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+                </ul>
+              </li>
+            <% } else { %>
+              <li class="nav-item ms-2">
+                <a class="btn btn-sm btn-outline-secondary" href="/auth/login">
+                  <i class="fas fa-user me-1"></i> Login
+                </a>
+              </li>
+            <% } %>
           </ul>
         </div>
       </div>
