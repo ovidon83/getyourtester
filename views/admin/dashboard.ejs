@@ -44,7 +44,7 @@
               <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'testers' ? 'active' : '' %>" href="/admin/testers">Testers</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'prs' ? 'active' : '' %>" href="/admin/prs">Pull Requests</a>
+              <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'prs' ? 'active' : '' %>" href="/admin/prs">Test Requests</a>
             </li>
             <li class="nav-item">
               <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'applications' ? 'active' : '' %>" href="/admin/applications">Applications</a>
@@ -124,7 +124,7 @@
           <div class="card h-100 border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="h5 mb-0">Active PRs</h2>
+                <h2 class="h5 mb-0">Active Tests</h2>
                 <div class="icon-circle bg-light">
                   <i class="fas fa-code-branch text-primary"></i>
                 </div>
@@ -166,15 +166,15 @@
         </div>
       </div>
     <% } else if (currentPage === 'prs') { %>
-      <!-- Pull Requests Content -->
+      <!-- Test Requests Content -->
       <div class="row">
         <div class="col-12">
           <div class="card border-0 shadow-sm">
             <div class="card-body">
               <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i> Pull Request management functionality will be implemented soon.
+                <i class="fas fa-info-circle me-2"></i> Test Request management functionality will be implemented soon.
               </div>
-              <p class="text-center text-muted my-5">No pull requests have been submitted yet.</p>
+              <p class="text-center text-muted my-5">No test requests have been submitted yet.</p>
             </div>
           </div>
         </div>

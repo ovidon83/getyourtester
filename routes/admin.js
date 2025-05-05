@@ -26,7 +26,7 @@ router.get('/testers', (req, res) => {
 // Pull Requests management
 router.get('/prs', (req, res) => {
   res.render('admin/dashboard', {
-    title: 'Pull Requests Management',
+    title: 'Test Requests Management',
     layout: false,
     activePage: 'prs'
   });
