@@ -1,0 +1,157 @@
+<%- include('../partials/header', { title: title || 'Test Request Details' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1><i class="bi bi-clipboard-data me-2"></i> Test Request Details</h1>
+  <div>
+    <a href="/admin/dashboard" class="btn btn-outline-secondary me-2">
+      <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+    </a>
+    <a href="/admin/logout" class="btn btn-outline-danger">
+      <i class="bi bi-box-arrow-right me-1"></i> Logout
+    </a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <!-- Main Request Information -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Request Information</h3>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+          <h4>
+            <a href="<%= testRequest.prUrl %>" target="_blank" class="text-decoration-none">
+              <%= testRequest.prTitle %> 
+              <small class="text-muted">#<%= testRequest.prNumber %></small>
+              <i class="bi bi-box-arrow-up-right ms-1 small"></i>
+            </a>
+          </h4>
+          <span class="badge rounded-pill 
+            <% if (testRequest.status === 'Pending') { %>bg-warning<% } %>
+            <% if (testRequest.status === 'In Progress') { %>bg-info<% } %>
+            <% if (testRequest.status === 'Complete-PASS') { %>bg-success<% } %>
+            <% if (testRequest.status === 'Complete-FAIL') { %>bg-danger<% } %>
+            fs-6 d-flex align-items-center">
+            <%= testRequest.status %>
+          </span>
+        </div>
+        
+        <div class="mb-3">
+          <strong>Repository:</strong> 
+          <a href="https://github.com/<%= testRequest.owner %>/<%= testRequest.repo %>" target="_blank" class="text-decoration-none">
+            <%= testRequest.owner %>/<%= testRequest.repo %>
+            <i class="bi bi-box-arrow-up-right ms-1 small"></i>
+          </a>
+        </div>
+        
+        <div class="mb-3">
+          <strong>Requested At:</strong> <%= new Date(testRequest.requestedAt).toLocaleString() %>
+        </div>
+        
+        <div class="mb-3">
+          <strong>Request ID:</strong> <%= testRequest.id %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Report Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Test Report</h3>
+      </div>
+      <div class="card-body">
+        <% if (testRequest.report) { %>
+          <div class="markdown-content">
+            <%= testRequest.report %>
+          </div>
+        <% } else { %>
+          <form action="/admin/request/<%= testRequest.id %>/update" method="POST">
+            <div class="mb-3">
+              <label for="reportContent" class="form-label">Test Report</label>
+              <textarea class="form-control" id="reportContent" name="report" rows="10" placeholder="Enter detailed test findings here..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Update Status</label>
+              <div class="d-flex gap-2">
+                <input type="hidden" name="status" id="statusField" value="<%= testRequest.status %>">
+                <button type="button" class="btn btn-warning" onclick="updateStatus('Pending')">Pending</button>
+                <button type="button" class="btn btn-info" onclick="updateStatus('In Progress')">In Progress</button>
+                <button type="button" class="btn btn-success" onclick="updateStatus('Complete-PASS')">Complete-PASS</button>
+                <button type="button" class="btn btn-danger" onclick="updateStatus('Complete-FAIL')">Complete-FAIL</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Report</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <!-- Status Update Panel -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Update Status</h3>
+      </div>
+      <div class="card-body">
+        <form action="/admin/request/<%= testRequest.id %>/update" method="POST">
+          <div class="mb-3">
+            <label class="form-label">Current Status:</label>
+            <h4>
+              <span class="badge 
+                <% if (testRequest.status === 'Pending') { %>bg-warning<% } %>
+                <% if (testRequest.status === 'In Progress') { %>bg-info<% } %>
+                <% if (testRequest.status === 'Complete-PASS') { %>bg-success<% } %>
+                <% if (testRequest.status === 'Complete-FAIL') { %>bg-danger<% } %>
+              ">
+                <%= testRequest.status %>
+              </span>
+            </h4>
+          </div>
+          
+          <div class="mb-3">
+            <label for="status" class="form-label">Change Status:</label>
+            <select class="form-select" id="status" name="status">
+              <option value="Pending" <%= testRequest.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+              <option value="In Progress" <%= testRequest.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+              <option value="Complete-PASS" <%= testRequest.status === 'Complete-PASS' ? 'selected' : '' %>>Complete-PASS</option>
+              <option value="Complete-FAIL" <%= testRequest.status === 'Complete-FAIL' ? 'selected' : '' %>>Complete-FAIL</option>
+            </select>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Update Status</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Quick References Panel -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h3 class="mb-0">Quick Reference</h3>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <strong>Status Meanings:</strong>
+          <ul class="mt-2">
+            <li><span class="badge bg-warning">Pending</span> - Waiting to be tested</li>
+            <li><span class="badge bg-info">In Progress</span> - Currently being tested</li>
+            <li><span class="badge bg-success">Complete-PASS</span> - Testing passed</li>
+            <li><span class="badge bg-danger">Complete-FAIL</span> - Testing failed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateStatus(status) {
+    document.getElementById('statusField').value = status;
+  }
+</script>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,25 @@
+<%- include('partials/header', { title: title || 'Error' }) %>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card mt-5">
+      <div class="card-header bg-danger text-white">
+        <h3><i class="bi bi-exclamation-triangle-fill me-2"></i> <%= message || 'An error occurred' %></h3>
+      </div>
+      <div class="card-body">
+        <p>Sorry, we encountered an error processing your request.</p>
+        
+        <% if (process.env.NODE_ENV === 'development' && error) { %>
+          <div class="alert alert-secondary mt-3">
+            <h4>Error Details:</h4>
+            <pre class="mb-0"><%= JSON.stringify(error, null, 2) %></pre>
+          </div>
+        <% } %>
+        
+        <a href="/" class="btn btn-primary mt-3">Return to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 

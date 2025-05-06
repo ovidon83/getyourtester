@@ -1,0 +1,44 @@
+<%- include('../partials/header', { title: 'Admin Login' }) %>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card mt-5">
+      <div class="card-header bg-primary text-white">
+        <h3><i class="bi bi-shield-lock me-2"></i> Admin Login</h3>
+      </div>
+      <div class="card-body">
+        <% if (error) { %>
+          <div class="alert alert-danger">
+            <%= error %>
+          </div>
+        <% } %>
+        
+        <form action="/admin/login" method="POST">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
+        
+        <div class="alert alert-info mt-4">
+          <h5><i class="bi bi-info-circle me-2"></i> Default Credentials</h5>
+          <p class="mb-2">For demo purposes, you can use:</p>
+          <ul>
+            <li>Email: admin@example.com</li>
+            <li>Password: password</li>
+          </ul>
+          <p class="mb-0 small">In a production environment, secure credentials would be stored in environment variables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %> 

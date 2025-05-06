@@ -1,0 +1,138 @@
+<%- include('partials/header', { title: 'GetYourTester Pricing' }) %>
+
+<div class="container py-5">
+  <h1 class="text-center mb-2">Simple, Transparent Pricing</h1>
+  <p class="lead text-center mb-5">Choose the plan that works for your team's testing needs</p>
+  
+  <div class="row row-cols-1 row-cols-md-3 mb-5 justify-content-center">
+    <div class="col mb-4">
+      <div class="card h-100 border-primary">
+        <div class="card-header bg-primary text-white text-center py-4">
+          <h2 class="my-0 fw-normal">Startup</h2>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h1 class="card-title pricing-card-title text-center">$29<small class="text-muted fw-light">/month</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 5 tests per month</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Standard response time (24h)</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Basic test report</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Email support</li>
+            <li class="py-2 text-muted"><i class="bi bi-x-circle-fill text-muted me-2"></i> Priority support</li>
+            <li class="py-2 text-muted"><i class="bi bi-x-circle-fill text-muted me-2"></i> Custom test scenarios</li>
+          </ul>
+          <div class="mt-auto d-grid">
+            <a href="#" class="btn btn-lg btn-outline-primary">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card h-100 border-primary shadow-lg">
+        <div class="card-header bg-primary text-white text-center py-4">
+          <h2 class="my-0 fw-normal">Business</h2>
+          <span class="badge bg-warning text-dark">Most Popular</span>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h1 class="card-title pricing-card-title text-center">$99<small class="text-muted fw-light">/month</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 20 tests per month</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Fast response time (12h)</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Detailed test report</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Priority support</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Basic test scenarios included</li>
+            <li class="py-2 text-muted"><i class="bi bi-x-circle-fill text-muted me-2"></i> Custom test plan</li>
+          </ul>
+          <div class="mt-auto d-grid">
+            <a href="#" class="btn btn-lg btn-primary">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card h-100 border-primary">
+        <div class="card-header bg-primary text-white text-center py-4">
+          <h2 class="my-0 fw-normal">Enterprise</h2>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h1 class="card-title pricing-card-title text-center">$299<small class="text-muted fw-light">/month</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> 50 tests per month</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Rapid response time (6h)</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Comprehensive test reports</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Priority support</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Custom test scenarios</li>
+            <li class="py-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Dedicated test manager</li>
+          </ul>
+          <div class="mt-auto d-grid">
+            <a href="#" class="btn btn-lg btn-outline-primary">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card mt-5">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Frequently Asked Questions</h2>
+    </div>
+    <div class="card-body">
+      <div class="accordion" id="pricingFAQ">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Can I rollover unused tests to the next month?
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+            <div class="accordion-body">
+              Yes, unused tests are automatically rolled over to the next month. They can accumulate for up to 3 months.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              What happens if I exceed my monthly test limit?
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+            <div class="accordion-body">
+              If you exceed your monthly test limit, additional tests will be billed at a per-test rate based on your plan.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Can I upgrade or downgrade my plan at any time?
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+            <div class="accordion-body">
+              Yes, you can change your plan at any time. Upgrades are effective immediately, while downgrades take effect at the start of the next billing cycle.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Is there a plan for open-source projects?
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+            <div class="accordion-body">
+              We offer a special discount for open-source projects. Please contact us for more information.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mt-5">
+    <p class="lead">Need a custom plan for your team?</p>
+    <a href="/contact" class="btn btn-primary btn-lg">Contact Us</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 

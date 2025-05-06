@@ -5,14 +5,27 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+// Load environment variables
+dotenv.config();
+
+// Debug environment variables
+console.log('DEBUG - Environment Variables:');
+console.log(`ENABLE_GITHUB: "${process.env.ENABLE_GITHUB}" (type: ${typeof process.env.ENABLE_GITHUB})`);
+console.log(`GITHUB_APP_ID: "${process.env.GITHUB_APP_ID}" (type: ${typeof process.env.GITHUB_APP_ID})`);
+console.log(`Has GITHUB_PRIVATE_KEY: ${process.env.GITHUB_PRIVATE_KEY ? 'yes' : 'no'}`);
+console.log(`Has GITHUB_TOKEN: ${process.env.GITHUB_TOKEN ? 'yes' : 'no'}`);
+
 // Import routes
 const indexRoutes = require('./routes/index');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 
-// Load environment variables
-dotenv.config();
+// Initialize storage
+const storage = require('./utils/storage');
+storage.initialize().catch(err => {
+  console.error('Failed to initialize storage:', err);
+});
 
 // Initialize express app
 const app = express();
@@ -22,93 +35,91 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session setup
+// Session configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  secret: process.env.SESSION_SECRET || 'dev-secret-key',
   resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
+  saveUninitialized: true,
+  cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
-// Make auth status available to all views
+// Make user available to templates
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isAuthenticated || false;
+  res.locals.isAuthenticated = !!req.session.user;
   res.locals.user = req.session.user || null;
-  next();
-});
-
-// Layout middleware
-app.use((req, res, next) => {
   res.locals.title = 'GetYourTester';
-  
-  // Override res.render to use layouts
-  const originalRender = res.render;
-  res.render = function(view, options, callback) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    
-    if (!options) {
-      options = {};
-    }
-    
-    // Merge view options and locals
-    const mergedOptions = { ...res.locals, ...options };
-    
-    if (view !== 'layout') {
-      originalRender.call(this, view, mergedOptions, (err, html) => {
-        if (err) return callback ? callback(err) : next(err);
-        
-        // Don't use layout for API responses or if explicitly disabled
-        if (req.xhr || mergedOptions.layout === false) {
-          return callback ? callback(null, html) : res.send(html);
-        }
-        
-        mergedOptions.content = html;
-        originalRender.call(this, 'layout', mergedOptions, callback);
-      });
-    } else {
-      originalRender.call(this, view, mergedOptions, callback);
-    }
-  };
-  
   next();
 });
 
-// Register routes
+// Mount routes
 app.use('/', indexRoutes);
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 
-// Catch 404 and forward to error handler
+// GitHub integration
+// Only load GitHub routes if we're explicitly requiring it
+// This is a workaround for development mode where Probot
+// keeps crashing the app if credentials aren't set
+const githubEnabled = process.env.ENABLE_GITHUB === 'true' || process.env.ENABLE_GITHUB === '1';
+console.log(`DEBUG - GitHub integration enabled check: ${githubEnabled}`);
+console.log(`DEBUG - ENABLE_GITHUB value: ${process.env.ENABLE_GITHUB} (type: ${typeof process.env.ENABLE_GITHUB})`);
+
+if (githubEnabled) {
+  try {
+    console.log(`DEBUG - Loading GitHub routes...`);
+    const githubRoutes = require('./routes/github');
+    console.log(`DEBUG - GitHub routes loaded successfully.`);
+    app.use('/github', githubRoutes);
+    
+    console.log('✅ GitHub integration is enabled');
+  } catch (error) {
+    console.error('❌ Failed to load GitHub integration:', error.message);
+    
+    // Add a placeholder route for GitHub if it failed to load
+    app.use('/github', (req, res) => {
+      res.json({
+        status: 'error',
+        message: 'GitHub integration failed to initialize',
+        error: error.message
+      });
+    });
+  }
+} else {
+  console.log('ℹ️ GitHub integration is disabled');
+  console.log('ℹ️ Set ENABLE_GITHUB=true in .env to enable');
+  
+  // Add a placeholder route for GitHub
+  app.use('/github', (req, res) => {
+    res.json({
+      status: 'disabled',
+      message: 'GitHub integration is disabled in this instance',
+      note: 'Set ENABLE_GITHUB=true in .env to enable'
+    });
+  });
+}
+
+// 404 handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.status(404).render('error', {
+    title: 'Page Not Found',
+    message: 'The page you requested was not found.',
+    error: { status: 404 }
+  });
 });
 
 // Error handler
 app.use((err, req, res, next) => {
-  // Set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // Render the error page
-  res.status(err.status || 500);
-  res.render('error', { 
+  console.error(err);
+  res.status(err.status || 500).render('error', {
     title: 'Error',
     message: err.message,
-    error: res.locals.error
+    error: process.env.NODE_ENV === 'development' ? err : {}
   });
 });
 

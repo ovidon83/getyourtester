@@ -1,0 +1,94 @@
+<%- include('partials/header', { title: 'How GetYourTester Works' }) %>
+
+<div class="container py-5">
+  <h1 class="text-center mb-5">How GetYourTester Works</h1>
+  
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm mb-5">
+        <div class="card-body p-5">
+          <h2 class="mb-4">The Process</h2>
+          
+          <div class="d-flex mb-4">
+            <div class="me-4">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <h3 class="mb-0">1</h3>
+              </div>
+            </div>
+            <div>
+              <h3>Install the GitHub App</h3>
+              <p>Begin by installing the GetYourTester GitHub App to your repositories. This gives us the necessary access to receive notifications about your pull requests.</p>
+            </div>
+          </div>
+          
+          <div class="d-flex mb-4">
+            <div class="me-4">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <h3 class="mb-0">2</h3>
+              </div>
+            </div>
+            <div>
+              <h3>Request Testing</h3>
+              <p>When you have a pull request that needs manual testing, simply comment <code>/test</code> on the PR. Our system will automatically detect this command and create a test request.</p>
+            </div>
+          </div>
+          
+          <div class="d-flex mb-4">
+            <div class="me-4">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <h3 class="mb-0">3</h3>
+              </div>
+            </div>
+            <div>
+              <h3>We Test Your PR</h3>
+              <p>Our expert testers will review your PR, set up the necessary environment, and thoroughly test the changes according to best practices and your specific requirements.</p>
+            </div>
+          </div>
+          
+          <div class="d-flex">
+            <div class="me-4">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <h3 class="mb-0">4</h3>
+              </div>
+            </div>
+            <div>
+              <h3>Get Detailed Results</h3>
+              <p>Once testing is complete, we'll post a detailed report directly to your PR with our findings, including any bugs discovered, screenshots, and recommendations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card shadow-sm">
+        <div class="card-body p-5">
+          <h2 class="mb-4">What We Test</h2>
+          
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item py-3">
+              <h5><i class="bi bi-check-circle-fill text-success me-2"></i> Functionality</h5>
+              <p class="mb-0">We verify that your changes work as expected across various scenarios.</p>
+            </li>
+            <li class="list-group-item py-3">
+              <h5><i class="bi bi-check-circle-fill text-success me-2"></i> User Experience</h5>
+              <p class="mb-0">We evaluate the user experience and flow, highlighting any usability issues.</p>
+            </li>
+            <li class="list-group-item py-3">
+              <h5><i class="bi bi-check-circle-fill text-success me-2"></i> Cross-Browser Compatibility</h5>
+              <p class="mb-0">We test your changes across major browsers to ensure consistent behavior.</p>
+            </li>
+            <li class="list-group-item py-3">
+              <h5><i class="bi bi-check-circle-fill text-success me-2"></i> Mobile Responsiveness</h5>
+              <p class="mb-0">For web applications, we verify proper rendering and functionality on mobile devices.</p>
+            </li>
+            <li class="list-group-item py-3">
+              <h5><i class="bi bi-check-circle-fill text-success me-2"></i> Edge Cases</h5>
+              <p class="mb-0">We look for unusual scenarios that might cause issues in production.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 

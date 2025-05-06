@@ -1,64 +1,104 @@
 # GetYourTester
 
-GetYourTester is a platform that connects product owners with testers. This MVP provides the basic functionality needed to start matching testers with products that need testing.
+> Expert manual testing directly in your GitHub PRs.
+
+GetYourTester is a GitHub app that allows developers to request manual testing on their pull requests. This MVP implementation provides a simplified interface to demonstrate the core functionality.
 
 ## Features
 
-- User registration and authentication
-- Product listing and management
-- Tester profiles and matching
-- Feedback collection and reporting
+- 🚀 **Simple Integration**: Request testing with a single comment
+- 📊 **Admin Dashboard**: Manage test requests, update statuses, and submit reports
+- 🏷️ **Status Tracking**: Monitor the progress of test requests
+- 💬 **Detailed Reports**: Provide comprehensive test feedback
+
+## Tech Stack
+
+- Node.js/Express
+- EJS templates
+- Bootstrap 5
+- JSON file storage (no database required)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm (v6 or higher)
+- Node.js (v14+)
+- npm
 
 ### Installation
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/your-username/getyourtester.git
-   cd getyourtester
-   ```
+
+```bash
+git clone https://github.com/yourusername/getyourtester.git
+cd getyourtester
+```
 
 2. Install dependencies:
-   ```
-   npm install
-   ```
 
-3. Create a `.env` file based on the `.env.example` template:
-   ```
-   cp .env.example .env
-   ```
-
-4. Edit the `.env` file and add your configuration values.
-
-### Running the Application
-
-Start the development server:
+```bash
+npm install
 ```
+
+3. Create a `.env` file in the root directory with the following variables:
+
+```
+# Server Settings
+PORT=3000
+NODE_ENV=development
+
+# Session Secret
+SESSION_SECRET=your-secret-session-key
+
+# Admin Login Credentials
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=password
+```
+
+4. Start the development server:
+
+```bash
 npm run dev
 ```
 
-For production:
+5. Visit http://localhost:3000 to see the application
+
+### Project Structure
+
 ```
-npm start
+/
+├── src/                  # Source code
+│   ├── app.js            # Main application entry point
+│   ├── data/             # JSON data storage
+│   ├── public/           # Static assets
+│   │   ├── css/          # CSS files
+│   │   ├── js/           # JavaScript files
+│   │   └── img/          # Image files
+│   ├── routes/           # Express routes
+│   ├── utils/            # Utility functions
+│   └── views/            # EJS templates
+│       ├── admin/        # Admin views
+│       └── partials/     # Reusable template parts
+├── package.json          # Project dependencies
+└── README.md             # Project documentation
 ```
 
-## Project Structure
+## Usage
 
-- `app.js` - Express application setup
-- `index.js` - Server entry point
-- `routes/` - Application route handlers
-- `views/` - EJS templates
-- `public/` - Static assets
-- `models/` - Data models (for future use)
-- `controllers/` - Route controllers (for future use)
-- `middlewares/` - Custom middleware functions (for future use)
+### For Developers
+
+1. Install the GetYourTester GitHub App on your repositories
+2. Create a pull request
+3. Comment `/test` on the PR to request testing
+4. When testing is complete, you'll receive detailed feedback
+
+### For Admins
+
+1. Log in to the admin dashboard at `/admin/login` with your admin credentials
+2. View all test requests in the dashboard
+3. Click on a request to view details
+4. Update the request status and submit test reports
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the ISC License. 
