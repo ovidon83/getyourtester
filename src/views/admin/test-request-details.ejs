@@ -1,157 +1,173 @@
-<%- include('../partials/header', { title: title || 'Test Request Details' }) %>
+<%- include('../partials/header', { title: 'Test Request Details' }) %>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1><i class="bi bi-clipboard-data me-2"></i> Test Request Details</h1>
-  <div>
-    <a href="/admin/dashboard" class="btn btn-outline-secondary me-2">
-      <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
-    </a>
-    <a href="/admin/logout" class="btn btn-outline-danger">
-      <i class="bi bi-box-arrow-right me-1"></i> Logout
-    </a>
-  </div>
-</div>
+<div class="container my-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Request #<%= testRequest.id %></li>
+    </ol>
+  </nav>
 
-<div class="row">
-  <div class="col-md-8">
-    <!-- Main Request Information -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-primary text-white">
-        <h3 class="mb-0">Request Information</h3>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between mb-3">
-          <h4>
-            <a href="<%= testRequest.prUrl %>" target="_blank" class="text-decoration-none">
-              <%= testRequest.prTitle %> 
-              <small class="text-muted">#<%= testRequest.prNumber %></small>
-              <i class="bi bi-box-arrow-up-right ms-1 small"></i>
-            </a>
-          </h4>
-          <span class="badge rounded-pill 
-            <% if (testRequest.status === 'Pending') { %>bg-warning<% } %>
-            <% if (testRequest.status === 'In Progress') { %>bg-info<% } %>
-            <% if (testRequest.status === 'Complete-PASS') { %>bg-success<% } %>
-            <% if (testRequest.status === 'Complete-FAIL') { %>bg-danger<% } %>
-            fs-6 d-flex align-items-center">
-            <%= testRequest.status %>
-          </span>
+  <div class="row">
+    <!-- Request Details -->
+    <div class="col-md-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">Test Request Details</h3>
         </div>
-        
-        <div class="mb-3">
-          <strong>Repository:</strong> 
-          <a href="https://github.com/<%= testRequest.owner %>/<%= testRequest.repo %>" target="_blank" class="text-decoration-none">
-            <%= testRequest.owner %>/<%= testRequest.repo %>
-            <i class="bi bi-box-arrow-up-right ms-1 small"></i>
-          </a>
-        </div>
-        
-        <div class="mb-3">
-          <strong>Requested At:</strong> <%= new Date(testRequest.requestedAt).toLocaleString() %>
-        </div>
-        
-        <div class="mb-3">
-          <strong>Request ID:</strong> <%= testRequest.id %>
-        </div>
-      </div>
-    </div>
-
-    <!-- Test Report Section -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-primary text-white">
-        <h3 class="mb-0">Test Report</h3>
-      </div>
-      <div class="card-body">
-        <% if (testRequest.report) { %>
-          <div class="markdown-content">
-            <%= testRequest.report %>
+        <div class="card-body">
+          <h4>PR Information</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tr>
+                <th style="width: 150px">Request ID</th>
+                <td><code><%= testRequest.id %></code></td>
+              </tr>
+              <tr>
+                <th>Repository</th>
+                <td><%= testRequest.repository %></td>
+              </tr>
+              <tr>
+                <th>PR Number</th>
+                <td><a href="<%= testRequest.prUrl %>" target="_blank">#<%= testRequest.prNumber %></a></td>
+              </tr>
+              <tr>
+                <th>Requested By</th>
+                <td><%= testRequest.requestedBy %></td>
+              </tr>
+              <tr>
+                <th>Requested At</th>
+                <td><%= new Date(testRequest.requestedAt).toLocaleString() %></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td>
+                  <span class="badge rounded-pill 
+                    <% if (testRequest.status === 'pending') { %>bg-warning<% } %>
+                    <% if (testRequest.status === 'in-progress') { %>bg-info<% } %>
+                    <% if (testRequest.status === 'delayed') { %>bg-secondary text-white<% } %>
+                    <% if (testRequest.status === 'blocked') { %>bg-danger<% } %>
+                    <% if (testRequest.status === 'complete-pass') { %>bg-success<% } %>
+                    <% if (testRequest.status === 'complete-fail') { %>bg-danger<% } %>"
+                  >
+                    <% if (testRequest.status === 'pending') { %>⏳ GYT-Pending<% } %>
+                    <% if (testRequest.status === 'in-progress') { %>🔄 GYT-In Progress<% } %>
+                    <% if (testRequest.status === 'delayed') { %>⏰ GYT-Delayed<% } %>
+                    <% if (testRequest.status === 'blocked') { %>🚫 GYT-Blocked<% } %>
+                    <% if (testRequest.status === 'complete-pass') { %>✅ GYT-Complete: PASS<% } %>
+                    <% if (testRequest.status === 'complete-fail') { %>❌ GYT-Complete: FAIL<% } %>
+                  </span>
+                </td>
+              </tr>
+            </table>
           </div>
-        <% } else { %>
-          <form action="/admin/request/<%= testRequest.id %>/update" method="POST">
-            <div class="mb-3">
-              <label for="reportContent" class="form-label">Test Report</label>
-              <textarea class="form-control" id="reportContent" name="report" rows="10" placeholder="Enter detailed test findings here..."></textarea>
+
+          <h4 class="mt-4">PR Description</h4>
+          <div class="card">
+            <div class="card-body bg-light">
+              <pre style="white-space: pre-wrap;"><%= testRequest.prDescription || 'No description available' %></pre>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Update Status</label>
-              <div class="d-flex gap-2">
-                <input type="hidden" name="status" id="statusField" value="<%= testRequest.status %>">
-                <button type="button" class="btn btn-warning" onclick="updateStatus('Pending')">Pending</button>
-                <button type="button" class="btn btn-info" onclick="updateStatus('In Progress')">In Progress</button>
-                <button type="button" class="btn btn-success" onclick="updateStatus('Complete-PASS')">Complete-PASS</button>
-                <button type="button" class="btn btn-danger" onclick="updateStatus('Complete-FAIL')">Complete-FAIL</button>
+          </div>
+
+          <% if (testRequest.parsedDetails) { %>
+            <h4 class="mt-4">Test Details</h4>
+            <div class="card">
+              <div class="card-body bg-light">
+                <% for (const [key, value] of Object.entries(testRequest.parsedDetails)) { %>
+                  <div class="mb-2">
+                    <strong><%= key %>:</strong> <%= value %>
+                  </div>
+                <% } %>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Report</button>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Panel -->
+    <div class="col-md-4">
+      <!-- Status Update -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="card-title mb-0">Update Status</h4>
+        </div>
+        <div class="card-body">
+          <form action="/request/<%= testRequest.id %>/status" method="POST">
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" name="status" required>
+                <option value="pending" <%= testRequest.status === 'pending' ? 'selected' : '' %>>⏳ GYT-Pending</option>
+                <option value="in-progress" <%= testRequest.status === 'in-progress' ? 'selected' : '' %>>🔄 GYT-In Progress</option>
+                <option value="delayed" <%= testRequest.status === 'delayed' ? 'selected' : '' %>>⏰ GYT-Delayed</option>
+                <option value="blocked" <%= testRequest.status === 'blocked' ? 'selected' : '' %>>🚫 GYT-Blocked</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Status</button>
           </form>
-        <% } %>
+        </div>
       </div>
-    </div>
-  </div>
-  
-  <div class="col-md-4">
-    <!-- Status Update Panel -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-primary text-white">
-        <h3 class="mb-0">Update Status</h3>
+
+      <!-- Post Comment -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="card-title mb-0">Post Comment to PR</h4>
+        </div>
+        <div class="card-body">
+          <form action="/request/<%= testRequest.id %>/comment" method="POST">
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comment</label>
+              <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="updateStatus" name="updateStatus">
+              <label class="form-check-label" for="updateStatus">Update status with comment</label>
+            </div>
+            <div class="mb-3" id="statusSelectContainer" style="display: none;">
+              <label for="commentStatus" class="form-label">New Status</label>
+              <select class="form-select" id="commentStatus" name="commentStatus">
+                <option value="delayed">⏰ GYT-Delayed</option>
+                <option value="blocked">🚫 GYT-Blocked</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Post Comment</button>
+          </form>
+          <script>
+            document.getElementById('updateStatus').addEventListener('change', function() {
+              document.getElementById('statusSelectContainer').style.display = this.checked ? 'block' : 'none';
+            });
+          </script>
+        </div>
       </div>
-      <div class="card-body">
-        <form action="/admin/request/<%= testRequest.id %>/update" method="POST">
-          <div class="mb-3">
-            <label class="form-label">Current Status:</label>
-            <h4>
-              <span class="badge 
-                <% if (testRequest.status === 'Pending') { %>bg-warning<% } %>
-                <% if (testRequest.status === 'In Progress') { %>bg-info<% } %>
-                <% if (testRequest.status === 'Complete-PASS') { %>bg-success<% } %>
-                <% if (testRequest.status === 'Complete-FAIL') { %>bg-danger<% } %>
-              ">
-                <%= testRequest.status %>
-              </span>
-            </h4>
-          </div>
-          
-          <div class="mb-3">
-            <label for="status" class="form-label">Change Status:</label>
-            <select class="form-select" id="status" name="status">
-              <option value="Pending" <%= testRequest.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-              <option value="In Progress" <%= testRequest.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
-              <option value="Complete-PASS" <%= testRequest.status === 'Complete-PASS' ? 'selected' : '' %>>Complete-PASS</option>
-              <option value="Complete-FAIL" <%= testRequest.status === 'Complete-FAIL' ? 'selected' : '' %>>Complete-FAIL</option>
-            </select>
-          </div>
-          
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Update Status</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    
-    <!-- Quick References Panel -->
-    <div class="card shadow-sm">
-      <div class="card-header bg-secondary text-white">
-        <h3 class="mb-0">Quick Reference</h3>
-      </div>
-      <div class="card-body">
-        <div class="mb-3">
-          <strong>Status Meanings:</strong>
-          <ul class="mt-2">
-            <li><span class="badge bg-warning">Pending</span> - Waiting to be tested</li>
-            <li><span class="badge bg-info">In Progress</span> - Currently being tested</li>
-            <li><span class="badge bg-success">Complete-PASS</span> - Testing passed</li>
-            <li><span class="badge bg-danger">Complete-FAIL</span> - Testing failed</li>
-          </ul>
+
+      <!-- Submit Test Report -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="card-title mb-0">Submit Test Report</h4>
+        </div>
+        <div class="card-body">
+          <form action="/request/<%= testRequest.id %>/report" method="POST">
+            <div class="mb-3">
+              <label for="summary" class="form-label">Test Summary</label>
+              <textarea class="form-control" id="summary" name="summary" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="details" class="form-label">Details &amp; Bug Reports</label>
+              <textarea class="form-control" id="details" name="details" rows="5" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="testResult" class="form-label">Test Result</label>
+              <select class="form-select" id="testResult" name="testResult" required>
+                <option value="complete-pass">✅ GYT-Complete: PASS</option>
+                <option value="complete-fail">❌ GYT-Complete: FAIL</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Submit Report</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  function updateStatus(status) {
-    document.getElementById('statusField').value = status;
-  }
-</script>
 
 <%- include('../partials/footer') %> 

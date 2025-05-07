@@ -2,13 +2,13 @@
 
 > Expert manual testing directly in your GitHub PRs.
 
-GetYourTester is a GitHub app that allows developers to request manual testing on their pull requests. This MVP implementation provides a simplified interface to demonstrate the core functionality.
+GetYourTester is a GitHub app that allows developers to request manual testing on their pull requests. This implementation provides a webhook server that responds to GitHub events and processes test requests.
 
 ## Features
 
-- 🚀 **Simple Integration**: Request testing with a single comment
-- 📊 **Admin Dashboard**: Manage test requests, update statuses, and submit reports
-- 🏷️ **Status Tracking**: Monitor the progress of test requests
+- 🚀 **Simple Integration**: Request testing with a single comment (`/test`)
+- 📊 **Dashboard**: View and manage test requests 
+- 🏷️ **Status Tracking**: Automatically label PRs with testing status
 - 💬 **Detailed Reports**: Provide comprehensive test feedback
 
 ## Tech Stack
@@ -17,6 +17,7 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 - EJS templates
 - Bootstrap 5
 - JSON file storage (no database required)
+- GitHub API via Octokit
 
 ## Getting Started
 
@@ -24,6 +25,8 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 
 - Node.js (v14+)
 - npm
+- A GitHub repository with a webhook configured
+- A smee.io channel for webhook proxying (for local development)
 
 ### Installation
 
@@ -43,61 +46,71 @@ npm install
 3. Create a `.env` file in the root directory with the following variables:
 
 ```
-# Server Settings
+# Server configuration
 PORT=3000
 NODE_ENV=development
 
-# Session Secret
-SESSION_SECRET=your-secret-session-key
+# Session management
+SESSION_SECRET=your-session-secret-key
 
-# Admin Login Credentials
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=password
+# GitHub webhook configuration
+WEBHOOK_PROXY_URL=https://smee.io/your-smee-url
+GITHUB_TOKEN=your-github-token
+
+# Notification settings
+NOTIFICATION_EMAIL=your-email@example.com
 ```
 
-4. Start the development server:
+4. Start the webhook server:
 
 ```bash
 npm run dev
 ```
 
-5. Visit http://localhost:3000 to see the application
+5. In a separate terminal, start the smee client to forward GitHub webhooks:
 
-### Project Structure
-
-```
-/
-├── src/                  # Source code
-│   ├── app.js            # Main application entry point
-│   ├── data/             # JSON data storage
-│   ├── public/           # Static assets
-│   │   ├── css/          # CSS files
-│   │   ├── js/           # JavaScript files
-│   │   └── img/          # Image files
-│   ├── routes/           # Express routes
-│   ├── utils/            # Utility functions
-│   └── views/            # EJS templates
-│       ├── admin/        # Admin views
-│       └── partials/     # Reusable template parts
-├── package.json          # Project dependencies
-└── README.md             # Project documentation
+```bash
+npm run webhook
 ```
 
-## Usage
+6. Visit http://localhost:3000 to see the application
+7. Visit http://localhost:3000/dashboard to view test requests
 
-### For Developers
+### Usage
 
-1. Install the GetYourTester GitHub App on your repositories
-2. Create a pull request
+1. Make sure your GitHub repository has a webhook configured to:
+   - Send events to your smee.io URL
+   - Send "Issue comments" events
+   - Content type should be "application/json"
+
+2. Create a pull request in your repository
 3. Comment `/test` on the PR to request testing
-4. When testing is complete, you'll receive detailed feedback
+4. The webhook server will:
+   - Add a "testing-requested" label to the PR
+   - Post an acknowledgment comment
+   - Store the test request in the local database
+   - (Optionally) Send a notification email
 
-### For Admins
+5. View the test request in the dashboard at http://localhost:3000/dashboard
 
-1. Log in to the admin dashboard at `/admin/login` with your admin credentials
-2. View all test requests in the dashboard
-3. Click on a request to view details
-4. Update the request status and submit test reports
+## Webhook Implementation
+
+The webhook implementation consists of two main components:
+
+1. **webhook-server.js**: The main Express server that receives webhook events and processes them
+2. **fixed-webhook.js**: A client that connects to smee.io and forwards events to the local server
+
+When a PR comment containing "/test" is received:
+
+```
+GitHub PR Comment → GitHub Webhook → smee.io → fixed-webhook.js → webhook-server.js → githubService
+```
+
+The githubService then:
+1. Creates a test request record
+2. Posts an acknowledgment comment on the PR
+3. Adds a label to the PR
+4. Stores the test request for the dashboard
 
 ## License
 
