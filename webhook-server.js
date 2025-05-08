@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const githubService = require('./src/utils/githubService');
+const indexRoutes = require('./src/routes/index');
 
 // Create Express app
 const app = express();
@@ -46,12 +47,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// Add a landing page using the existing template
-app.get('/', (req, res) => {
-  res.render('landing', { 
-    title: 'GetYourTester - Expert Manual Testing for GitHub PRs'
-  });
-});
+// Use the index routes
+app.use('/', indexRoutes);
 
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {

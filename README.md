@@ -112,6 +112,22 @@ The githubService then:
 3. Adds a label to the PR
 4. Stores the test request for the dashboard
 
+## Troubleshooting
+
+### Website Routes Not Working (Contact, About, etc.)
+
+If you notice that routes like `/contact`, `/about`, `/how-it-works`, or `/pricing` are not working, make sure that the `webhook-server.js` file properly imports and uses the routes from `src/routes/index.js`:
+
+```javascript
+// In webhook-server.js
+const indexRoutes = require('./src/routes/index');
+
+// Add this after middleware setup
+app.use('/', indexRoutes);
+```
+
+This ensures that all the public website routes defined in `src/routes/index.js` are available when running the server.
+
 ## License
 
 This project is licensed under the ISC License. 

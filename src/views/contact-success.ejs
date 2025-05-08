@@ -8,9 +8,12 @@
           <div class="mb-4">
             <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
           </div>
-          <h1 class="mb-4">Thank You!</h1>
+          <h1 class="mb-4">Thank You<%= name ? ', ' + name : '' %>!</h1>
           <p class="lead mb-4">Your message has been received. We'll get back to you shortly.</p>
-          <a href="/" class="btn btn-primary">Return to Home</a>
+          <div class="d-flex gap-3 justify-content-center">
+            <a href="/" class="btn btn-primary">Return to Home</a>
+            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-outline-primary">Book a Call</a>
+          </div>
         </div>
       </div>
     </div>
