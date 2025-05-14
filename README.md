@@ -18,6 +18,7 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 - Bootstrap 5
 - JSON file storage (no database required)
 - GitHub API via Octokit
+- GitHub App authentication
 
 ## Getting Started
 
@@ -53,9 +54,17 @@ NODE_ENV=development
 # Session management
 SESSION_SECRET=your-session-secret-key
 
-# GitHub webhook configuration
-WEBHOOK_PROXY_URL=https://smee.io/your-smee-url
+# GitHub App configuration (recommended)
+GITHUB_APP_ID=your-app-id
+GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
+GITHUB_WEBHOOK_SECRET=your-webhook-secret
+
+# GitHub PAT (legacy, optional fallback)
 GITHUB_TOKEN=your-github-token
+
+# Webhook configuration
+WEBHOOK_PROXY_URL=https://smee.io/your-smee-url
+ENABLE_GITHUB=true
 
 # Notification settings
 NOTIFICATION_EMAIL=your-email@example.com
@@ -75,6 +84,40 @@ npm run webhook
 
 6. Visit http://localhost:3000 to see the application
 7. Visit http://localhost:3000/dashboard to view test requests
+
+### GitHub App Authentication
+
+GetYourTester uses GitHub App authentication for secure, repository-specific access. This allows the app to:
+
+1. Access repositories where it's installed
+2. Use repository-specific permissions
+3. Work across multiple GitHub accounts
+
+#### Setting up GitHub App Authentication
+
+1. Create a GitHub App in your GitHub account:
+   - Go to Settings > Developer settings > GitHub Apps
+   - Click "New GitHub App"
+   - Set the app name, homepage URL, and webhook URL
+   - Configure permissions:
+     - Repository permissions: Contents (Read & write), Issues (Read & write), Pull requests (Read & write)
+   - Generate a private key and download it
+
+2. Add the GitHub App credentials to your `.env` file:
+   ```
+   GITHUB_APP_ID=your-app-id
+   GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
+   ```
+
+3. Install the app on repositories where you want to use GetYourTester
+
+#### Legacy PAT Authentication (Fallback)
+
+For backward compatibility, GetYourTester can also use a Personal Access Token (PAT):
+
+1. Create a PAT with repo, issues, and pull_request scopes
+2. Add it to your `.env` file as `GITHUB_TOKEN`
+3. The app will use the PAT as a fallback if GitHub App authentication fails
 
 ### Usage
 

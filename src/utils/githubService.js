@@ -6,23 +6,22 @@ const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const githubAppAuth = require('./githubAppAuth');
 
-// Initialize GitHub client with token
+// Initialize GitHub client with token (for backward compatibility)
 let octokit;
 let simulatedMode = false;
 
 try {
   if (process.env.GITHUB_TOKEN) {
     octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-    console.log('✅ GitHub API client initialized with token');
+    console.log('✅ GitHub API client initialized with token (PAT)');
   } else {
-    console.warn('⚠️ No GITHUB_TOKEN found, GitHub API interactions will be simulated');
-    simulatedMode = true;
+    console.warn('⚠️ No GITHUB_TOKEN found, will use GitHub App authentication');
   }
 } catch (error) {
   console.error('⚠️ Error initializing GitHub client:', error.message);
-  console.warn('⚠️ GitHub API interactions will be simulated');
-  simulatedMode = true;
+  console.warn('⚠️ Will use GitHub App authentication');
 }
 
 // Configure email transporter
@@ -233,14 +232,6 @@ async function fetchPRDescription(repository, prNumber) {
  */
 async function postComment(repo, issueNumber, body) {
   try {
-    if (simulatedMode || !octokit) {
-      console.log(`[SIMULATED] Would post comment to ${repo}#${issueNumber}:`);
-      console.log('--- Start of simulated comment ---');
-      console.log(body);
-      console.log('--- End of simulated comment ---');
-      return { success: true, simulated: true };
-    }
-    
     const [owner, repoName] = repo.split('/');
     // Handle case where repo might not have correct format
     if (!owner || !repoName) {
@@ -248,7 +239,18 @@ async function postComment(repo, issueNumber, body) {
       return { success: false, error: 'Invalid repository format' };
     }
     
-    const response = await octokit.issues.createComment({
+    // Get an Octokit instance for this repository
+    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    
+    if (!repoOctokit) {
+      console.log(`[SIMULATED] Would post comment to ${repo}#${issueNumber}:`);
+      console.log('--- Start of simulated comment ---');
+      console.log(body);
+      console.log('--- End of simulated comment ---');
+      return { success: true, simulated: true };
+    }
+    
+    const response = await repoOctokit.issues.createComment({
       owner,
       repo: repoName,
       issue_number: issueNumber,
@@ -261,9 +263,8 @@ async function postComment(repo, issueNumber, body) {
     console.error(`Failed to post comment to ${repo}#${issueNumber}:`, error.message);
     
     // Check if the error is due to invalid credentials or permissions
-    if (error.status === 401) {
+    if (error.status === 401 || error.status === 403) {
       console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
-      simulatedMode = true; // Switch to simulated mode
     } else if (error.status === 404) {
       console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
     }
@@ -281,19 +282,22 @@ async function postComment(repo, issueNumber, body) {
  */
 async function updateLabels(repo, issueNumber, newLabels) {
   try {
-    if (simulatedMode || !octokit) {
-      console.log(`[SIMULATED] Would update labels on ${repo}#${issueNumber} to: ${newLabels.join(', ')}`);
-      return { success: true, simulated: true };
-    }
-    
     const [owner, repoName] = repo.split('/');
     if (!owner || !repoName) {
       console.error(`Invalid repository format: ${repo}. Should be in format 'owner/repo'`);
       return { success: false, error: 'Invalid repository format' };
     }
     
+    // Get an Octokit instance for this repository
+    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    
+    if (!repoOctokit) {
+      console.log(`[SIMULATED] Would update labels on ${repo}#${issueNumber} to: ${newLabels.join(', ')}`);
+      return { success: true, simulated: true };
+    }
+    
     // Get current labels
-    const currentLabelsResponse = await octokit.issues.listLabelsOnIssue({
+    const currentLabelsResponse = await repoOctokit.issues.listLabelsOnIssue({
       owner,
       repo: repoName,
       issue_number: issueNumber
@@ -310,7 +314,7 @@ async function updateLabels(repo, issueNumber, newLabels) {
     const updatedLabels = [...labelsToKeep, ...newLabels];
     
     // Set the new labels
-    const response = await octokit.issues.setLabels({
+    const response = await repoOctokit.issues.setLabels({
       owner,
       repo: repoName,
       issue_number: issueNumber,
@@ -323,9 +327,8 @@ async function updateLabels(repo, issueNumber, newLabels) {
     console.error(`Failed to update labels on ${repo}#${issueNumber}:`, error.message);
     
     // Check if the error is due to invalid credentials or permissions
-    if (error.status === 401) {
+    if (error.status === 401 || error.status === 403) {
       console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
-      simulatedMode = true; // Switch to simulated mode
     } else if (error.status === 404) {
       console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
     }
@@ -349,12 +352,6 @@ async function addLabel(repo, issueNumber, labels) {
       return await updateLabels(repo, issueNumber, labels);
     }
     
-    // For non-status labels, just add them
-    if (simulatedMode || !octokit) {
-      console.log(`[SIMULATED] Would add labels to ${repo}#${issueNumber}: ${labels.join(', ')}`);
-      return { success: true, simulated: true };
-    }
-    
     const [owner, repoName] = repo.split('/');
     // Handle case where repo might not have correct format
     if (!owner || !repoName) {
@@ -362,7 +359,15 @@ async function addLabel(repo, issueNumber, labels) {
       return { success: false, error: 'Invalid repository format' };
     }
     
-    const response = await octokit.issues.addLabels({
+    // Get an Octokit instance for this repository
+    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    
+    if (!repoOctokit) {
+      console.log(`[SIMULATED] Would add labels to ${repo}#${issueNumber}: ${labels.join(', ')}`);
+      return { success: true, simulated: true };
+    }
+    
+    const response = await repoOctokit.issues.addLabels({
       owner,
       repo: repoName,
       issue_number: issueNumber,
@@ -375,9 +380,8 @@ async function addLabel(repo, issueNumber, labels) {
     console.error(`Failed to add labels to ${repo}#${issueNumber}:`, error.message);
     
     // Check if the error is due to invalid credentials or permissions
-    if (error.status === 401) {
+    if (error.status === 401 || error.status === 403) {
       console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
-      simulatedMode = true; // Switch to simulated mode
     } else if (error.status === 404) {
       console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
     }
@@ -727,14 +731,34 @@ async function processWebhookEvent(event) {
 
 // Test the GitHub token immediately on startup
 async function testGitHubToken() {
-  if (!octokit) return;
-  
   try {
-    const response = await octokit.users.getAuthenticated();
-    console.log(`✅ GitHub token successfully verified! Authenticated as: ${response.data.login}`);
-    simulatedMode = false;
+    // First try to verify the PAT if available
+    if (octokit) {
+      try {
+        const response = await octokit.users.getAuthenticated();
+        console.log(`✅ GitHub PAT successfully verified! Authenticated as: ${response.data.login}`);
+        simulatedMode = false;
+        return;
+      } catch (error) {
+        console.warn('❌ GitHub PAT verification failed:', error.message);
+        console.log('⚠️ Will try GitHub App authentication instead');
+      }
+    }
+    
+    // Try to verify GitHub App authentication
+    const jwt = githubAppAuth.getGitHubAppJWT();
+    if (jwt) {
+      const appOctokit = new Octokit({ auth: jwt });
+      const { data: app } = await appOctokit.apps.getAuthenticated();
+      console.log(`✅ GitHub App authentication successful! App: ${app.name}`);
+      simulatedMode = false;
+    } else {
+      console.warn('❌ GitHub App authentication not available');
+      console.warn('⚠️ Switching to simulated mode');
+      simulatedMode = true;
+    }
   } catch (error) {
-    console.error('❌ GitHub token verification failed:', error.message);
+    console.error('❌ GitHub authentication verification failed:', error.message);
     console.warn('⚠️ Switching to simulated mode');
     simulatedMode = true;
   }
