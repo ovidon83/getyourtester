@@ -546,9 +546,7 @@ async function postWelcomeComment(repository, prNumber) {
 
 Request a manual QA test for this PR by commenting:
 
-```
 /test Checkout flow on mobile, env: staging, browsers: Chrome & Safari
-```
 
 That's it! We'll handle the rest. 🚀
 `;
