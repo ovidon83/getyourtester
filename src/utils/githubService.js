@@ -525,6 +525,10 @@ ${details}
 **Test result:** ${testResult === 'complete-pass' ? '✅ PASS' : '❌ FAIL'}
 
 _This report was submitted from the [test request dashboard](http://localhost:3000/request/${requestId})._
+
+---
+
+☕ If this helped you ship better, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
   `;
   
   // Post the report as a comment
