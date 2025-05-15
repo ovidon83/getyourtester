@@ -548,6 +548,10 @@ async function postWelcomeComment(repository, prNumber) {
   const welcomeComment = `
 **Welcome to GetYourTester!**
 
+_Early-access mode: Your first test request (4h turnaround) is **FREE**!_
+
+If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
+
 Request a manual QA test for this PR by commenting:
 
 /test Checkout flow on mobile, env: staging, browsers: Chrome & Safari
