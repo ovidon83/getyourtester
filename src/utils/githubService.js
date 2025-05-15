@@ -542,32 +542,16 @@ _This report was submitted from the [test request dashboard](http://localhost:30
  */
 async function postWelcomeComment(repository, prNumber) {
   const welcomeComment = `
-## 👋 Welcome to GetYourTester!
+**Welcome to GetYourTester!**
 
-Thank you for opening this pull request. GetYourTester provides expert manual testing directly in your GitHub PRs.
+Request a manual QA test for this PR by commenting:
 
-### 🧪 How to Request Testing
+```
+/test Checkout flow on mobile, env: staging, browsers: Chrome & Safari
+```
 
-To request manual testing for this PR, simply add a comment with the command \`/test\` followed by your testing requirements:
-
-\`\`\`
-/test
-Environment: Production
-Browsers: Chrome, Firefox, Safari
-Devices: Desktop, Mobile
-Scope: Verify the new login flow works as expected
-Instructions: Pay special attention to error states and validation
-\`\`\`
-
-### 🔍 What Happens Next
-
-1. Your test request will be processed immediately
-2. A tester will be assigned to your PR
-3. You'll receive updates and a detailed test report
-
-If you have any questions, feel free to ask!
-  `;
-  
+That's it! We'll handle the rest. 🚀
+`;
   return await postComment(repository, prNumber, welcomeComment);
 }
 
