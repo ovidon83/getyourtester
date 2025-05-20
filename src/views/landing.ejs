@@ -136,11 +136,92 @@
         <i class="bi bi-clock me-2"></i> Testing begins within 4 hours of your request and is typically completed within 4-24 hours.
       </div>
     </div>
-    <div class="text-center mt-4">
-      <a href="https://github.com/settings/apps/get-your-tester/installations" class="btn btn-primary btn-lg px-4" style="min-width: 260px;"><i class="bi bi-github me-2"></i>Install GitHub App</a>
+    <div class="row g-5 justify-content-center mt-5">
+      <div class="col-md-8 col-lg-6">
+        <div class="card h-100 border-0 shadow-none bg-transparent p-3">
+          <div class="howit-img-wrapper position-relative p-3">
+            <div class="howit-title-img-top">Welcome Message</div>
+            <img src="/images/welcome_msg.png" class="card-img-top howit-img" alt="Welcome message from GetYourTester bot in a GitHub PR" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-lg-6">
+        <div class="card h-100 border-0 shadow-none bg-transparent p-3">
+          <div class="howit-img-wrapper position-relative p-3">
+            <div class="howit-title-img-top">Test Request</div>
+            <img src="/images/test_request.png" class="card-img-top howit-img" alt="Test request comment in a GitHub PR" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-lg-6">
+        <div class="card h-100 border-0 shadow-none bg-transparent p-3">
+          <div class="howit-img-wrapper position-relative p-3">
+            <div class="howit-title-img-top">Bug Report</div>
+            <img src="/images/bug_report.png" class="card-img-top howit-img" alt="Bug report comment from GetYourTester in a GitHub PR" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-lg-6">
+        <div class="card h-100 border-0 shadow-none bg-transparent p-3">
+          <div class="howit-img-wrapper position-relative p-3">
+            <div class="howit-title-img-top">Final Test Report</div>
+            <img src="/images/test_report.png" class="card-img-top howit-img" alt="Final test report from GetYourTester in a GitHub PR" loading="lazy">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+.howit-img-wrapper {
+  width: 100%;
+  height: 420px;
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #f8f9fa;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.howit-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 1.25rem;
+  background: #f8f9fa;
+}
+.howit-title-img-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 1.1rem 0.5rem 0.7rem 0.5rem;
+  background: none;
+  color: #222;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 8px #fff, 0 1px 8px #fff;
+  z-index: 2;
+}
+@media (max-width: 991.98px) {
+  .howit-img-wrapper {
+    height: 320px;
+  }
+}
+@media (max-width: 767.98px) {
+  .howit-img-wrapper {
+    height: 220px;
+  }
+}
+</style>
 
 <!-- Features Section -->
 <section id="features" class="py-5 bg-light">
