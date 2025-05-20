@@ -11,6 +11,10 @@ const path = require('path');
 const fs = require('fs');
 const githubService = require('./src/utils/githubService');
 const indexRoutes = require('./src/routes/index');
+const docsRoutes = require('./src/routes/docs');
+const statusRoutes = require('./src/routes/status');
+const privacyRoutes = require('./src/routes/privacy');
+const termsRoutes = require('./src/routes/terms');
 
 // Create Express app
 const app = express();
@@ -49,6 +53,10 @@ app.use((err, req, res, next) => {
 
 // Use the index routes
 app.use('/', indexRoutes);
+app.use('/docs', docsRoutes);
+app.use('/status', statusRoutes);
+app.use('/privacy', privacyRoutes);
+app.use('/terms', termsRoutes);
 
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {
