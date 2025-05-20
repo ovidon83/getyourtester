@@ -14,6 +14,10 @@ const fs = require('fs');
 const indexRoutes = require('./routes/index');
 const adminRoutes = require('./routes/admin');
 const githubRoutes = require('./routes/github');
+const docsRoutes = require('./routes/docs');
+const statusRoutes = require('./routes/status');
+const privacyRoutes = require('./routes/privacy');
+const termsRoutes = require('./routes/terms');
 
 // Initialize services
 const emailService = require('./utils/emailService');
@@ -107,6 +111,10 @@ if (!fs.existsSync(testRequestsPath)) {
 app.use('/', indexRoutes);
 app.use('/admin', adminRoutes);
 app.use('/github', githubRoutes);
+app.use('/docs', docsRoutes);
+app.use('/status', statusRoutes);
+app.use('/privacy', privacyRoutes);
+app.use('/terms', termsRoutes);
 
 // 404 handler
 app.use((req, res) => {
