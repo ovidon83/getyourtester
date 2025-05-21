@@ -1,0 +1,341 @@
+<%- include('partials/header', { title: 'Request Services - GetYourTester' }) %>
+
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="text-center mb-4">Request QA Services</h1>
+          
+          <% if (locals.success) { %>
+            <div class="alert alert-success">
+              <i class="bi bi-check-circle-fill me-2"></i> Thank you for your request! We'll get back to you within 24 hours.
+            </div>
+          <% } %>
+          
+          <form action="/request" method="POST" class="needs-validation" novalidate>
+            <!-- Personal Info Section -->
+            <div class="mb-4">
+              <h4 class="border-bottom pb-2 mb-3">Contact Information</h4>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Name *</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+                  <div class="invalid-feedback">Please provide your name</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="company" class="form-label">Company</label>
+                  <input type="text" class="form-control" id="company" name="company">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email *</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                  <div class="invalid-feedback">Please provide a valid email</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="phone" class="form-label">Phone</label>
+                  <input type="tel" class="form-control" id="phone" name="phone">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Service Type Selection -->
+            <div class="mb-4">
+              <h4 class="border-bottom pb-2 mb-3">Service Type</h4>
+              <div class="mb-3">
+                <label class="form-label">Which service(s) are you interested in? *</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="pr-testing" name="services" value="PR Testing" 
+                         onchange="toggleSection('pr-testing-section', this.checked)">
+                  <label class="form-check-label" for="pr-testing">
+                    PR Testing (GitHub Pull Request Testing)
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="qa-strategy" name="services" value="QA Strategy" 
+                         onchange="toggleSection('qa-strategy-section', this.checked)">
+                  <label class="form-check-label" for="qa-strategy">
+                    QA Strategy & Process Development
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="test-automation" name="services" value="Test Automation" 
+                         onchange="toggleSection('test-automation-section', this.checked)">
+                  <label class="form-check-label" for="test-automation">
+                    Test Automation Strategy & Implementation
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="manual-qa" name="services" value="Manual QA" 
+                         onchange="toggleSection('manual-qa-section', this.checked)">
+                  <label class="form-check-label" for="manual-qa">
+                    Hands-on Testing Services
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="qa-team" name="services" value="QA Team Building" 
+                         onchange="toggleSection('qa-team-section', this.checked)">
+                  <label class="form-check-label" for="qa-team">
+                    QA Team Building
+                  </label>
+                </div>
+                <div class="invalid-feedback">Please select at least one service</div>
+              </div>
+            </div>
+            
+            <!-- PR Testing Section (Hidden by default) -->
+            <div id="pr-testing-section" class="service-details mb-4" style="display: none;">
+              <h4 class="border-bottom pb-2 mb-3 text-primary">PR Testing Details</h4>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="github-repo" class="form-label">GitHub Repository URL</label>
+                  <input type="url" class="form-control" id="github-repo" name="github_repo" placeholder="https://github.com/username/repo">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="pr-count" class="form-label">Estimated Number of PRs per Month</label>
+                  <select class="form-select" id="pr-count" name="pr_count">
+                    <option value="">Please select...</option>
+                    <option value="1-5">1-5</option>
+                    <option value="6-15">6-15</option>
+                    <option value="16-30">16-30</option>
+                    <option value="31+">31+</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="pr-testing-needs" class="form-label">What are your specific PR testing needs?</label>
+                <textarea class="form-control" id="pr-testing-needs" name="pr_testing_needs" rows="3" 
+                          placeholder="e.g., UI/UX testing, API testing, specific test scenarios, etc."></textarea>
+              </div>
+            </div>
+            
+            <!-- QA Strategy Section (Hidden by default) -->
+            <div id="qa-strategy-section" class="service-details mb-4" style="display: none;">
+              <h4 class="border-bottom pb-2 mb-3 text-success">QA Strategy Details</h4>
+              <div class="mb-3">
+                <label for="current-process" class="form-label">Describe your current QA processes (if any)</label>
+                <textarea class="form-control" id="current-process" name="current_process" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="strategy-goals" class="form-label">What goals do you have for your QA strategy?</label>
+                <textarea class="form-control" id="strategy-goals" name="strategy_goals" rows="3" 
+                          placeholder="e.g., reduce bugs, improve quality, streamline processes, etc."></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="team-size" class="form-label">Current Development Team Size</label>
+                  <select class="form-select" id="team-size" name="team_size">
+                    <option value="">Please select...</option>
+                    <option value="1-5">1-5</option>
+                    <option value="6-15">6-15</option>
+                    <option value="16-30">16-30</option>
+                    <option value="31+">31+</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="product-stage" class="form-label">Product Stage</label>
+                  <select class="form-select" id="product-stage" name="product_stage">
+                    <option value="">Please select...</option>
+                    <option value="Concept/MVP">Concept/MVP</option>
+                    <option value="Early stage">Early stage</option>
+                    <option value="Growth">Growth</option>
+                    <option value="Mature">Mature</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Test Automation Section (Hidden by default) -->
+            <div id="test-automation-section" class="service-details mb-4" style="display: none;">
+              <h4 class="border-bottom pb-2 mb-3 text-warning">Test Automation Details</h4>
+              <div class="mb-3">
+                <label for="tech-stack" class="form-label">Your Tech Stack</label>
+                <input type="text" class="form-control" id="tech-stack" name="tech_stack" 
+                       placeholder="e.g., React, Node.js, PostgreSQL, etc.">
+              </div>
+              <div class="mb-3">
+                <label for="automation-needs" class="form-label">Describe your automation goals and needs</label>
+                <textarea class="form-control" id="automation-needs" name="automation_needs" rows="3" 
+                          placeholder="e.g., UI testing, API testing, CI/CD integration, etc."></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Do you have existing automated tests?</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="existing_automation" id="existing-yes" value="Yes">
+                  <label class="form-check-label" for="existing-yes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="existing_automation" id="existing-no" value="No">
+                  <label class="form-check-label" for="existing-no">No</label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Manual QA Section (Hidden by default) -->
+            <div id="manual-qa-section" class="service-details mb-4" style="display: none;">
+              <h4 class="border-bottom pb-2 mb-3 text-danger">Hands-on Testing Details</h4>
+              <div class="mb-3">
+                <label class="form-label">What type of testing do you need?</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="testing-uiux" name="testing_types" value="UI/UX">
+                  <label class="form-check-label" for="testing-uiux">UI/UX Testing</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="testing-api" name="testing_types" value="API">
+                  <label class="form-check-label" for="testing-api">API Testing</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="testing-performance" name="testing_types" value="Performance">
+                  <label class="form-check-label" for="testing-performance">Performance Testing</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="testing-security" name="testing_types" value="Security">
+                  <label class="form-check-label" for="testing-security">Security Testing</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="testing-other" name="testing_types" value="Other">
+                  <label class="form-check-label" for="testing-other">Other</label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="testing-frequency" class="form-label">Testing Frequency</label>
+                <select class="form-select" id="testing-frequency" name="testing_frequency">
+                  <option value="">Please select...</option>
+                  <option value="One-time">One-time project</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Bi-weekly">Bi-weekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="As needed">As needed</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="testing-details" class="form-label">Additional testing details or requirements</label>
+                <textarea class="form-control" id="testing-details" name="testing_details" rows="3"></textarea>
+              </div>
+            </div>
+            
+            <!-- QA Team Building Section (Hidden by default) -->
+            <div id="qa-team-section" class="service-details mb-4" style="display: none;">
+              <h4 class="border-bottom pb-2 mb-3 text-info">QA Team Building Details</h4>
+              <div class="mb-3">
+                <label for="team-goals" class="form-label">What are your goals for building a QA team?</label>
+                <textarea class="form-control" id="team-goals" name="team_goals" rows="3" 
+                          placeholder="e.g., hire first QA engineer, grow existing team, etc."></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="hiring-timeline" class="form-label">When do you plan to start hiring?</label>
+                  <select class="form-select" id="hiring-timeline" name="hiring_timeline">
+                    <option value="">Please select...</option>
+                    <option value="ASAP">As soon as possible</option>
+                    <option value="1-3 months">1-3 months</option>
+                    <option value="3-6 months">3-6 months</option>
+                    <option value="6+ months">6+ months</option>
+                    <option value="Undecided">Undecided</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="team-structure" class="form-label">Desired team structure</label>
+                  <input type="text" class="form-control" id="team-structure" name="team_structure" 
+                         placeholder="e.g., 1 QA lead, 2 manual testers, etc.">
+                </div>
+              </div>
+            </div>
+            
+            <!-- General Information -->
+            <div class="mb-4">
+              <h4 class="border-bottom pb-2 mb-3">Additional Information</h4>
+              <div class="mb-3">
+                <label for="message" class="form-label">Tell us more about your project and requirements *</label>
+                <textarea class="form-control" id="message" name="message" rows="5" required 
+                          placeholder="Describe your project, specific challenges, timeline, budget, or any other relevant details."></textarea>
+                <div class="invalid-feedback">Please provide some details about your project</div>
+              </div>
+              <div class="mb-3">
+                <label for="budget" class="form-label">Budget Range (if applicable)</label>
+                <select class="form-select" id="budget" name="budget">
+                  <option value="">Please select...</option>
+                  <option value="Under $1,000">Under $1,000</option>
+                  <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                  <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                  <option value="$10,000+">$10,000+</option>
+                  <option value="Not sure">Not sure</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="timeline" class="form-label">Desired Timeline</label>
+                <select class="form-select" id="timeline" name="timeline">
+                  <option value="">Please select...</option>
+                  <option value="ASAP">As soon as possible</option>
+                  <option value="Within 1 month">Within 1 month</option>
+                  <option value="1-3 months">1-3 months</option>
+                  <option value="3+ months">3+ months</option>
+                  <option value="Ongoing">Ongoing service</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="referral" class="form-label">How did you hear about us?</label>
+                <select class="form-select" id="referral" name="referral">
+                  <option value="">Please select...</option>
+                  <option value="Google">Google</option>
+                  <option value="Social Media">Social Media</option>
+                  <option value="GitHub">GitHub</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg px-5">Submit Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle service-specific sections based on checkbox selection
+  function toggleSection(sectionId, show) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.style.display = show ? 'block' : 'none';
+    }
+  }
+  
+  // Form validation
+  (function() {
+    'use strict';
+    
+    // Fetch all forms we want to apply validation to
+    var forms = document.querySelectorAll('.needs-validation');
+    
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function(form) {
+      form.addEventListener('submit', function(event) {
+        // Check if at least one service is selected
+        var services = form.querySelectorAll('input[name="services"]:checked');
+        if (services.length === 0) {
+          var servicesGroup = form.querySelector('input[name="services"]').closest('.mb-3');
+          servicesGroup.classList.add('was-validated');
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+</script>
+
+<%- include('partials/footer') %> 

@@ -1,0 +1,247 @@
+/* Custom styles for GetYourTester */
+
+/* Base elements */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #212529;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #858796 0%, #60616f 100%);
+}
+
+/* Service cards */
+.service-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Card optimization */
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Service stages */
+.service-stage {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  max-width: fit-content;
+}
+
+.service-stage-1 {
+  background-color: rgba(78, 115, 223, 0.1);
+  border-left: 4px solid #4e73df;
+}
+
+.service-stage-2 {
+  background-color: rgba(28, 200, 138, 0.1);
+  border-left: 4px solid #1cc88a;
+}
+
+.service-stage-3 {
+  background-color: rgba(246, 194, 62, 0.1);
+  border-left: 4px solid #f6c23e;
+}
+
+.service-stage-4 {
+  background-color: rgba(231, 74, 59, 0.1);
+  border-left: 4px solid #e74a3b;
+}
+
+.service-stage-5 {
+  background-color: rgba(54, 185, 204, 0.1);
+  border-left: 4px solid #36b9cc;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+}
+
+.timeline:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: #e9ecef;
+  border-radius: 3px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item:before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 0.25rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4e73df;
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.2);
+}
+
+/* Section spacing */
+section {
+  padding: 3rem 0;
+}
+
+section + section {
+  padding-top: 4rem;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* Icons */
+.icon-container {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.icon-primary {
+  background-color: rgba(78, 115, 223, 0.1);
+  color: #4e73df;
+}
+
+.icon-success {
+  background-color: rgba(28, 200, 138, 0.1);
+  color: #1cc88a;
+}
+
+.icon-warning {
+  background-color: rgba(246, 194, 62, 0.1);
+  color: #f6c23e;
+}
+
+.icon-danger {
+  background-color: rgba(231, 74, 59, 0.1);
+  color: #e74a3b;
+}
+
+.icon-info {
+  background-color: rgba(54, 185, 204, 0.1);
+  color: #36b9cc;
+}
+
+/* Buttons and CTAs */
+.btn {
+  border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  section {
+    padding: 2.5rem 0;
+  }
+  
+  h1.display-4 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-sections .col-md-4,
+  .service-sections .col-md-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  section {
+    padding: 2rem 0;
+  }
+  
+  h1.display-4 {
+    font-size: 2.2rem;
+  }
+  
+  .timeline {
+    padding-left: 1.5rem;
+  }
+  
+  .timeline-item {
+    padding-left: 1rem;
+  }
+  
+  .timeline-item:before {
+    left: -1.25rem;
+  }
+}
+
+/* Testimonial cards */
+.testimonial-card {
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  height: 100%;
+}
+
+/* Footer */
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
+/* Additional spacing utilities */
+.pb-6 {
+  padding-bottom: 4rem;
+}
+
+.pt-6 {
+  padding-top: 4rem;
+}
+
+.mb-6 {
+  margin-bottom: 4rem;
+}
+
+.mt-6 {
+  margin-top: 4rem;
+}
