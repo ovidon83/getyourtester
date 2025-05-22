@@ -148,12 +148,31 @@
         <div class="card-body">
           <form action="/request/<%= testRequest.id %>/report" method="POST">
             <div class="mb-3">
-              <label for="summary" class="form-label">Test Summary</label>
-              <textarea class="form-control" id="summary" name="summary" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="details" class="form-label">Details &amp; Bug Reports</label>
-              <textarea class="form-control" id="details" name="details" rows="5" required></textarea>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="reportContent" class="form-label">Test Report (Markdown supported)</label>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="markdownPreviewToggle">
+                  <label class="form-check-label" for="markdownPreviewToggle">Preview</label>
+                </div>
+              </div>
+              <textarea class="form-control" id="reportContent" name="reportContent" rows="12" required
+                placeholder="## Test Summary
+Brief overview of what was tested and key findings...
+
+## Issues Found
+### Critical Issues
+- **Issue 1**: Description here
+  - Steps to reproduce: 
+  - Expected vs Actual:
+
+### Minor Issues  
+- **Issue 2**: Description here
+
+## Additional Notes
+- Overall user experience feedback
+- Performance observations
+- Recommendations for improvement"></textarea>
+              <div id="markdownPreview" class="form-control overflow-auto p-3 mt-2" style="display: none; height: 300px;"></div>
             </div>
             <div class="mb-3">
               <label for="testResult" class="form-label">Test Result</label>
@@ -164,6 +183,36 @@
             </div>
             <button type="submit" class="btn btn-success w-100">Submit Report</button>
           </form>
+
+          <!-- Add markdown-it for preview -->
+          <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const md = window.markdownit();
+              const toggle = document.getElementById('markdownPreviewToggle');
+              const textarea = document.getElementById('reportContent');
+              const preview = document.getElementById('markdownPreview');
+              
+              // Toggle preview when checkbox is clicked
+              toggle.addEventListener('change', function() {
+                if (this.checked) {
+                  preview.innerHTML = md.render(textarea.value);
+                  preview.style.display = 'block';
+                  textarea.style.display = 'none';
+                } else {
+                  preview.style.display = 'none';
+                  textarea.style.display = 'block';
+                }
+              });
+              
+              // Update preview content when typing
+              textarea.addEventListener('input', function() {
+                if (toggle.checked) {
+                  preview.innerHTML = md.render(this.value);
+                }
+              });
+            });
+          </script>
         </div>
       </div>
     </div>

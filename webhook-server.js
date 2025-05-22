@@ -132,11 +132,11 @@ app.post('/request/:id/comment', async (req, res) => {
 // Submit test report
 app.post('/request/:id/report', async (req, res) => {
   const requestId = req.params.id;
-  const { summary, details, testResult } = req.body;
+  const { reportContent, testResult } = req.body;
   
   try {
     // Submit the test report and update the test request status
-    await githubService.submitTestReport(requestId, summary, details, testResult);
+    await githubService.submitTestReport(requestId, reportContent, testResult);
     
     // Explicitly update the UI status to match the test result status
     const testRequests = githubService.loadTestRequests();

@@ -416,10 +416,8 @@ async function postCommentToPR(requestId, commentBody, newStatus = null) {
 
 ${commentBody}
 
-**Status update:** ${testRequest.status} → ${newStatus}
-
-_This comment was posted from the [test request dashboard](http://localhost:3000/request/${requestId})._
-    `;
+**Status update:** ${newStatus}
+`;
     
     // Update the test request status
     await updateTestRequestStatus(requestId, newStatus, false); // Don't post a separate status comment
@@ -429,8 +427,6 @@ _This comment was posted from the [test request dashboard](http://localhost:3000
 ## 💬 Tester Comment
 
 ${commentBody}
-
-_This comment was posted from the [test request dashboard](http://localhost:3000/request/${requestId})._
     `;
   }
   
@@ -467,12 +463,7 @@ async function updateTestRequestStatus(requestId, newStatus, postCommentUpdate =
       const statusComment = `
 ## 🔄 Test Status Update
 
-The test request status has been updated:
-
-**Previous status:** ${oldStatus}
-**New status:** ${newStatus}
-
-View the [test request details](http://localhost:3000/request/${requestId}) for more information.
+The test request status has been updated to ${newStatus}.
       `;
       
       await postComment(testRequest.repository, testRequest.prNumber, statusComment);
@@ -483,14 +474,17 @@ View the [test request details](http://localhost:3000/request/${requestId}) for 
 }
 
 /**
- * Submit a test report for a PR
+ * Submit a test report and update PR status
  */
-async function submitTestReport(requestId, summary, details, testResult) {
+async function submitTestReport(requestId, reportContent, testResult) {
+  console.log(`📝 Submitting test report for request ${requestId} with result ${testResult}`);
+  
+  // Find the test request
   const testRequests = loadTestRequests();
   const testRequest = testRequests.find(r => r.id === requestId);
   
   if (!testRequest) {
-    throw new Error(`Test request with ID ${requestId} not found`);
+    throw new Error(`Test request ${requestId} not found`);
   }
   
   if (!testRequest.repository || !testRequest.prNumber) {
@@ -499,8 +493,7 @@ async function submitTestReport(requestId, summary, details, testResult) {
   
   // Save the report to the test request
   testRequest.report = {
-    summary,
-    details,
+    reportContent,
     testResult,
     submittedAt: new Date().toISOString()
   };
@@ -515,16 +508,10 @@ async function submitTestReport(requestId, summary, details, testResult) {
   const reportComment = `
 ## 📋 Manual Test Report
 
-### Summary
-${summary}
-
-### Details & Bug Reports
-${details}
+${reportContent}
 
 ### Status
 **Test result:** ${testResult === 'complete-pass' ? '✅ PASS' : '❌ FAIL'}
-
-_This report was submitted from the [test request dashboard](http://localhost:3000/request/${requestId})._
 
 ---
 
@@ -548,13 +535,11 @@ async function postWelcomeComment(repository, prNumber) {
   const welcomeComment = `
 **Welcome to GetYourTester!**
 
-_Early-access mode: Your first test request (4h turnaround) is **FREE**!_
+_Early-access mode: Your first test requests (up to 2 hours) are **FREE**!_
 
 If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
 
-Request a manual QA test for this PR by commenting:
-
-/test Checkout flow on mobile, env: staging, browsers: Chrome & Safari
+Request a test by commenting: /test followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
 
 That's it! We'll handle the rest. 🚀
 `;
@@ -605,18 +590,9 @@ async function handleTestRequest(repository, issue, comment, sender) {
   const acknowledgmentComment = `
 ## 🧪 Test Request Received
 
-Thank you for requesting manual testing! Your request has been received and is being processed.
-
-* **Request ID:** \`${requestId}\`
-* **Requested by:** @${sender.login}
+Thank you for the testing request! Your request has been received and is being processed.
 * **Status:** Pending
-
-${Object.keys(testRequest.parsedDetails).length > 0 ? '### Test Requirements\n' + 
-  Object.entries(testRequest.parsedDetails).map(([key, value]) => `* **${key}:** ${value}`).join('\n') : ''}
-
-A tester will be assigned to this PR soon. You'll receive a notification once testing begins.
-
-View the [test request dashboard](http://localhost:3000/request/${requestId}) for more information.
+A tester will be assigned to this PR soon and you'll receive status updates notifications.
   `;
   
   const commentResult = await postComment(repository.full_name, issue.number, acknowledgmentComment);
