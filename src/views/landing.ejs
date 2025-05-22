@@ -65,11 +65,12 @@
         <h3 class="mb-0"><i class="bi bi-card-checklist"></i> GetYourTester</h3>
       </div>
       <div class="d-flex gap-3 align-items-center">
-        <a href="https://chat.google.com/room/AAQA-W7gcrU?cls=7" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-dots me-1"></i>Join Lounge</a>
-        <a href="/docs" class="btn btn-outline-primary">Docs</a>
-        <a href="/contact" class="btn btn-outline-primary">Contact</a>
-        <a href="/request" class="btn btn-outline-primary">Request Services</a>
-        <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-primary">Book a Call</a>
+        <a href="https://chat.google.com/room/AAQA-W7gcrU?cls=7" target="_blank" class="nav-btn chat-btn">
+          <div class="google-icon me-1"><i class="bi bi-chat-dots"></i></div>
+          <span>Join Lounge</span>
+        </a>
+        <a href="/request" class="nav-btn request-btn"><i class="bi bi-send me-1"></i><span>Request Services</span></a>
+        <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="nav-btn calendar-btn"><i class="bi bi-calendar-check me-1"></i><span>Book a Call</span></a>
       </div>
     </div>
   </div>
@@ -80,16 +81,29 @@
   <div class="container">
     <div class="row justify-content-center align-items-center">
       <div class="col-lg-7 text-center text-lg-start">
-        <h1 class="fw-bold mb-3">Your First QA Hire for Solo Founders & Startups</h1>
-        <p class="lead mb-4">From on-demand PR testing to complete QA systems—get expert quality assurance without the hiring hassle.</p>
-        <div class="d-flex flex-wrap gap-3">
-          <a href="#services" class="btn btn-light btn-lg">Explore Services</a>
-          <a href="https://github.com/settings/apps/get-your-tester/installations" target="_blank" class="btn btn-outline-light btn-lg">Install GitHub App</a>
-          <div class="d-flex align-items-center">
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="getyourtester" data-color="#FFDD00" data-emoji="📖" data-font="Cookie" data-text="Buy me a book" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff"></script>
-          </div>
+        <h1 class="fw-bold mb-3">QA on Speed Dial for Indie Hackers & Startups</h1>
+        <p class="lead mb-4">PR testing directly in Github with first results in 4h   <span class="free-badge">First tests FREE!</span></p>
+        
+        <div class="key-benefits d-flex flex-wrap justify-content-start mb-4">
+          <div class="key-benefit"><i class="bi bi-bug me-2"></i>Catch critical bugs early</div>
+          <div class="key-benefit"><i class="bi bi-chat-square-text me-2"></i>Product feedback</div>
+          <div class="key-benefit"><i class="bi bi-graph-up-arrow me-2"></i>Scale QA as you grow</div>
         </div>
-        <p class="mt-3 small text-white-50">✨ First few test requests are free during early access</p>
+        
+        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+          <a href="https://github.com/settings/apps/get-your-tester/installations" target="_blank" class="hero-btn primary-btn">
+            <div class="btn-icon-wrapper">
+              <i class="bi bi-github"></i>
+            </div>
+            <span>Install GitHub App</span>
+          </a>
+          <a href="#services" class="hero-btn secondary-btn">
+            <div class="btn-icon-wrapper">
+              <i class="bi bi-grid-3x3-gap"></i>
+            </div>
+            <span>More Services</span>
+          </a>
+        </div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">
         <div class="card shadow-lg border-0 border-radius-lg">
@@ -101,14 +115,17 @@
             </div>
             <div class="d-flex align-items-center mb-3">
               <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" style="min-width: 36px; height: 36px;">2</div>
-              <p class="ms-3 mb-0 text-start">Type <code>/test</code> in PR comment</p>
+              <p class="ms-3 mb-0 text-start">Type <code>/test</code> in PR comment to request testing</p>
             </div>
             <div class="d-flex align-items-center">
               <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center" style="min-width: 36px; height: 36px;">3</div>
-              <p class="ms-3 mb-0 text-start">Get detailed feedback in 4-24h</p>
+              <p class="ms-3 mb-0 text-start">Get bug reports and detailed feedback in 4-24h</p>
             </div>
             <div class="mt-4">
-              <a href="/docs" class="btn btn-sm btn-outline-primary">View Guide and Examples <i class="bi bi-arrow-right ms-1"></i></a>
+              <a href="/docs" class="guide-link"><i class="bi bi-book me-2"></i>View Guide and Examples <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            <div class="mt-4">
+              <i class="bi bi-stars me-2"></i>Free onboarding to know your product
             </div>
           </div>
         </div>
@@ -121,8 +138,8 @@
 <section id="services" class="py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="fw-bold">0-1 QA Services for Growing Teams</h2>
-      <p class="lead">Start with what you need today, then scale as you grow</p>
+      <h2 class="fw-bold">Full-Stack QA Services for Early-Stage and Growing Startups</h2>
+      <p class="lead">From first PR test to full QA—quality services that scale with your growth</p>
     </div>
     
     <div class="row g-4">
@@ -138,7 +155,7 @@
             </div>
             <p>On-demand manual QA directly in your GitHub pull requests.</p>
             <ul class="small mb-3">
-              <li>No coordination hassle</li>
+              <li>Free product onboarding</li>
               <li>Pay only for what you use</li>
               <li>Results in hours, not days</li>
             </ul>
@@ -157,12 +174,12 @@
               <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
                 <i class="bi bi-diagram-3 text-success" style="font-size: 1.5rem;"></i>
               </div>
-              <h3 class="fs-5 mb-0">QA Strategy</h3>
+              <h3 class="fs-5 mb-0">Test Culture & Strategy</h3>
             </div>
-            <p>Build quality-focused engineering culture with the right processes.</p>
+            <p>Lean quality-focused engineering processes and best practices.</p>
             <ul class="small mb-3">
+              <li>Quality-focused culture</li>
               <li>Testing strategies</li>
-              <li>Quality workflows</li>
               <li>Best practices</li>
             </ul>
           </div>
@@ -182,10 +199,10 @@
               </div>
               <h3 class="fs-5 mb-0">Test Automation</h3>
             </div>
-            <p>Efficient, maintainable automation for sustainable testing velocity.</p>
+            <p>Efficient startup-ready test automation: Your accelerator, not your bottleneck.</p>
             <ul class="small mb-3">
-              <li>Framework selection & setup</li>
-              <li>Test automation architecture</li>
+              <li>Architecture, Framework, and Approach</li>
+              <li>Test Implementation & Coverage</li>
               <li>CI/CD integration</li>
             </ul>
           </div>
@@ -209,7 +226,7 @@
             <div class="row">
               <div class="col-md-6">
                 <ul class="small mb-3">
-                  <li>Exploratory testing</li>
+                  <li>Acceptance testing</li>
                   <li>Regression testing</li>
                 </ul>
               </div>
@@ -222,7 +239,7 @@
             </div>
           </div>
           <div class="card-footer bg-white border-0 pb-3">
-            <a href="/contact" class="btn btn-sm btn-danger">Schedule Testing</a>
+            <a href="/contact" class="btn btn-sm btn-danger">Request Testing</a>
           </div>
         </div>
       </div>
@@ -235,9 +252,9 @@
               <div class="rounded-circle bg-info bg-opacity-10 p-2 me-3">
                 <i class="bi bi-people-fill text-info" style="font-size: 1.5rem;"></i>
               </div>
-              <h3 class="fs-5 mb-0">QA Team Building</h3>
+              <h3 class="fs-5 mb-0">QA Team</h3>
             </div>
-            <p>Build your first QA team at the right time, in the right way.</p>
+            <p>Build your QA team at the right time, in the right way, for best results.</p>
             <div class="row">
               <div class="col-md-6">
                 <ul class="small mb-3">
@@ -280,7 +297,7 @@
               <i class="bi bi-star-fill text-warning me-1"></i>
               <i class="bi bi-star-fill text-warning"></i>
             </div>
-            <p>"Ovi helped us catch critical bugs before merging and releasing. He found edge cases we missed, and his detailed reports saved us investigation time."</p>
+            <p>"Ovi has been our testing partner for 4 years, delivering a perfect mix of on-demand testing, process implementation, and engineering team coaching that shifted our entire approach to quality."</p>
             <div class="d-flex align-items-center mt-3">
               <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                 <span class="fw-bold">DK</span>
@@ -303,7 +320,7 @@
               <i class="bi bi-star-fill text-warning me-1"></i>
               <i class="bi bi-star-fill text-warning"></i>
             </div>
-            <p>"Ovi is always testing from the user's perspective which is something we value a lot. Within hours we got thorough feedback directly in our workflow."</p>
+            <p>"Ovi is always testing from the user's perspective which is something we value a lot. Within hours we got thorough feedback directly in our workflow. He also covered most of the critical paths with automation."</p>
             <div class="d-flex align-items-center mt-3">
               <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                 <span class="fw-bold">JH</span>
@@ -326,7 +343,7 @@
               <i class="bi bi-star-fill text-warning me-1"></i>
               <i class="bi bi-star-fill text-warning"></i>
             </div>
-            <p>"Impressively fast turnaround and great feedback. Ovi has always been a great help on hands-on testing and process improvements."</p>
+            <p>"Ovi built our testing foundation from zero to one while balancing hands-on testing with mentorship. His work transformed our engineering culture and quality practices. His work directly increased customer satisfaction while accelerating our releases."</p>
             <div class="d-flex align-items-center mt-3">
               <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                 <span class="fw-bold">JB</span>
@@ -354,15 +371,16 @@
               <div class="col-md-4 text-center mb-4 mb-md-0">
                 <img src="https://media.licdn.com/dms/image/v2/D5603AQFxdS7D7Wjoow/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1667611347443?e=1752710400&v=beta&t=ZqI5RIhNCorqeI5-CiHFLmYbiPwHuFF2NfchuGJi9Ak" alt="Ovidiu Donciu, QA Expert" class="rounded-circle img-fluid shadow-sm mb-3" style="max-width: 150px; border: 3px solid #fff;">
                 <h2 class="fs-4 fw-bold">Meet Your QA Partner</h2>
-                <div class="mt-3">
-                  <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-linkedin me-1"></i>Connect</a>
-                  <a href="/contact" class="btn btn-sm btn-outline-primary ms-2"><i class="bi bi-envelope me-1"></i>Contact</a>
+                <div class="mt-3 about-buttons">
+                  <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="about-btn linkedin-btn"><i class="bi bi-linkedin me-2"></i>Connect</a>
+                  <a href="/contact" class="about-btn contact-btn"><i class="bi bi-envelope me-2"></i>Contact</a>
+                  <a href="https://www.buymeacoffee.com/getyourtester" target="_blank" class="about-btn book-btn"><i class="bi bi-journal-bookmark me-2"></i>Buy me a book</a>
                 </div>
               </div>
               <div class="col-md-8">
-                <p class="lead mb-3">Hi! I'm Ovi Donciu — With 15+ years in quality assurance, I've helped solo founders, startups, and scale-ups ship faster and safer.</p>
+                <p class="lead mb-3">Hi! I'm Ovi Donciu — With 15+ years of passion for quality in startups, I've helped solo founders, startups, and scale-ups ship faster and safer.</p>
                 <p>Throughout my career, I've worked with companies at every stage, from pre-seed startups to enterprise organizations. I've built QA processes from scratch, established test automation frameworks, led QA teams, and helped companies navigate their quality journey as they scale.</p>
-                <p class="mb-0">My approach combines technical expertise with a deep understanding of what startups really need: quality solutions that match their stage, resources, and growth trajectory.</p>
+                <p class="mb-0">My approach combines startup-friendly strategic thinking, technical expertise, and a natural passion and dedication to quality at startup speed.</p>
               </div>
             </div>
           </div>
@@ -378,13 +396,19 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <h2 class="fw-bold mb-3">Ready to ship with confidence?</h2>
-        <p class="lead mb-4">Get started free today - no credit card required.</p>
+        <p class="lead mb-4">Get started today - <span class="free-badge">First tests FREE!</span></p>
         <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
-          <a href="https://github.com/settings/apps/get-your-tester/installations" target="_blank" class="btn btn-light btn-lg">
-            <i class="bi bi-github me-2"></i>Install GitHub App
+          <a href="https://github.com/settings/apps/get-your-tester/installations" target="_blank" class="hero-btn primary-btn">
+            <div class="btn-icon-wrapper">
+              <i class="bi bi-github"></i>
+            </div>
+            <span>Install GitHub App</span>
           </a>
-          <a href="/request" class="btn btn-outline-light btn-lg">
-            <i class="bi bi-send me-2"></i>Request Services
+          <a href="/request" class="hero-btn secondary-btn">
+            <div class="btn-icon-wrapper">
+              <i class="bi bi-send"></i>
+            </div>
+            <span>Request Services</span>
           </a>
         </div>
         <p class="mt-3 small text-white-50">Your first few test requests (4 hours of work) are completely free during early access.</p>
@@ -404,13 +428,13 @@
       </div>
       <div class="col-md-6 text-center text-md-end">
         <div class="mb-2">
-          <a href="/docs" class="btn btn-sm btn-outline-light me-2">Documentation</a>
-          <a href="/request" class="btn btn-sm btn-outline-light me-2">Request Services</a>
-          <a href="/contact" class="btn btn-sm btn-outline-light">Contact Us</a>
+          <a href="/docs" class="nav-btn guide-btn btn-sm"><i class="bi bi-book me-1"></i><span>View Guide</span></a>
+          <a href="/request" class="nav-btn request-btn btn-sm"><i class="bi bi-send me-1"></i><span>Request Services</span></a>
+          <a href="/contact" class="nav-btn contact-btn btn-sm"><i class="bi bi-envelope me-1"></i><span>Contact</span></a>
         </div>
         <div>
           <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="text-white-50 me-3"><i class="bi bi-linkedin"></i></a>
-          <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="getyourtester" data-color="#FFDD00" data-emoji="📖" data-font="Cookie" data-text="Buy me a book" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff"></script>
+          <a href="https://www.buymeacoffee.com/getyourtester" target="_blank" class="bmc-subtle"><i class="bi bi-journal-bookmark me-1"></i>Buy me a book</a>
         </div>
       </div>
     </div>
@@ -420,6 +444,124 @@
 <style>
 .bg-gradient-primary {
   background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+/* Free badge */
+.free-badge {
+  display: inline-block;
+  background: rgba(255, 216, 0, 0.9);
+  color: #000;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: pulse 2s infinite;
+  position: relative;
+  transform: rotate(2deg);
+}
+
+/* Free onboarding callout */
+.free-onboarding-callout {
+  border-top: 2px solid #5c49ff;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  font-weight: 500;
+  color: #4e73df;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.free-onboarding-callout i {
+  color: #f7b924;
+  margin-right: 0.5rem;
+}
+
+@keyframes pulse {
+  0% {
+    transform: rotate(2deg) scale(1);
+  }
+  50% {
+    transform: rotate(2deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(2deg) scale(1);
+  }
+}
+
+/* Key benefits */
+.key-benefits {
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.key-benefit {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.key-benefit:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.key-benefit i {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* Guide link */
+.guide-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background: #ffc107;
+  color: #212529;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.guide-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+.guide-link:hover {
+  background: #e5ac00;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
+}
+
+.guide-link:hover::before {
+  left: 100%;
+}
+
+.guide-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
 }
 
 .card {
@@ -440,6 +582,312 @@
   border-radius: 6px;
 }
 
+/* Navigation buttons */
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.nav-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+
+.nav-btn:hover::after {
+  height: 100%;
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+/* Hero buttons */
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  margin: 4px;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.hero-btn span {
+  flex: 1;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.hero-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+.hero-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-btn:hover::before {
+  left: 100%;
+}
+
+.hero-btn:hover .btn-icon-wrapper {
+  transform: scale(1.1);
+}
+
+.hero-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.primary-btn {
+  background: #333;
+  color: white;
+  border: none;
+}
+
+.primary-btn .btn-icon-wrapper {
+  background: #ff6b6b;
+  color: white;
+}
+
+.primary-btn:hover {
+  background: #222;
+  color: white;
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border: none;
+}
+
+.secondary-btn .btn-icon-wrapper {
+  background: #4e73df;
+  color: white;
+}
+
+.secondary-btn:hover {
+  background: white;
+  color: #000;
+}
+
+/* Chat button */
+.chat-btn {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.08), rgba(219, 68, 55, 0.08), rgba(244, 180, 0, 0.08), rgba(15, 157, 88, 0.08));
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.chat-btn:hover {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.12), rgba(219, 68, 55, 0.12), rgba(244, 180, 0, 0.12), rgba(15, 157, 88, 0.12));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Google icon */
+.google-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.google-icon i {
+  background: conic-gradient(from 45deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Contact button */
+.contact-btn {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.contact-btn:hover {
+  background-color: rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.15);
+}
+
+/* Request button */
+.request-btn {
+  color: #20bf6b;
+  background-color: rgba(32, 191, 107, 0.1);
+  border: 1px solid rgba(32, 191, 107, 0.2);
+}
+
+.request-btn:hover {
+  background-color: rgba(32, 191, 107, 0.15);
+  box-shadow: 0 4px 8px rgba(32, 191, 107, 0.15);
+}
+
+/* Calendar button */
+.calendar-btn {
+  color: #3f51b5;
+  background-color: rgba(63, 81, 181, 0.1);
+  border: 1px solid rgba(63, 81, 181, 0.2);
+}
+
+.calendar-btn:hover {
+  background-color: rgba(63, 81, 181, 0.15);
+  box-shadow: 0 4px 8px rgba(63, 81, 181, 0.15);
+}
+
+/* Guide button */
+.guide-btn {
+  color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.guide-btn:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.15);
+}
+
+/* Footer buttons */
+footer .nav-btn {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+footer .nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+footer .nav-btn:last-child {
+  margin-right: 0;
+}
+
+/* Buy me a book button */
+.bmc-subtle {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(255, 216, 0, 0.8);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.bmc-subtle:hover {
+  color: rgba(255, 216, 0, 1);
+  background-color: rgba(255, 216, 0, 0.1);
+}
+
+/* About section buttons */
+.about-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.about-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 180px;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.about-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.linkedin-btn {
+  background-color: #0077b5;
+  color: white;
+}
+
+.linkedin-btn:hover {
+  background-color: #005e93;
+  color: white;
+}
+
+.contact-btn {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.contact-btn:hover {
+  background-color: #ff4f4f;
+  color: white;
+}
+
+.book-btn {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.book-btn:hover {
+  background-color: #e5ac00;
+  color: #212529;
+}
+
 /* Mobile optimization */
 @media (max-width: 576px) {
   h1 {
@@ -448,6 +896,115 @@
   .lead {
     font-size: 1rem;
   }
+  
+  /* Responsive navigation */
+  .nav-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Responsive key benefits */
+  .key-benefits {
+    justify-content: center;
+  }
+  
+  .key-benefit {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Responsive hero buttons */
+  .hero-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 140px;
+  }
+  
+  /* Responsive free badge */
+  .free-badge {
+    padding: 3px 10px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+  
+  /* Responsive guide link */
+  .guide-link {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive free onboarding callout */
+  .free-onboarding-callout {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-btn i {
+    margin-right: 0 !important;
+  }
+  
+  .nav-btn span {
+    display: none;
+  }
+  
+  .google-icon {
+    margin-right: 0 !important;
+  }
+  
+  /* Center benefits on tablet */
+  .key-benefits {
+    justify-content: center;
+  }
+  
+  /* About buttons on mobile/tablet */
+  .about-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .about-btn {
+    max-width: 120px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .about-btn i {
+    margin-right: 0.3rem !important;
+  }
+}
+
+/* Google icon */
+.google-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.google-icon i {
+  background: conic-gradient(from 45deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Contact button */
+.contact-btn {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.contact-btn:hover {
+  background-color: #ff4f4f;
+  color: white;
 }
 </style>
 
