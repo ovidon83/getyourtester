@@ -70,6 +70,7 @@
           <span>Join Lounge</span>
         </a>
         <a href="/request" class="nav-btn request-btn"><i class="bi bi-send me-1"></i><span>Request Services</span></a>
+        <a href="#about" class="nav-btn about-nav-btn"><i class="bi bi-person-circle me-1"></i><span>Meet Your Tester</span></a>
         <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="nav-btn calendar-btn"><i class="bi bi-calendar-check me-1"></i><span>Book a Call</span></a>
       </div>
     </div>
@@ -303,7 +304,7 @@
             
             <p class="text-secondary mb-4">Single services from the options above to address your most pressing quality needs.</p>
             
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-outline-primary w-100 py-2">Schedule a Consultation</a>
+            <a href="/request" target="_blank" class="btn btn-outline-primary w-100 py-2">Request Service</a>
           </div>
         </div>
       </div>
@@ -324,7 +325,7 @@
             
             <p class="text-secondary mb-4">Holistic quality approach combining multiple services for end-to-end quality assurance coverage.</p>
             
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-primary w-100 py-2">Get Custom Quote</a>
+            <a href="/request" target="_blank" class="btn btn-primary w-100 py-2">Pick Bundle</a>
           </div>
         </div>
       </div>
@@ -418,7 +419,7 @@
 </section>
 
 <!-- About Me Section - Card Style -->
-<section class="py-5">
+<section class="py-5" id="about">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
@@ -499,6 +500,10 @@
 </footer>
 
 <style>
+html {
+  scroll-behavior: smooth;
+}
+
 .bg-gradient-primary {
   background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
 }
@@ -1106,6 +1111,18 @@ footer .nav-btn:last-child {
   left: -25px;
   top: 30px;
   transform: rotate(45deg);
+}
+
+/* About navigation button */
+.about-nav-btn {
+  color: #6c5ce7;
+  background-color: rgba(108, 92, 231, 0.1);
+  border: 1px solid rgba(108, 92, 231, 0.2);
+}
+
+.about-nav-btn:hover {
+  background-color: rgba(108, 92, 231, 0.15);
+  box-shadow: 0 4px 8px rgba(108, 92, 231, 0.15);
 }
 </style>
 
