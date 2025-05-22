@@ -279,6 +279,63 @@
   </div>
 </section>
 
+<!-- Pricing Packages -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Pricing Plans</h2>
+      <p class="lead">TRY FOR FREE, then choose the right plan for your QA needs</p>
+    </div>
+    
+    <div class="row justify-content-center g-4">
+      <!-- Individual Package -->
+      <div class="col-lg-5">
+        <div class="card h-100 border-0 shadow-sm hover-lift position-relative overflow-hidden">
+          <div class="card-body p-4 p-lg-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="fs-4 fw-bold mb-0">On-Demand</h3>
+            </div>
+            
+            <div class="mb-4">
+              <span class="h2 fw-bold">$100</span>
+              <span class="text-muted"> / starting at</span>
+            </div>
+            
+            <p class="text-secondary mb-4">Single services from the options above to address your most pressing quality needs.</p>
+            
+            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-outline-primary w-100 py-2">Schedule a Consultation</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bundle Package -->
+      <div class="col-lg-5">
+        <div class="card h-100 border-0 shadow hover-lift position-relative overflow-hidden">
+          <div class="card-body p-4 p-lg-5">
+            <div class="ribbon ribbon-top-right"><span>Best Value</span></div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="fs-4 fw-bold mb-0">Startup Bundle</h3>
+            </div>
+            
+            <div class="mb-4">
+              <span class="h2 fw-bold">$1,500</span>
+              <span class="text-muted"> / starting at</span>
+            </div>
+            
+            <p class="text-secondary mb-4">Holistic quality approach combining multiple services for end-to-end quality assurance coverage.</p>
+            
+            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-primary w-100 py-2">Get Custom Quote</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4">
+      <p class="mb-0">Need a custom solution? <a href="/contact" class="fw-medium">Contact me</a> for specialized services tailored to your unique requirements.</p>
+    </div>
+  </div>
+</section>
+
 <!-- Testimonials in Card Format -->
 <section class="py-5 bg-light">
   <div class="container">
@@ -1005,6 +1062,50 @@ footer .nav-btn:last-child {
 .contact-btn:hover {
   background-color: #ff4f4f;
   color: white;
+}
+
+/* Pricing cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ribbon */
+.ribbon {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.ribbon span {
+  position: absolute;
+  display: block;
+  width: 225px;
+  padding: 8px 0;
+  background-color: #28a745;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.ribbon-top-right {
+  top: -10px;
+  right: -10px;
+}
+
+.ribbon-top-right span {
+  left: -25px;
+  top: 30px;
+  transform: rotate(45deg);
 }
 </style>
 
