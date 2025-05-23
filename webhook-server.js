@@ -15,6 +15,7 @@ const docsRoutes = require('./src/routes/docs');
 const statusRoutes = require('./src/routes/status');
 const privacyRoutes = require('./src/routes/privacy');
 const termsRoutes = require('./src/routes/terms');
+const supportRoutes = require('./src/routes/support');
 
 // Create Express app
 const app = express();
@@ -57,6 +58,7 @@ app.use('/docs', docsRoutes);
 app.use('/status', statusRoutes);
 app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
+app.use('/support', supportRoutes);
 
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {
