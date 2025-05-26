@@ -21,9 +21,7 @@ try {
 
 // Home/landing page route
 router.get('/', (req, res) => {
-  res.render('landing', { 
-    title: 'GetYourTester - Expert Manual Testing for GitHub PRs' 
-  });
+  res.render('landing', { title: 'GetYourTester - Your First QA Hire for Solo Founders & Startups' });
 });
 
 // How it works page
@@ -217,6 +215,11 @@ router.get('/about', (req, res) => {
   res.render('about', { 
     title: 'About GetYourTester' 
   });
+});
+
+// GET waitlist thank you page
+router.get('/waitlist-thank-you', (req, res) => {
+  res.render('waitlist-thank-you', { title: 'Thanks for Joining the Waitlist - GetYourTester' });
 });
 
 module.exports = router; 

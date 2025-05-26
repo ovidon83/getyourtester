@@ -1,0 +1,31 @@
+<%- include('partials/header', { title: title || 'Thanks for Joining the Waitlist - GetYourTester' }) %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 text-center">
+      <div class="mb-4">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+      </div>
+      <h1 class="mb-4">Thanks for joining the waitlist!</h1>
+      <p class="lead mb-4">We've received your request to join the Chrome Extension waitlist. We'll notify you as soon as it's available.</p>
+      
+      <div class="card bg-light border-0 p-4 mb-4">
+        <p class="mb-0">While you wait, you can try our other testing methods:</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+          <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank" class="btn btn-dark">
+            <i class="bi bi-github me-2"></i>Install GitHub App
+          </a>
+          <a href="/request" class="btn btn-primary">
+            <i class="bi bi-clipboard-check me-2"></i>Request Test
+          </a>
+        </div>
+      </div>
+      
+      <a href="/" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 
