@@ -178,13 +178,16 @@ function loadAllTestRequests() {
 }
 
 /**
- * Parse a test request comment to extract structured information
+ * Parse a /test comment to extract test request details
  */
 function parseTestRequestComment(comment) {
   // Skip the "/test" part
   const content = comment.replace(/^\/test\s+/, '').trim();
   
-  const parsedDetails = {};
+  const parsedDetails = {
+    // Include the full content as the first field
+    fullContent: content
+  };
   
   // Parse common patterns
   // Look for environment details
@@ -223,8 +226,8 @@ function parseTestRequestComment(comment) {
     parsedDetails.instructions = instructionsMatch[1].trim();
   }
   
-  // If we couldn't parse structured information, use the whole comment as description
-  if (Object.keys(parsedDetails).length === 0 && content) {
+  // If we couldn't parse structured information, ensure we at least have the full content
+  if (Object.keys(parsedDetails).length === 1 && content) {
     parsedDetails.description = content;
   }
   
@@ -270,14 +273,9 @@ async function sendEmailNotification(testRequest) {
           <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.prDescription || 'No description provided'}</pre>
         </div>
         
-        <h3>Test Request Comment:</h3>
+        <h3>Test Request Content:</h3>
         <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment || 'No comment content available'}</pre>
-        </div>
-        
-        <h3>Parsed Details:</h3>
-        <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-          <pre style="white-space: pre-wrap; font-family: monospace;">${JSON.stringify(testRequest.parsedDetails || {}, null, 2)}</pre>
+          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/test\s+/, '').trim() : 'No content available'}</pre>
         </div>
         
         <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to manage this request.</p>
@@ -300,11 +298,8 @@ Request Details:
 PR Description:
 ${testRequest.prDescription || 'No description provided'}
 
-Test Request Comment:
-${testRequest.comment || 'No comment content available'}
-
-Parsed Details:
-${JSON.stringify(testRequest.parsedDetails || {}, null, 2)}
+Test Request Content:
+${testRequest.comment ? testRequest.comment.replace(/^\/test\s+/, '').trim() : 'No content available'}
 
 Please login to the dashboard to manage this request: http://localhost:3000/dashboard
 

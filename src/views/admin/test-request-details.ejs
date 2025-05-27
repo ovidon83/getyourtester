@@ -73,10 +73,23 @@
             <h4 class="mt-4">Test Details</h4>
             <div class="card">
               <div class="card-body bg-light">
-                <% for (const [key, value] of Object.entries(testRequest.parsedDetails)) { %>
-                  <div class="mb-2">
-                    <strong><%= key %>:</strong> <%= value %>
+                <% if (testRequest.parsedDetails.fullContent) { %>
+                  <div class="mb-4">
+                    <h5>Full Test Request:</h5>
+                    <pre style="white-space: pre-wrap;"><%= testRequest.parsedDetails.fullContent %></pre>
                   </div>
+                  <hr>
+                <% } %>
+                
+                <% if (Object.keys(testRequest.parsedDetails).length > 1) { %>
+                  <h5>Parsed Details:</h5>
+                  <% for (const [key, value] of Object.entries(testRequest.parsedDetails)) { %>
+                    <% if (key !== 'fullContent') { %>
+                      <div class="mb-2">
+                        <strong><%= key %>:</strong> <%= value %>
+                      </div>
+                    <% } %>
+                  <% } %>
                 <% } %>
               </div>
             </div>

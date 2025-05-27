@@ -17,6 +17,7 @@
               <th>ID</th>
               <th>Repository</th>
               <th>PR #</th>
+              <th>Test Preview</th>
               <th>Requested By</th>
               <th>Requested At</th>
               <th>Status</th>
@@ -29,6 +30,19 @@
                 <td><a href="/request/<%= request.id %>"><%= request.id %></a></td>
                 <td><%= request.repository %></td>
                 <td><a href="<%= request.prUrl %>" target="_blank"><%= request.prNumber %></a></td>
+                <td>
+                  <% if (request.parsedDetails && request.parsedDetails.fullContent) { %>
+                    <div class="text-truncate" style="max-width: 250px;" title="<%= request.parsedDetails.fullContent %>">
+                      <%= request.parsedDetails.fullContent.substring(0, 60) %><%= request.parsedDetails.fullContent.length > 60 ? '...' : '' %>
+                    </div>
+                  <% } else if (request.comment) { %>
+                    <div class="text-truncate" style="max-width: 250px;" title="<%= request.comment.replace(/^\/test\s+/, '').trim() %>">
+                      <%= request.comment.replace(/^\/test\s+/, '').trim().substring(0, 60) %><%= request.comment.replace(/^\/test\s+/, '').trim().length > 60 ? '...' : '' %>
+                    </div>
+                  <% } else { %>
+                    <em>No details</em>
+                  <% } %>
+                </td>
                 <td><%= request.requestedBy %></td>
                 <td><%= new Date(request.requestedAt).toLocaleString() %></td>
                 <td>
