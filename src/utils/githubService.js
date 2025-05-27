@@ -41,10 +41,23 @@ try {
 }
 
 // Ensure data directory exists
-const dataDir = path.join(process.cwd(), 'data');
+const homeDir = process.env.HOME || process.env.USERPROFILE;
+let dataDir = process.env.DATA_DIR || path.join(homeDir, '.getyourtester', 'data');
+
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir);
-  console.log(`Created data directory at ${dataDir}`);
+  // Create the directory structure recursively
+  try {
+    fs.mkdirSync(dataDir, { recursive: true });
+    console.log(`Created data directory at ${dataDir}`);
+  } catch (error) {
+    console.error(`Failed to create data directory at ${dataDir}:`, error.message);
+    // Fallback to the local data directory
+    dataDir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir);
+      console.log(`Created fallback data directory at ${dataDir}`);
+    }
+  }
 }
 
 // Path to test requests storage
@@ -77,9 +90,15 @@ const STATUS_LABEL_PATTERNS = Object.values(STATUS_LABELS).map(label =>
 function loadTestRequests() {
   try {
     if (!fs.existsSync(TEST_REQUESTS_PATH)) {
-      console.log(`Creating empty test requests file at ${TEST_REQUESTS_PATH}`);
-      fs.writeFileSync(TEST_REQUESTS_PATH, JSON.stringify([]));
-      return [];
+      // Try to restore from backup if available
+      restoreFromBackup();
+      
+      // If still doesn't exist, create empty file
+      if (!fs.existsSync(TEST_REQUESTS_PATH)) {
+        console.log(`Creating empty test requests file at ${TEST_REQUESTS_PATH}`);
+        fs.writeFileSync(TEST_REQUESTS_PATH, JSON.stringify([]));
+        return [];
+      }
     }
     const data = fs.readFileSync(TEST_REQUESTS_PATH, 'utf8');
     return JSON.parse(data);
@@ -877,7 +896,120 @@ testGitHubToken();
 setTimeout(() => {
   console.log('Running scheduled archive operation...');
   archiveOldRequests();
+  
+  // Also create an initial backup
+  console.log('Creating initial backup...');
+  backupTestRequests();
+  
+  // Schedule regular backups (every 4 hours)
+  setInterval(() => {
+    console.log('Running scheduled backup...');
+    backupTestRequests();
+  }, 4 * 60 * 60 * 1000); // 4 hours in milliseconds
 }, 5000); // Wait 5 seconds after startup
+
+/**
+ * Create a backup of test requests data
+ * This helps prevent data loss during deployments
+ */
+function backupTestRequests() {
+  try {
+    // Create backup directory if it doesn't exist
+    const backupDir = path.join(dataDir, 'backups');
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+      console.log(`Created backup directory at ${backupDir}`);
+    }
+
+    // Generate backup filename with timestamp
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const backupFile = path.join(backupDir, `test-requests-${timestamp}.json`);
+    
+    // Copy current test requests to backup
+    if (fs.existsSync(TEST_REQUESTS_PATH)) {
+      fs.copyFileSync(TEST_REQUESTS_PATH, backupFile);
+      console.log(`Created backup of test requests at ${backupFile}`);
+    }
+    
+    // Copy archive to backup if it exists
+    if (fs.existsSync(ARCHIVE_PATH)) {
+      const archiveBackupFile = path.join(backupDir, `archived-requests-${timestamp}.json`);
+      fs.copyFileSync(ARCHIVE_PATH, archiveBackupFile);
+      console.log(`Created backup of archived requests at ${archiveBackupFile}`);
+    }
+    
+    // Clean up old backups (keep only the last 10)
+    const backupFiles = fs.readdirSync(backupDir)
+      .filter(file => file.startsWith('test-requests-'))
+      .sort()
+      .reverse();
+    
+    if (backupFiles.length > 10) {
+      const filesToDelete = backupFiles.slice(10);
+      filesToDelete.forEach(file => {
+        fs.unlinkSync(path.join(backupDir, file));
+        console.log(`Deleted old backup file: ${file}`);
+      });
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error creating backup:', error);
+    return false;
+  }
+}
+
+/**
+ * Restore test requests from the most recent backup if needed
+ * This is called automatically if the main data files are missing
+ */
+function restoreFromBackup() {
+  try {
+    // If both main files exist, no need to restore
+    if (fs.existsSync(TEST_REQUESTS_PATH) && fs.existsSync(ARCHIVE_PATH)) {
+      return false;
+    }
+    
+    console.log('Main data files missing or corrupted, attempting to restore from backup...');
+    
+    // Check for backup directory
+    const backupDir = path.join(dataDir, 'backups');
+    if (!fs.existsSync(backupDir)) {
+      console.warn('No backup directory found, cannot restore data');
+      return false;
+    }
+    
+    // Find the most recent backups
+    const testRequestBackups = fs.readdirSync(backupDir)
+      .filter(file => file.startsWith('test-requests-'))
+      .sort()
+      .reverse();
+      
+    const archiveBackups = fs.readdirSync(backupDir)
+      .filter(file => file.startsWith('archived-requests-'))
+      .sort()
+      .reverse();
+    
+    // Restore test requests if needed
+    if (!fs.existsSync(TEST_REQUESTS_PATH) && testRequestBackups.length > 0) {
+      const latestBackup = path.join(backupDir, testRequestBackups[0]);
+      fs.copyFileSync(latestBackup, TEST_REQUESTS_PATH);
+      console.log(`Restored test requests from backup: ${latestBackup}`);
+    }
+    
+    // Restore archive if needed
+    if (!fs.existsSync(ARCHIVE_PATH) && archiveBackups.length > 0) {
+      const latestArchiveBackup = path.join(backupDir, archiveBackups[0]);
+      fs.copyFileSync(latestArchiveBackup, ARCHIVE_PATH);
+      console.log(`Restored archived requests from backup: ${latestArchiveBackup}`);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error restoring from backup:', error);
+    return false;
+  }
+}
 
 module.exports = {
   processWebhookEvent,
@@ -890,5 +1022,7 @@ module.exports = {
   updateTestRequestStatus,
   postCommentToPR,
   submitTestReport,
-  postWelcomeComment
+  postWelcomeComment,
+  backupTestRequests,
+  restoreFromBackup
 }; 

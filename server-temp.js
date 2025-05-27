@@ -61,7 +61,7 @@ app.use('/support', supportRoutes);
 
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {
-  const testRequests = githubService.loadTestRequests();
+  const testRequests = githubService.loadAllTestRequests();
   res.render('admin/dashboard', { 
     title: 'Test Requests Dashboard',
     testRequests
@@ -196,4 +196,7 @@ app.listen(PORT, () => {
   console.log(`Health check: http://localhost:${PORT}/github/health`);
   console.log(`Webhook endpoint: http://localhost:${PORT}/github/webhook`);
   console.log(`Dashboard: http://localhost:${PORT}/dashboard`);
+  
+  // Check for any needed data restoration
+  githubService.restoreFromBackup();
 }); 

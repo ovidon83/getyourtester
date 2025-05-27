@@ -197,4 +197,7 @@ app.listen(PORT, () => {
   console.log(`Health check: http://localhost:${PORT}/github/health`);
   console.log(`Webhook endpoint: http://localhost:${PORT}/github/webhook`);
   console.log(`Dashboard: http://localhost:${PORT}/dashboard`);
+  
+  // Check for any needed data restoration
+  githubService.restoreFromBackup();
 }); 
