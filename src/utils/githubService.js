@@ -49,7 +49,12 @@ if (!fs.existsSync(dataDir)) {
 
 // Path to test requests storage
 const TEST_REQUESTS_PATH = path.join(dataDir, 'test-requests.json');
+const ARCHIVE_PATH = path.join(dataDir, 'archived-requests.json');
+// Keep requests for 14 days by default
+const DATA_RETENTION_DAYS = process.env.DATA_RETENTION_DAYS ? parseInt(process.env.DATA_RETENTION_DAYS) : 14;
+
 console.log(`Test requests will be stored at: ${TEST_REQUESTS_PATH}`);
+console.log(`Data retention period: ${DATA_RETENTION_DAYS} days`);
 
 // Define status labels with emojis
 const STATUS_LABELS = {
@@ -96,6 +101,80 @@ function saveTestRequests(requests) {
     console.error('Error saving test requests:', error);
     return false;
   }
+}
+
+/**
+ * Archive older test requests to prevent data loss
+ * This keeps the main file smaller while preserving historical data
+ */
+function archiveOldRequests() {
+  try {
+    const currentRequests = loadTestRequests();
+    if (currentRequests.length === 0) return true;
+    
+    // Current date minus retention period
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - DATA_RETENTION_DAYS);
+    
+    // Split requests into current and archived
+    const toKeep = [];
+    const toArchive = [];
+    
+    currentRequests.forEach(request => {
+      const requestDate = new Date(request.requestedAt);
+      if (requestDate < cutoffDate && request.status.startsWith('complete')) {
+        // Archive completed requests older than the retention period
+        toArchive.push(request);
+      } else {
+        // Keep recent requests and any non-completed ones
+        toKeep.push(request);
+      }
+    });
+    
+    if (toArchive.length === 0) return true;
+    
+    // Load existing archive
+    let archivedRequests = [];
+    if (fs.existsSync(ARCHIVE_PATH)) {
+      const archiveData = fs.readFileSync(ARCHIVE_PATH, 'utf8');
+      archivedRequests = JSON.parse(archiveData);
+    }
+    
+    // Add newly archived requests
+    archivedRequests = [...archivedRequests, ...toArchive];
+    
+    // Save updated files
+    fs.writeFileSync(ARCHIVE_PATH, JSON.stringify(archivedRequests, null, 2));
+    fs.writeFileSync(TEST_REQUESTS_PATH, JSON.stringify(toKeep, null, 2));
+    
+    console.log(`Archived ${toArchive.length} old requests. Active requests: ${toKeep.length}`);
+    return true;
+  } catch (error) {
+    console.error('Error archiving old requests:', error);
+    return false;
+  }
+}
+
+/**
+ * Load both current and archived test requests
+ * This can be used for the dashboard to show complete history
+ */
+function loadAllTestRequests() {
+  const currentRequests = loadTestRequests();
+  
+  try {
+    if (fs.existsSync(ARCHIVE_PATH)) {
+      const archiveData = fs.readFileSync(ARCHIVE_PATH, 'utf8');
+      const archivedRequests = JSON.parse(archiveData);
+      
+      // Return combined results with current requests first
+      return [...currentRequests, ...archivedRequests];
+    }
+  } catch (error) {
+    console.error('Error loading archived requests:', error);
+  }
+  
+  return currentRequests;
 }
 
 /**
@@ -165,6 +244,9 @@ async function sendEmailNotification(testRequest) {
     const toEmail = process.env.NOTIFICATION_EMAIL || process.env.EMAIL_TO || 'ovidon83@gmail.com';
     const fromEmail = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@getyourtester.com';
 
+    // Extract repository owner and name
+    const [owner, repo] = testRequest.repository ? testRequest.repository.split('/') : ['unknown', 'unknown'];
+
     const mailOptions = {
       from: `"GetYourTester" <${fromEmail}>`,
       to: toEmail,
@@ -177,15 +259,57 @@ async function sendEmailNotification(testRequest) {
         <ul>
           <li><strong>Request ID:</strong> ${testRequest.id}</li>
           <li><strong>Repository:</strong> ${testRequest.repository}</li>
-          <li><strong>PR:</strong> <a href="${testRequest.prUrl}">#${testRequest.prNumber}</a></li>
+          <li><strong>PR Number:</strong> <a href="${testRequest.prUrl}">#${testRequest.prNumber}</a></li>
           <li><strong>Requested by:</strong> ${testRequest.requestedBy}</li>
           <li><strong>Date:</strong> ${new Date(testRequest.requestedAt).toLocaleString()}</li>
           <li><strong>Status:</strong> ${testRequest.status}</li>
         </ul>
         
-        <p>Please login to the <a href="http://localhost:3000/dashboard">dashboard</a> to manage this request.</p>
+        <h3>PR Description:</h3>
+        <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.prDescription || 'No description provided'}</pre>
+        </div>
+        
+        <h3>Test Request Comment:</h3>
+        <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment || 'No comment content available'}</pre>
+        </div>
+        
+        <h3>Parsed Details:</h3>
+        <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+          <pre style="white-space: pre-wrap; font-family: monospace;">${JSON.stringify(testRequest.parsedDetails || {}, null, 2)}</pre>
+        </div>
+        
+        <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to manage this request.</p>
         
         <p>Thank you,<br/>GetYourTester Bot</p>
+      `,
+      text: `
+🧪 New Test Request Received
+
+A new test request has been submitted and requires your attention.
+
+Request Details:
+- Request ID: ${testRequest.id}
+- Repository: ${testRequest.repository}
+- PR Number: #${testRequest.prNumber}
+- Requested by: ${testRequest.requestedBy}
+- Date: ${new Date(testRequest.requestedAt).toLocaleString()}
+- Status: ${testRequest.status}
+
+PR Description:
+${testRequest.prDescription || 'No description provided'}
+
+Test Request Comment:
+${testRequest.comment || 'No comment content available'}
+
+Parsed Details:
+${JSON.stringify(testRequest.parsedDetails || {}, null, 2)}
+
+Please login to the dashboard to manage this request: http://localhost:3000/dashboard
+
+Thank you,
+GetYourTester Bot
       `
     };
 
@@ -535,11 +659,32 @@ async function postWelcomeComment(repository, prNumber) {
   const welcomeComment = `
 **Welcome to GetYourTester!**
 
-_Early-access mode: Your first test requests (up to 2 hours) are **FREE**!_
+_Early-access mode: Your first test requests (up to 4 hours) are **FREE**!_
 
 If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
 
 Request a test by commenting: /test followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
+
+**Example test request:**
+\`\`\`
+/test
+
+Please run a full manual QA on this PR. Here's what I'd like you to focus on:
+- Main goal: Verify the new user onboarding flow (sign up, email verification, and first login).
+- Browsers: Chrome (latest), Firefox (latest), Safari (latest).
+- Devices: Desktop and mobile (iPhone 13, Pixel 6).
+- Test data: Use test email addresses (e.g., test+onboarding1@myapp.com).
+- What to look for:
+  - Any blockers or bugs in the onboarding steps
+  - Usability issues or confusing UI
+  - Broken links, typos, or missing error messages
+  - Accessibility issues (keyboard navigation, screen reader basics)
+  - Edge cases (weak passwords, invalid emails, slow network)
+- Environment: https://staging.myapp.com
+- Test user: testuser / password: Test1234!
+\`\`\`
+
+For more information and tips, check out our [Documentation Guide](/docs).
 
 That's it! We'll handle the rest. 🚀
 `;
@@ -733,14 +878,22 @@ async function testGitHubToken() {
 // Run the token test
 testGitHubToken();
 
+// Run archiving operation when module is loaded
+setTimeout(() => {
+  console.log('Running scheduled archive operation...');
+  archiveOldRequests();
+}, 5000); // Wait 5 seconds after startup
+
 module.exports = {
   processWebhookEvent,
   postComment,
   addLabel,
   loadTestRequests,
+  loadAllTestRequests,
   saveTestRequests,
   parseTestRequestComment,
   updateTestRequestStatus,
   postCommentToPR,
-  submitTestReport
+  submitTestReport,
+  postWelcomeComment
 }; 
