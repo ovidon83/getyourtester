@@ -1,0 +1,72 @@
+<%- include('partials/header', { title: 'GetYourTester – ' + title }) %>
+
+<div class="container my-5" style="max-width: 900px;">
+  <h1 class="fw-bold mb-4 text-center">Send Mass Email</h1>
+
+  <% if (success) { %>
+    <div class="alert alert-success mb-4">
+      <i class="bi bi-check-circle-fill me-2"></i> <%= success %>
+    </div>
+  <% } %>
+
+  <% if (error) { %>
+    <div class="alert alert-danger mb-4">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i> <%= error %>
+    </div>
+  <% } %>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <form method="POST" action="/email">
+        <div class="mb-3">
+          <label for="recipients" class="form-label">Recipients (separate with commas, semicolons, or new lines)</label>
+          <textarea 
+            class="form-control" 
+            id="recipients" 
+            name="recipients" 
+            rows="4" 
+            required
+            placeholder="email1@example.com, email2@example.com"
+          ></textarea>
+          <div class="form-text">All recipients will be BCC'd to protect privacy</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="subject" class="form-label">Subject</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="subject" 
+            name="subject" 
+            required
+            placeholder="Email subject"
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="message" class="form-label">Message (HTML supported)</label>
+          <textarea 
+            class="form-control" 
+            id="message" 
+            name="message" 
+            rows="10" 
+            required
+            placeholder="Your message here..."
+          ></textarea>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Send Email</button>
+        </div>
+      </form>
+
+      <div class="mt-4 text-muted">
+        <small>
+          <strong>Note:</strong> Emails will be sent from ovidon83@gmail.com and replies will go to the same address.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 
