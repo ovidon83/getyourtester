@@ -52,6 +52,14 @@ router.post('/', async (req, res) => {
     if (invalidEmails.length > 0) {
       return res.redirect(`/email?error=Invalid email formats: ${invalidEmails.join(', ')}`);
     }
+
+    // Convert plain text to HTML with proper line breaks
+    const htmlContent = message
+      .replace(/\n/g, '<br>')
+      .replace(/\r/g, '')
+      .replace(/<br><br>/g, '</p><p>')
+      .replace(/^(.+)(?!<br>)/, '<p>$1</p>')
+      .replace(/<br>$/, '');
     
     // Send email
     const mailOptions = {
@@ -59,8 +67,8 @@ router.post('/', async (req, res) => {
       to: recipientList.join(','),
       subject: subject,
       replyTo: 'ovidon83@gmail.com',
-      html: message,
-      text: message.replace(/<[^>]*>/g, '') // Strip HTML for text version
+      html: htmlContent,
+      text: message // Keep original plain text version
     };
     
     const info = await emailTransporter.sendMail(mailOptions);
