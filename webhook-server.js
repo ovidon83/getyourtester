@@ -194,6 +194,11 @@ app.get('/github/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Environment validation for AI integration
+console.log('🔍 AI Environment Check:');
+console.log(`   OPENAI_API_KEY: ${process.env.OPENAI_API_KEY ? '✅ Set (' + process.env.OPENAI_API_KEY.substring(0, 15) + '...)' : '❌ Missing'}`);
+console.log(`   OPENAI_MODEL: ${process.env.OPENAI_MODEL || 'gpt-4o (default)'}`);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Webhook server running on port ${PORT}`);

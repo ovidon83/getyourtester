@@ -787,18 +787,50 @@ async function handleTestRequest(repository, issue, comment, sender) {
   const requestId = `${repository.full_name.replace('/', '-')}-${issue.number}-${Date.now()}`;
   
   // Get PR description and diff
+  console.log(`📄 Fetching PR description for ${repository.full_name}#${issue.number}`);
   const prDescription = await fetchPRDescription(repository.full_name, issue.number);
+  console.log(`📄 PR description: ${prDescription ? 'Success' : 'Failed'}`);
+  
+  console.log(`📝 Fetching PR diff for ${repository.full_name}#${issue.number}`);
   const prDiff = await fetchPRDiff(repository.full_name, issue.number);
+  console.log(`📝 PR diff: ${prDiff ? `Success (${prDiff.length} chars)` : 'Failed'}`);
+  
+  // Debug what we're sending to AI
+  console.log('🔍 AI Input Debug:');
+  console.log(`   Repo: ${repository.full_name}`);
+  console.log(`   PR #: ${issue.number}`);
+  console.log(`   Title: ${issue.title}`);
+  console.log(`   Body length: ${prDescription?.length || 0}`);
+  console.log(`   Diff length: ${prDiff?.length || 0}`);
   
   // Generate AI insights for the PR
   console.log('🤖 Generating AI insights for PR...');
-  const aiInsights = await generateQAInsights({
-    repo: repository.full_name,
-    pr_number: issue.number,
-    title: issue.title,
-    body: prDescription,
-    diff: prDiff
-  });
+  let aiInsights;
+  try {
+    aiInsights = await generateQAInsights({
+      repo: repository.full_name,
+      pr_number: issue.number,
+      title: issue.title,
+      body: prDescription,
+      diff: prDiff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ AI insights generated successfully');
+    } else {
+      console.error('❌ AI insights failed:', aiInsights?.error, aiInsights?.details);
+    }
+  } catch (error) {
+    console.error('❌ AI insights threw exception:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    // Create error result
+    aiInsights = {
+      success: false,
+      error: 'AI generation failed',
+      details: error.message
+    };
+  }
   
   // Generate test request object
   const testRequest = {
