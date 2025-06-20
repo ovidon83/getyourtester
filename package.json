@@ -7,6 +7,8 @@
     "start": "node webhook-server.js",
     "dev": "nodemon webhook-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:ai": "node scripts/testAI.js",
+    "test:integration": "node scripts/testIntegration.js",
     "webhook": "node fixed-webhook.js"
   },
   "keywords": [
@@ -30,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.7",
+    "openai": "^5.5.1",
     "smee-client": "^1.2.5",
     "uuid": "^9.0.1"
   },

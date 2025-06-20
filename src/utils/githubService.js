@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const githubAppAuth = require('./githubAppAuth');
+const { generateQAInsights } = require('../../ai/openaiClient');
 
 // Initialize GitHub client with token (for backward compatibility)
 let octokit;
@@ -366,6 +367,75 @@ async function fetchPRDescription(repository, prNumber) {
 }
 
 /**
+ * Fetch PR diff for AI analysis
+ */
+async function fetchPRDiff(repository, prNumber) {
+  try {
+    if (simulatedMode || !octokit) {
+      console.log(`[SIMULATED] Would fetch PR diff for ${repository}#${prNumber}`);
+      return `diff --git a/src/auth.js b/src/auth.js
+new file mode 100644
+index 0000000..abc123
+--- /dev/null
++++ b/src/auth.js
+@@ -0,0 +1,25 @@
++const jwt = require('jsonwebtoken');
++const bcrypt = require('bcryptjs');
++
++function authenticateUser(email, password) {
++  // Find user in database
++  const user = findUserByEmail(email);
++  if (!user) {
++    throw new Error('User not found');
++  }
++
++  // Verify password
++  const isValid = bcrypt.compare(password, user.hashedPassword);
++  if (!isValid) {
++    throw new Error('Invalid password');
++  }
++
++  // Generate JWT token
++  const token = jwt.sign(
++    { userId: user.id, email: user.email },
++    process.env.JWT_SECRET,
++    { expiresIn: '24h' }
++  );
++
++  return { token, user };
++}`;
+    }
+    
+    const [owner, repoName] = repository.split('/');
+    if (!owner || !repoName) {
+      console.error(`Invalid repository format: ${repository}. Should be in format 'owner/repo'`);
+      return 'Error: Invalid repository format';
+    }
+    
+    // Get PR files to construct diff
+    const response = await octokit.pulls.listFiles({
+      owner,
+      repo: repoName,
+      pull_number: prNumber
+    });
+    
+    // Combine patches from all files
+    let fullDiff = '';
+    response.data.forEach(file => {
+      if (file.patch) {
+        fullDiff += `diff --git a/${file.filename} b/${file.filename}\n`;
+        fullDiff += file.patch + '\n\n';
+      }
+    });
+    
+    return fullDiff || 'No code changes detected';
+  } catch (error) {
+    console.error(`Failed to fetch PR diff for ${repository}#${prNumber}:`, error.message);
+    return 'Error fetching PR diff';
+  }
+}
+
+/**
  * Post a comment on a GitHub PR
  */
 async function postComment(repo, issueNumber, body) {
@@ -716,8 +786,19 @@ async function handleTestRequest(repository, issue, comment, sender) {
   // Create a unique ID for this test request
   const requestId = `${repository.full_name.replace('/', '-')}-${issue.number}-${Date.now()}`;
   
-  // Get PR description
+  // Get PR description and diff
   const prDescription = await fetchPRDescription(repository.full_name, issue.number);
+  const prDiff = await fetchPRDiff(repository.full_name, issue.number);
+  
+  // Generate AI insights for the PR
+  console.log('🤖 Generating AI insights for PR...');
+  const aiInsights = await generateQAInsights({
+    repo: repository.full_name,
+    pr_number: issue.number,
+    title: issue.title,
+    body: prDescription,
+    diff: prDiff
+  });
   
   // Generate test request object
   const testRequest = {
@@ -728,6 +809,7 @@ async function handleTestRequest(repository, issue, comment, sender) {
     requestedAt: new Date().toISOString(),
     comment: comment.body,
     prDescription: prDescription,
+    aiInsights: aiInsights, // Include AI insights in test request
     status: 'pending',
     prUrl: issue.html_url || `https://github.com/${repository.full_name}/pull/${issue.number}`,
     labels: []
@@ -745,14 +827,41 @@ async function handleTestRequest(repository, issue, comment, sender) {
   const saveResult = saveTestRequests(testRequests);
   console.log(`✅ Test request saved to database: ${saveResult ? 'success' : 'failed'}`);
   
-  // Post acknowledgment comment
-  const acknowledgmentComment = `
+  // Post acknowledgment comment with AI insights if available
+  let acknowledgmentComment = `
 ## 🧪 Test Request Received
 
 Thank you for the testing request! Your request has been received and is being processed.
 * **Status:** Pending
 A tester will be assigned to this PR soon and you'll receive status updates notifications.
   `;
+  
+  // Add AI insights to the comment if they were generated successfully
+  if (aiInsights && aiInsights.success) {
+    acknowledgmentComment += `
+
+## 🤖 AI-Generated QA Insights
+
+Based on the code changes in this PR, here are some AI-generated testing insights:
+
+### 🤔 Key Questions for Testing
+${aiInsights.data.smartQuestions.map(q => `• ${q}`).join('\n')}
+
+### 🧪 Suggested Test Cases
+${aiInsights.data.testCases.map(tc => `• ${tc}`).join('\n')}
+
+### ⚠️ Potential Risks & Areas of Focus
+${aiInsights.data.risks.map(r => `• ${r}`).join('\n')}
+
+---
+*These insights are AI-generated to help guide the manual testing process. A human tester will review and expand on these recommendations.*
+    `;
+  } else if (aiInsights && !aiInsights.success) {
+    acknowledgmentComment += `
+
+*Note: AI insights could not be generated for this PR (${aiInsights.error}), but manual testing will proceed as normal.*
+    `;
+  }
   
   const commentResult = await postComment(repository.full_name, issue.number, acknowledgmentComment);
   console.log(`✅ Acknowledgment comment ${commentResult.simulated ? 'would be' : 'was'} posted`);

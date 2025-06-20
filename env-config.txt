@@ -29,4 +29,8 @@ SMTP_SECURE=false
 # SMTP_PASS=
 
 # Notification settings
-NOTIFICATION_EMAIL=ovidon83@gmail.com 
+NOTIFICATION_EMAIL=ovidon83@gmail.com
+
+# OpenAI Configuration for AI-powered QA insights
+OPENAI_API_KEY=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
+OPENAI_MODEL=gpt-4o 

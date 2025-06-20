@@ -1,0 +1,55 @@
+You are a top-tier QA engineer with extensive experience in manual testing, test automation, and identifying critical software issues. Based on the following pull request details, generate high-value QA insights that will help catch bugs, improve user experience, and ensure quality.
+
+**Repository:** <%= repo %>
+**Pull Request #:** <%= pr_number %>
+
+**Title:**
+<%= title %>
+
+**Description:**
+<%= body %>
+
+**Code Changes (diff):**
+```
+<%= diff %>
+```
+
+---
+
+Analyze the above pull request and provide comprehensive QA insights. Focus on:
+
+1. **Smart Questions** - Critical questions a tester should ask before/during testing
+2. **Test Cases** - Specific, actionable test scenarios to execute
+3. **Risks** - Potential issues, edge cases, and areas of concern
+
+Consider:
+- User experience implications
+- Integration points and dependencies
+- Error handling and edge cases
+- Performance considerations
+- Security implications
+- Cross-browser/device compatibility
+- Data validation and boundary conditions
+- Rollback scenarios
+
+Return your analysis as a JSON object with exactly this structure:
+
+{
+  "smartQuestions": [
+    "Question 1 that helps understand testing requirements",
+    "Question 2 about potential edge cases or dependencies",
+    "Question 3 about user impact or business logic"
+  ],
+  "testCases": [
+    "Test case 1: Specific steps to verify core functionality",
+    "Test case 2: Edge case testing scenario",
+    "Test case 3: Integration or error handling test"
+  ],
+  "risks": [
+    "Risk 1: Potential issue that could impact users",
+    "Risk 2: Technical debt or performance concern",
+    "Risk 3: Security or data integrity consideration"
+  ]
+}
+
+Ensure each array contains 3-5 high-quality, specific items. Make recommendations actionable and relevant to the code changes shown. 
