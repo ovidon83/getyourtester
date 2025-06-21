@@ -222,4 +222,66 @@ router.get('/waitlist-thank-you', (req, res) => {
   res.render('waitlist-thank-you', { title: 'Thanks for Joining the Waitlist - GetYourTester' });
 });
 
+// Test Recipe Generation endpoint for AI insights
+router.post('/generate-test-recipe', async (req, res) => {
+  try {
+    const { generateQAInsights } = require('../../ai/openaiClient');
+    
+    // Extract required fields from request body
+    const { repo, pr_number, title, body, diff } = req.body;
+    
+    // Validate required fields
+    if (!repo || !pr_number || !title) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        details: 'repo, pr_number, and title are required'
+      });
+    }
+    
+    console.log(`🤖 Generating QA insights for PR #${pr_number} in ${repo}`);
+    console.log('🔍 Input Debug:');
+    console.log(`   Repo: ${repo}`);
+    console.log(`   PR #: ${pr_number}`);
+    console.log(`   Title: ${title}`);
+    console.log(`   Body length: ${body?.length || 0}`);
+    console.log(`   Diff length: ${diff?.length || 0}`);
+    
+    // Generate AI insights
+    const aiInsights = await generateQAInsights({
+      repo,
+      pr_number,
+      title,
+      body,
+      diff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ QA insights generated successfully via API');
+      res.json({
+        success: true,
+        data: aiInsights.data,
+        metadata: aiInsights.metadata
+      });
+    } else {
+      console.error('❌ AI insights failed via API:', aiInsights?.error, aiInsights?.details);
+      res.status(500).json({
+        success: false,
+        error: aiInsights?.error || 'Failed to generate insights',
+        details: aiInsights?.details || 'Unknown error occurred'
+      });
+    }
+    
+  } catch (error) {
+    console.error('❌ Exception in test recipe generation:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    res.status(500).json({
+      success: false,
+      error: 'AI generation failed',
+      details: error.message
+    });
+  }
+});
+
 module.exports = router; 

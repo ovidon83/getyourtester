@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:ai": "node scripts/testAI.js",
     "test:integration": "node scripts/testIntegration.js",
+    "test:endpoint": "node scripts/testEndpoint.js",
     "setup": "node scripts/setupSecure.js",
     "webhook": "node fixed-webhook.js"
   },
@@ -21,6 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^19.0.13",
+    "axios": "^1.10.0",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.1",

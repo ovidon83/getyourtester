@@ -7,7 +7,6 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const githubAppAuth = require('./githubAppAuth');
-const { generateQAInsights } = require('../../ai/openaiClient');
 
 // Initialize GitHub client with token (for backward compatibility)
 let octokit;
@@ -84,6 +83,62 @@ const STATUS_LABELS = {
 const STATUS_LABEL_PATTERNS = Object.values(STATUS_LABELS).map(label => 
   label.substring(label.indexOf('GYT-'))
 );
+
+/**
+ * Call the /generate-test-recipe endpoint for AI insights
+ */
+async function callTestRecipeEndpoint(data) {
+  try {
+    const axios = require('axios');
+    
+    // Determine the base URL for the API call
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? process.env.BASE_URL || 'https://getyourtester.onrender.com'
+      : 'http://localhost:3000';
+    
+    const response = await axios.post(`${baseUrl}/generate-test-recipe`, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 30000 // 30 second timeout
+    });
+    
+    return {
+      success: true,
+      data: response.data.data,
+      metadata: response.data.metadata
+    };
+    
+  } catch (error) {
+    console.error('❌ Error calling test recipe endpoint:', error.message);
+    
+    if (error.response) {
+      // Server responded with error status
+      console.error('Response status:', error.response.status);
+      console.error('Response data:', error.response.data);
+      
+      return {
+        success: false,
+        error: error.response.data?.error || 'API endpoint error',
+        details: error.response.data?.details || error.message
+      };
+    } else if (error.request) {
+      // Request timeout or network error
+      return {
+        success: false,
+        error: 'Network error',
+        details: 'Could not reach test recipe endpoint'
+      };
+    } else {
+      // Other error
+      return {
+        success: false,
+        error: 'Request setup error',
+        details: error.message
+      };
+    }
+  }
+}
 
 /**
  * Load test requests from storage
@@ -803,11 +858,11 @@ async function handleTestRequest(repository, issue, comment, sender) {
   console.log(`   Body length: ${prDescription?.length || 0}`);
   console.log(`   Diff length: ${prDiff?.length || 0}`);
   
-  // Generate AI insights for the PR
+  // Generate AI insights for the PR via API endpoint
   console.log('🤖 Generating AI insights for PR...');
   let aiInsights;
   try {
-    aiInsights = await generateQAInsights({
+    aiInsights = await callTestRecipeEndpoint({
       repo: repository.full_name,
       pr_number: issue.number,
       title: issue.title,
