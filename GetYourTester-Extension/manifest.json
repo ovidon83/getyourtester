@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "QA Copilot",
+  "version": "1.0.0",
+  "description": "AI-powered QA insights for Linear and Jira tickets",
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://*.linear.app/*",
+    "https://*.atlassian.net/*",
+    "https://www.getyourtester.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.linear.app/*",
+        "https://*.atlassian.net/*"
+      ],
+      "js": ["utils.js", "content.js"],
+      "css": ["ui.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "QA Copilot"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+} 
