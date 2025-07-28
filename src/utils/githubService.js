@@ -1108,7 +1108,7 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
     // Format the AI insights into a GitHub comment
     const aiData = aiInsights.data;
     
-    // Get production readiness emoji
+    // Get risk level emoji
     const getRiskEmoji = (riskLevel) => {
       switch (riskLevel?.toUpperCase()) {
         case 'LOW': return '✅';
@@ -1118,28 +1118,36 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
       }
     };
 
-    const riskEmoji = getRiskEmoji(aiData.riskLevel);
-    const shipStatus = aiData.canShip ? '✅ SHIP IT' : '❌ BLOCKED';
+    const riskEmoji = getRiskEmoji(aiData.summary?.riskLevel);
+    const shipScore = aiData.summary?.shipScore || 5;
+    const shipStatus = shipScore >= 7 ? '✅ SHIP IT' : shipScore >= 5 ? '⚠️ REVIEW FIRST' : '❌ BLOCKED';
     
     acknowledgmentComment += `## 🤖 Ovi QA Assistant by GetYourTester
 
 ### 📋 Summary
-${aiData.summary || 'No summary provided'}
+${aiData.summary?.description || 'No description provided'}
 
-### 🎯 Risk Assessment
-${riskEmoji} **Risk Level:** ${aiData.riskLevel || 'UNKNOWN'}
-🚀 **Ship Decision:** ${shipStatus}
+**Risk Level:** ${riskEmoji} ${aiData.summary?.riskLevel || 'UNKNOWN'}
+**Ship Score:** ${shipScore}/10 - ${shipStatus}
+${aiData.summary?.reasoning ? `*${aiData.summary.reasoning}*` : ''}
 
-${aiData.criticalIssues && aiData.criticalIssues.length > 0 ? `
-### 🚨 Critical Issues
-${aiData.criticalIssues.map(issue => `- ${issue}`).join('\n')}
-` : ''}
+### ❓ Critical Questions
+${aiData.questions ? aiData.questions.map(q => `- ${q}`).join('\n') : '- No specific questions identified'}
 
-### 🧪 Key Tests to Run
-${aiData.keyTests ? aiData.keyTests.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Basic functionality test'}
+### 🧪 Test Recipe
+**Critical Path:**
+${aiData.testRecipe?.criticalPath ? aiData.testRecipe.criticalPath.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test main functionality'}
 
-### 💡 Recommendations
-${aiData.recommendations ? aiData.recommendations.map(rec => `- ${rec}`).join('\n') : '- Test the main user flow'}
+**Edge Cases:**
+${aiData.testRecipe?.edgeCases ? aiData.testRecipe.edgeCases.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test error scenarios'}
+
+**Automation Plan:**
+- **Unit:** ${aiData.testRecipe?.automation?.unit ? aiData.testRecipe.automation.unit.join(', ') : 'Core logic functions'}
+- **Integration:** ${aiData.testRecipe?.automation?.integration ? aiData.testRecipe.automation.integration.join(', ') : 'API endpoints and data flow'}
+- **E2E:** ${aiData.testRecipe?.automation?.e2e ? aiData.testRecipe.automation.e2e.join(', ') : 'Complete user workflows'}
+
+### ⚠️ Key Risks
+${aiData.risks ? aiData.risks.map(risk => `- ${risk}`).join('\n') : '- No significant risks identified'}
 
 ---
 *🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
@@ -1421,4 +1429,4 @@ module.exports = {
   postWelcomeComment,
   backupTestRequests,
   restoreFromBackup
-}; 
+};

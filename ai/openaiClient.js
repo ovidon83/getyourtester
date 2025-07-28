@@ -269,21 +269,39 @@ function generateFallbackAnalysis(title, body, diff) {
   const featureList = features.length > 0 ? features.join(', ') : prInfo.featureName;
   
   return {
-    summary: `Adds ${featureList} functionality to enhance the thought capture system with productivity features`,
-    riskLevel: "MEDIUM",
-    canShip: true,
-    criticalIssues: [],
-    keyTests: [
-      `Test ${features.includes('direct text input') ? 'text area input with various content types' : 'input functionality'}`,
-      `Verify ${features.includes('tag system') ? 'tag extraction and categorization (#today, #todo, etc.)' : 'tag processing'}`,
-      `Test ${features.includes('todo management') ? 'To-Do view with today integration and task management' : 'task management'}`,
-      `Validate ${features.includes('AI integration') ? 'AI-enhanced categorization and insights generation' : 'AI features'}`,
-      `Check ${features.includes('priority management') ? 'overdue task highlighting and priority-based sorting' : 'priority features'}`
+    summary: {
+      description: `Adds ${featureList} functionality to enhance the thought capture system with productivity features`,
+      riskLevel: "MEDIUM",
+      shipScore: 7,
+      reasoning: "Medium risk due to multiple new features and integrations, but well-structured changes suggest good implementation"
+    },
+    questions: [
+      `How does the ${features.includes('tag system') ? 'tag extraction and categorization' : 'new functionality'} integrate with existing components?`,
+      `What is the expected performance impact of ${features.includes('AI integration') ? 'AI-enhanced categorization' : 'the new features'}?`,
+      `Are there any breaking changes to existing ${features.includes('todo management') ? 'todo workflows' : 'user workflows'}?`,
+      `How will ${features.includes('priority management') ? 'priority-based sorting' : 'the new features'} handle edge cases and error conditions?`
     ],
-    recommendations: [
-      `Test the complete user workflow: input → tag extraction → todo view → dashboard`,
-      `Verify performance with large numbers of thoughts and tasks`,
-      `Monitor AI categorization accuracy and response times`
+    testRecipe: {
+      criticalPath: [
+        `Test ${features.includes('direct text input') ? 'text area input with various content types and tag formats' : 'input functionality'}`,
+        `Verify ${features.includes('tag system') ? 'tag extraction and categorization (#today, #todo, etc.)' : 'tag processing'}`,
+        `Test ${features.includes('todo management') ? 'To-Do view with today integration and task management' : 'task management'}`
+      ],
+      edgeCases: [
+        `Test ${features.includes('tag system') ? 'invalid tag formats and special characters' : 'invalid inputs'}`,
+        `Verify ${features.includes('AI integration') ? 'AI service failure scenarios and fallback behavior' : 'error handling'}`,
+        `Test ${features.includes('priority management') ? 'large numbers of tasks and priority conflicts' : 'performance under load'}`
+      ],
+      automation: {
+        unit: [`Test ${features.includes('tag system') ? 'tag parsing and extraction logic' : 'core logic functions'}`],
+        integration: [`Test ${features.includes('AI integration') ? 'AI service integration and data flow' : 'API endpoints'}`],
+        e2e: [`Test ${features.includes('todo management') ? 'complete thought input to todo workflow' : 'complete user workflows'}`]
+      }
+    },
+    risks: [
+      `Performance impact from ${features.includes('AI integration') ? 'AI categorization processing' : 'new feature processing'}`,
+      `Potential data consistency issues with ${features.includes('tag system') ? 'tag extraction and storage' : 'new data handling'}`,
+      `User experience disruption if ${features.includes('todo management') ? 'todo view integration' : 'new features'} are not intuitive`
     ]
   };
 }
@@ -351,20 +369,39 @@ function generateUltimateFallback(title) {
   console.log('🔄 Generating ultimate fallback analysis');
   
   return {
-    summary: `Updates ${title || 'the application'} with new features and improvements`,
-    riskLevel: "MEDIUM",
-    canShip: true,
-    criticalIssues: [],
-    keyTests: [
-      "Test basic functionality",
-      "Verify user workflows",
-      "Check error handling",
-      "Test integration points"
+    summary: {
+      description: `Updates ${title || 'the application'} with new features and improvements`,
+      riskLevel: "MEDIUM",
+      shipScore: 6,
+      reasoning: "Unable to perform detailed analysis due to AI processing issues - manual review recommended"
+    },
+    questions: [
+      "What is the main purpose and scope of these changes?",
+      "Are there any breaking changes that could affect existing functionality?",
+      "What are the key user workflows that need to be tested?",
+      "Are there any dependencies or integrations that might be affected?"
     ],
-    recommendations: [
-      "Perform manual testing",
-      "Monitor for issues after deployment",
-      "Gather user feedback"
+    testRecipe: {
+      criticalPath: [
+        "Test the main functionality that was changed",
+        "Verify that existing features still work as expected",
+        "Check for any new error conditions or edge cases"
+      ],
+      edgeCases: [
+        "Test with invalid or unexpected inputs",
+        "Check error handling and recovery",
+        "Verify performance under load if applicable"
+      ],
+      automation: {
+        unit: ["Add unit tests for new functionality"],
+        integration: ["Test integration points and dependencies"],
+        e2e: ["Verify end-to-end user workflows"]
+      }
+    },
+    risks: [
+      "Unable to perform detailed risk analysis due to AI processing error",
+      "Please review the changes manually for potential issues",
+      "Consider testing the affected functionality thoroughly"
     ]
   };
 }
