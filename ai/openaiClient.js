@@ -41,10 +41,10 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       throw new Error('OpenAI client not initialized. Check OPENAI_API_KEY.');
     }
 
-    // Sanitize and validate inputs
-    const sanitizedTitle = (title || 'No title provided').substring(0, 200);
-    const sanitizedBody = (body || 'No description provided').substring(0, 1000);
-    const sanitizedDiff = (diff || 'No diff provided').substring(0, 4000);
+    // Sanitize and validate inputs - reduced limits to prevent token issues
+    const sanitizedTitle = (title || 'No title provided').substring(0, 150);
+    const sanitizedBody = (body || 'No description provided').substring(0, 500);
+    const sanitizedDiff = (diff || 'No diff provided').substring(0, 2000); // Significantly reduced
 
     console.log(`🔍 Input validation: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
 
@@ -83,7 +83,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
             }
           ],
           temperature: 0.7,
-          max_tokens: 2000,
+          max_tokens: 1500, // Reduced to prevent truncation
           response_format: { type: 'json_object' }
         });
 
