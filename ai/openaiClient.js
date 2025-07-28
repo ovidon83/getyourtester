@@ -254,22 +254,36 @@ function generateFallbackAnalysis(title, body, diff) {
   
   const prInfo = extractPRInfo(title, body, diff);
   
+  // Extract specific features from the PR description
+  const features = [];
+  if (body) {
+    if (body.includes('text area')) features.push('direct text input');
+    if (body.includes('tag support') || body.includes('#')) features.push('tag system');
+    if (body.includes('To-Do') || body.includes('todo')) features.push('todo management');
+    if (body.includes('Dashboard') || body.includes('dashboard')) features.push('dashboard enhancements');
+    if (body.includes('AI') || body.includes('artificial intelligence')) features.push('AI integration');
+    if (body.includes('overdue') || body.includes('priority')) features.push('priority management');
+    if (body.includes('sub-tasks') || body.includes('subtasks')) features.push('subtask support');
+  }
+  
+  const featureList = features.length > 0 ? features.join(', ') : prInfo.featureName;
+  
   return {
-    summary: `Enhances ${prInfo.featureName} with ${prInfo.featureType} functionality`,
+    summary: `Adds ${featureList} functionality to enhance the thought capture system with productivity features`,
     riskLevel: "MEDIUM",
     canShip: true,
     criticalIssues: [],
     keyTests: [
-      `Test ${prInfo.featureName} core functionality`,
-      `Verify ${prInfo.featureType} integration`,
-      `Check user experience flow`,
-      `Validate error handling`,
-      `Test performance under load`
+      `Test ${features.includes('direct text input') ? 'text area input with various content types' : 'input functionality'}`,
+      `Verify ${features.includes('tag system') ? 'tag extraction and categorization (#today, #todo, etc.)' : 'tag processing'}`,
+      `Test ${features.includes('todo management') ? 'To-Do view with today integration and task management' : 'task management'}`,
+      `Validate ${features.includes('AI integration') ? 'AI-enhanced categorization and insights generation' : 'AI features'}`,
+      `Check ${features.includes('priority management') ? 'overdue task highlighting and priority-based sorting' : 'priority features'}`
     ],
     recommendations: [
-      `Run manual testing on ${prInfo.featureName}`,
-      `Verify integration with existing systems`,
-      `Monitor for any user-reported issues`
+      `Test the complete user workflow: input → tag extraction → todo view → dashboard`,
+      `Verify performance with large numbers of thoughts and tasks`,
+      `Monitor AI categorization accuracy and response times`
     ]
   };
 }
@@ -278,32 +292,56 @@ function generateFallbackAnalysis(title, body, diff) {
  * Extract key information from PR content for fallback analysis
  */
 function extractPRInfo(title, body, diff) {
-  const titleLower = title.toLowerCase();
-  const bodyLower = body.toLowerCase();
+  // Extract feature type from title
+  let featureType = 'enhancement';
+  let featureName = 'application';
   
-  // Detect feature type
-  let featureType = 'new';
-  if (titleLower.includes('fix') || titleLower.includes('bug')) featureType = 'fix';
-  if (titleLower.includes('refactor')) featureType = 'refactor';
-  if (titleLower.includes('enhance') || titleLower.includes('improve')) featureType = 'enhancement';
+  if (title) {
+    const titleLower = title.toLowerCase();
+    if (titleLower.includes('auth') || titleLower.includes('login')) {
+      featureType = 'authentication';
+      featureName = 'user authentication';
+    } else if (titleLower.includes('api') || titleLower.includes('endpoint')) {
+      featureType = 'API';
+      featureName = 'API functionality';
+    } else if (titleLower.includes('ui') || titleLower.includes('interface')) {
+      featureType = 'UI';
+      featureName = 'user interface';
+    } else if (titleLower.includes('thought') || titleLower.includes('input')) {
+      featureType = 'thought capture';
+      featureName = 'thought input system';
+    } else if (titleLower.includes('todo') || titleLower.includes('task')) {
+      featureType = 'task management';
+      featureName = 'todo system';
+    } else if (titleLower.includes('dashboard')) {
+      featureType = 'dashboard';
+      featureName = 'dashboard';
+    } else if (titleLower.includes('tag') || titleLower.includes('categorization')) {
+      featureType = 'tagging';
+      featureName = 'tag system';
+    }
+  }
   
-  // Extract feature name
-  let featureName = 'the implemented feature';
-  if (titleLower.includes('auth')) featureName = 'authentication';
-  if (titleLower.includes('ui') || titleLower.includes('interface')) featureName = 'user interface';
-  if (titleLower.includes('api')) featureName = 'API';
-  if (titleLower.includes('test')) featureName = 'testing';
-  if (titleLower.includes('input') || titleLower.includes('form')) featureName = 'input handling';
-  if (titleLower.includes('tag')) featureName = 'tag system';
-  if (titleLower.includes('thought')) featureName = 'thought input';
+  // Extract affected area from diff
+  let affectedArea = 'frontend';
+  if (diff) {
+    const diffLower = diff.toLowerCase();
+    if (diffLower.includes('.js') || diffLower.includes('.ts')) {
+      affectedArea = 'frontend';
+    } else if (diffLower.includes('.py') || diffLower.includes('.java')) {
+      affectedArea = 'backend';
+    } else if (diffLower.includes('api/') || diffLower.includes('routes/')) {
+      affectedArea = 'API';
+    } else if (diffLower.includes('test') || diffLower.includes('spec')) {
+      affectedArea = 'testing';
+    }
+  }
   
-  // Detect affected area
-  let affectedArea = 'application';
-  if (diff.includes('frontend') || diff.includes('react') || diff.includes('vue')) affectedArea = 'frontend';
-  if (diff.includes('backend') || diff.includes('api') || diff.includes('server')) affectedArea = 'backend';
-  if (diff.includes('database') || diff.includes('db') || diff.includes('sql')) affectedArea = 'database';
-  
-  return { featureType, featureName, affectedArea };
+  return {
+    featureType,
+    featureName,
+    affectedArea
+  };
 }
 
 /**
