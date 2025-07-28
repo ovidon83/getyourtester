@@ -42,19 +42,34 @@ function getGitHubAppJWT() {
 }
 
 /**
+ * Clear the token cache to force refresh
+ * This is useful when authentication errors occur
+ */
+function clearTokenCache() {
+  console.log('🔄 Clearing GitHub App token cache...');
+  tokenCache.clear();
+}
+
+/**
  * Get an installation token for a specific repository
  * @param {string} owner - Repository owner
  * @param {string} repo - Repository name
+ * @param {boolean} forceRefresh - Force refresh the token (clear cache)
  * @returns {Promise<string|null>} - Installation token or null if not available
  */
-async function getInstallationToken(owner, repo) {
+async function getInstallationToken(owner, repo, forceRefresh = false) {
   try {
-    // Check cache first
+    // Check cache first (unless force refresh is requested)
     const cacheKey = `${owner}/${repo}`;
     const cachedToken = tokenCache.get(cacheKey);
     
-    if (cachedToken && cachedToken.expiresAt > Date.now()) {
+    if (!forceRefresh && cachedToken && cachedToken.expiresAt > Date.now()) {
       return cachedToken.token;
+    }
+    
+    // If force refresh requested, clear the cache entry
+    if (forceRefresh) {
+      tokenCache.delete(cacheKey);
     }
     
     // Generate a JWT for app authentication
@@ -93,6 +108,7 @@ async function getInstallationToken(owner, repo) {
       expiresAt: Date.now() + TOKEN_CACHE_TTL
     });
     
+    console.log(`✅ Generated fresh installation token for ${owner}/${repo}`);
     return tokenData.token;
   } catch (error) {
     console.error(`Error getting installation token for ${owner}/${repo}:`, error.message);
@@ -132,5 +148,6 @@ async function getOctokitForRepo(owner, repo) {
 module.exports = {
   getGitHubAppJWT,
   getInstallationToken,
-  getOctokitForRepo
+  getOctokitForRepo,
+  clearTokenCache
 }; 

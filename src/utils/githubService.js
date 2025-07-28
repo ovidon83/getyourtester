@@ -519,48 +519,60 @@ index 0000000..abc123
  */
 async function postComment(repo, issueNumber, body) {
   try {
-    const [owner, repoName] = repo.split('/');
-    // Handle case where repo might not have correct format
-    if (!owner || !repoName) {
-      console.error(`Invalid repository format: ${repo}. Should be in format 'owner/repo'`);
-      return { success: false, error: 'Invalid repository format' };
+    console.log(`📝 Attempting to post comment to ${repo}#${issueNumber}`);
+    
+    // Force refresh the GitHub App token by clearing cache
+    const [owner, repository] = repo.split('/');
+    const installationToken = await githubAppAuth.getInstallationToken(owner, repository, true); // Force refresh
+    
+    if (!installationToken) {
+      console.error('❌ Failed to get installation token for posting comment');
+      console.log('[SIMULATED] Would post comment to PR');
+      return { success: false, error: 'No installation token available' };
     }
     
-    // Get an Octokit instance for this repository
-    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    const octokit = new Octokit({ auth: installationToken });
     
-    if (!repoOctokit) {
-      console.log(`[SIMULATED] Would post comment to ${repo}#${issueNumber}:`);
-      console.log('--- Start of simulated comment ---');
-      console.log(body);
-      console.log('--- End of simulated comment ---');
-      return { success: true, simulated: true };
-    }
-    
-    const response = await repoOctokit.issues.createComment({
+    const response = await octokit.issues.createComment({
       owner,
-      repo: repoName,
+      repo: repository,
       issue_number: issueNumber,
-      body
+      body: body
     });
     
-    console.log(`Comment posted to ${repo}#${issueNumber}`);
-    return { success: true, data: response.data };
+    console.log(`✅ Comment posted successfully to ${repo}#${issueNumber}`);
+    return { success: true, commentId: response.data.id };
   } catch (error) {
-    console.error(`Failed to post comment to ${repo}#${issueNumber}:`, error.message);
+    console.error(`❌ Failed to post comment to ${repo}#${issueNumber}:`, error.message);
     
-    // Check if the error is due to invalid credentials or permissions
-    if (error.status === 401 || error.status === 403) {
-      console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
-    } else if (error.status === 404) {
-      console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
+    // If it's an authentication error, try to refresh the token
+    if (error.status === 401 || error.message.includes('Bad credentials')) {
+      console.log('🔄 Authentication error detected, attempting token refresh...');
+      
+      try {
+        const [owner, repository] = repo.split('/');
+        // Clear any cached token and get a fresh one
+        const freshToken = await githubAppAuth.getInstallationToken(owner, repository, true); // Force refresh
+        
+        if (freshToken) {
+          const freshOctokit = new Octokit({ auth: freshToken });
+          const response = await freshOctokit.issues.createComment({
+            owner,
+            repo: repository,
+            issue_number: issueNumber,
+            body: body
+          });
+          
+          console.log(`✅ Comment posted successfully after token refresh to ${repo}#${issueNumber}`);
+          return { success: true, commentId: response.data.id };
+        }
+      } catch (refreshError) {
+        console.error('❌ Token refresh also failed:', refreshError.message);
+      }
     }
     
-    console.log(`[SIMULATED] Would post comment to ${repo}#${issueNumber}:`);
-    console.log('--- Start of simulated comment ---');
-    console.log(body);
-    console.log('--- End of simulated comment ---');
-    return { success: true, simulated: true, error: error.message };
+    console.log('[SIMULATED] Would post comment to PR');
+    return { success: false, error: error.message };
   }
 }
 
