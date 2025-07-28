@@ -41,6 +41,13 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       throw new Error('OpenAI client not initialized. Check OPENAI_API_KEY.');
     }
 
+    // Sanitize and validate inputs
+    const sanitizedTitle = (title || 'No title provided').substring(0, 500);
+    const sanitizedBody = (body || 'No description provided').substring(0, 2000);
+    const sanitizedDiff = (diff || 'No diff provided').substring(0, 8000); // Limit diff size to avoid token limits
+
+    console.log(`🔍 Input validation: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
+
     // Load and render the prompt template
     const promptTemplatePath = path.join(__dirname, 'prompts', 'default.ejs');
     if (!fs.existsSync(promptTemplatePath)) {
@@ -51,9 +58,9 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
     const prompt = ejs.render(promptTemplate, {
       repo,
       pr_number,
-      title: title || 'No title provided',
-      body: body || 'No description provided',
-      diff: diff || 'No diff provided'
+      title: sanitizedTitle,
+      body: sanitizedBody,
+      diff: sanitizedDiff
     });
 
     console.log(`🤖 Ovi QA Agent generating insights for PR #${pr_number} in ${repo}`);
@@ -85,22 +92,30 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
           throw new Error('Empty response from OpenAI');
         }
 
+        // Log the raw response for debugging (truncated to avoid huge logs)
+        console.log('🔍 Raw AI response (first 500 chars):', response.substring(0, 500));
+        console.log('🔍 Response length:', response.length);
+
         // Try to parse the JSON response
         let insights;
         try {
           insights = JSON.parse(response);
         } catch (jsonError) {
           console.warn('⚠️ Failed to parse JSON response, attempting to extract JSON from text:', jsonError.message);
+          console.warn('🔍 Full response that failed to parse:', response);
           
           // Try to extract JSON from the response if it's wrapped in markdown or other text
           const jsonMatch = response.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             try {
+              console.log('🔍 Extracted JSON from response:', jsonMatch[0].substring(0, 500));
               insights = JSON.parse(jsonMatch[0]);
             } catch (secondError) {
+              console.error('❌ Failed to parse extracted JSON:', secondError.message);
               throw new Error(`Failed to parse JSON even after extraction: ${secondError.message}`);
             }
           } else {
+            console.error('❌ No JSON pattern found in response');
             throw new Error('No valid JSON found in response');
           }
         }

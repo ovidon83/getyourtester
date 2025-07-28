@@ -911,6 +911,80 @@ async function handleTestRequest(repository, issue, comment, sender) {
     };
   }
   
+  // If AI insights failed, create a basic fallback analysis
+  if (!aiInsights || !aiInsights.success) {
+    console.log('🔄 Creating fallback analysis due to AI failure');
+    aiInsights = {
+      success: true,
+      data: {
+        changeReview: {
+          smartQuestions: [
+            "What is the main purpose of these changes?",
+            "Are there any breaking changes that could affect existing functionality?",
+            "Have you tested the core functionality manually?",
+            "Are there any dependencies or integrations that might be affected?",
+            "What is the expected user impact of these changes?"
+          ],
+          risks: [
+            "Unable to perform detailed risk analysis due to AI processing error",
+            "Please review the changes manually for potential issues",
+            "Consider testing the affected functionality thoroughly"
+          ],
+          productionReadinessScore: {
+            score: 5,
+            level: "Needs Manual Review",
+            reasoning: "AI analysis failed - manual review required to assess production readiness",
+            criticalIssues: [
+              "AI analysis could not be completed - manual review needed"
+            ],
+            recommendations: [
+              "Review the changes manually before proceeding",
+              "Test the affected functionality thoroughly",
+              "Consider running the full test suite"
+            ]
+          }
+        },
+        testRecipe: {
+          criticalPath: [
+            "Test the main functionality that was changed",
+            "Verify that existing features still work as expected",
+            "Check for any new error conditions or edge cases"
+          ],
+          general: [
+            "Run the existing test suite",
+            "Test the user interface if UI changes were made",
+            "Verify API endpoints if backend changes were made"
+          ],
+          edgeCases: [
+            "Test with invalid or unexpected inputs",
+            "Check error handling and recovery",
+            "Verify performance under load if applicable"
+          ],
+          automationPlan: {
+            unit: ["Add unit tests for new functionality"],
+            integration: ["Test integration points and dependencies"],
+            e2e: ["Verify end-to-end user workflows"]
+          }
+        },
+        codeQuality: {
+          affectedModules: [
+            "Manual review needed to identify affected modules"
+          ],
+          testCoverage: {
+            existing: "Unable to analyze existing test coverage",
+            gaps: "Manual review needed to identify test gaps",
+            recommendations: "Add tests for new functionality and affected areas"
+          },
+          bestPractices: [
+            "Review code for security best practices",
+            "Ensure proper error handling is in place",
+            "Check for performance implications"
+          ]
+        }
+      }
+    };
+  }
+  
   // Generate test request object
   const testRequest = {
     id: requestId,
