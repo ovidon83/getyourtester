@@ -70,91 +70,102 @@ As a **Founder/PM/QA** with a "move fast, high-quality" mindset, evaluate the pr
 - 🚨 Core functionality broken or incomplete
 - 🚨 High risk of business impact or customer churn
 
+## IMPORTANT: Analyze the ACTUAL Changes
+
+Based on the PR title, description, and code changes provided above, analyze the SPECIFIC functionality being implemented. Do NOT provide generic responses. Focus on:
+
+1. **What the PR actually does** (from title and description)
+2. **The specific code changes** (from the diff)
+3. **Real risks and test scenarios** for this particular feature
+4. **Actual affected modules** and dependencies
+
 ## Output Format
 Return your analysis as a JSON object with exactly this structure:
 
 {
   "changeReview": {
     "smartQuestions": [
-      "Question 1: Focus on requirements clarity or business logic",
-      "Question 2: Address edge cases or error handling",
-      "Question 3: Consider integration points or dependencies",
-      "Question 4: Validate user experience or accessibility",
-      "Question 5: Security or performance implications"
+      "Question 1: Specific to the actual changes in this PR",
+      "Question 2: About the specific functionality being implemented",
+      "Question 3: Regarding the actual code changes shown",
+      "Question 4: About user impact of this specific feature",
+      "Question 5: Concerning integration points for this specific change"
     ],
     "risks": [
-      "Risk 1: Specific technical risk with potential impact",
-      "Risk 2: Business logic or user experience concern",
-      "Risk 3: Integration or dependency issue",
-      "Risk 4: Performance or scalability consideration",
-      "Risk 5: Security or data integrity concern"
+      "Risk 1: Specific risk related to the actual changes",
+      "Risk 2: Real concern about the specific functionality",
+      "Risk 3: Actual technical risk from the code changes",
+      "Risk 4: Specific user experience concern",
+      "Risk 5: Real business impact of this specific feature"
     ],
     "productionReadinessScore": {
       "score": 8,
       "level": "Ship with Monitoring",
-      "reasoning": "Detailed explanation of why this score was given, considering business impact, customer happiness, and technical quality. Focus on what matters for the business and users.",
+      "reasoning": "Detailed explanation specific to this PR's changes, considering the actual functionality being implemented and its business impact.",
       "criticalIssues": [
-        "List any critical issues that could block release"
+        "List any critical issues specific to this PR's changes"
       ],
       "recommendations": [
-        "Specific actionable recommendations to improve readiness"
+        "Specific actionable recommendations for this particular PR"
       ]
     }
   },
   "testRecipe": {
     "criticalPath": [
-      "Critical test 1: Core functionality that must work",
-      "Critical test 2: Primary user journey validation",
-      "Critical test 3: Essential business logic verification"
+      "Critical test 1: Specific to the main functionality being added",
+      "Critical test 2: For the core feature being implemented",
+      "Critical test 3: Testing the primary user journey for this feature"
     ],
     "general": [
-      "General test 1: Standard functionality testing",
-      "General test 2: Common user scenarios",
-      "General test 3: Basic error handling"
+      "General test 1: Standard testing for this specific feature",
+      "General test 2: Common user scenarios for this functionality",
+      "General test 3: Basic error handling for this specific change"
     ],
     "edgeCases": [
-      "Edge case 1: Boundary condition testing",
-      "Edge case 2: Error state handling",
-      "Edge case 3: Unusual user input scenarios"
+      "Edge case 1: Specific edge case for this feature",
+      "Edge case 2: Boundary condition for this functionality",
+      "Edge case 3: Unusual user input scenarios for this change"
     ],
     "automationPlan": {
       "unit": [
-        "Unit test 1: Specific function/method to test with brief description",
-        "Unit test 2: Another unit test recommendation"
+        "Unit test 1: Specific function/method for this feature",
+        "Unit test 2: Another unit test for this specific change"
       ],
       "integration": [
-        "Integration test 1: Component interaction testing",
-        "Integration test 2: API or service integration"
+        "Integration test 1: Specific integration for this feature",
+        "Integration test 2: API integration for this functionality"
       ],
       "e2e": [
-        "E2E test 1: End-to-end user journey",
-        "E2E test 2: Complete workflow validation"
+        "E2E test 1: End-to-end test for this specific feature",
+        "E2E test 2: Complete workflow for this functionality"
       ]
     }
   },
   "codeQuality": {
     "affectedModules": [
-      "Module 1: Description of what's affected and why",
-      "Module 2: Another affected component"
+      "Module 1: Specific module affected by these changes",
+      "Module 2: Another component impacted by this PR"
     ],
     "testCoverage": {
-      "existing": "Description of existing test coverage",
-      "gaps": "Identified testing gaps or missing coverage",
-      "recommendations": "Specific recommendations for improving test coverage"
+      "existing": "Analysis of existing test coverage for this specific functionality",
+      "gaps": "Specific testing gaps for this particular feature",
+      "recommendations": "Specific recommendations for testing this functionality"
     },
     "bestPractices": [
-      "Best practice 1: Code quality or security consideration",
-      "Best practice 2: Performance or maintainability tip"
+      "Best practice 1: Specific to the code changes shown",
+      "Best practice 2: Relevant to this particular feature implementation"
     ]
   }
 }
 
 ## Guidelines
-- **Think like a Founder**: Focus on business impact and customer happiness
-- **Think like a PM**: Consider user experience and feature completeness
-- **Think like a QA**: Ensure quality without being overly cautious
-- **Move Fast**: Don't block releases for minor issues
-- **High Quality**: Block releases for issues that could hurt customers or business
+- **Analyze the ACTUAL changes**: Base all analysis on the specific PR title, description, and code changes provided
+- **Be specific**: Don't provide generic responses - tailor everything to this particular PR
+- **Think like a Founder**: Focus on business impact and customer happiness for this specific feature
+- **Think like a PM**: Consider user experience and feature completeness for this particular implementation
+- **Think like a QA**: Ensure quality without being overly cautious for this specific change
+- **Move Fast**: Don't block releases for minor issues with this specific feature
+- **High Quality**: Block releases for issues that could hurt customers or business with this specific change
 - Be specific and actionable in all recommendations
 - Consider both technical and business implications
 - Focus on practical testing scenarios that can be executed

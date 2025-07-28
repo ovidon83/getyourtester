@@ -42,9 +42,9 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
     }
 
     // Sanitize and validate inputs
-    const sanitizedTitle = (title || 'No title provided').substring(0, 500);
-    const sanitizedBody = (body || 'No description provided').substring(0, 2000);
-    const sanitizedDiff = (diff || 'No diff provided').substring(0, 8000); // Limit diff size to avoid token limits
+    const sanitizedTitle = (title || 'No title provided').substring(0, 200);
+    const sanitizedBody = (body || 'No description provided').substring(0, 1000);
+    const sanitizedDiff = (diff || 'No diff provided').substring(0, 4000); // Reduced to avoid token limits
 
     console.log(`🔍 Input validation: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
 
@@ -83,7 +83,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
             }
           ],
           temperature: 0.7,
-          max_tokens: 3000, // Increased for more comprehensive analysis
+          max_tokens: 2000, // Reduced for more focused responses
           response_format: { type: 'json_object' }
         });
 
