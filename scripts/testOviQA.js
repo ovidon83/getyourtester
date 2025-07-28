@@ -127,9 +127,21 @@ async function testOviQAAgent() {
         console.log(`  ${i + 1}. ${r}`);
       });
       
-      console.log(`\nConfidence Score: ${data.changeReview.confidenceScore}`);
-      if (data.changeReview.confidenceReason) {
-        console.log(`Reason: ${data.changeReview.confidenceReason}`);
+      console.log(`\nProduction Readiness Score: ${data.changeReview.productionReadinessScore.score}/10 - ${data.changeReview.productionReadinessScore.level}`);
+      console.log(`Reasoning: ${data.changeReview.productionReadinessScore.reasoning}`);
+      
+      if (data.changeReview.productionReadinessScore.criticalIssues && data.changeReview.productionReadinessScore.criticalIssues.length > 0) {
+        console.log('\n🚨 Critical Issues:');
+        data.changeReview.productionReadinessScore.criticalIssues.forEach((issue, i) => {
+          console.log(`  ${i + 1}. ${issue}`);
+        });
+      }
+      
+      if (data.changeReview.productionReadinessScore.recommendations && data.changeReview.productionReadinessScore.recommendations.length > 0) {
+        console.log('\n💡 Recommendations:');
+        data.changeReview.productionReadinessScore.recommendations.forEach((rec, i) => {
+          console.log(`  ${i + 1}. ${rec}`);
+        });
       }
       
       // Display Test Recipe

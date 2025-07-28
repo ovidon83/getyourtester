@@ -85,21 +85,27 @@ const STATUS_LABEL_PATTERNS = Object.values(STATUS_LABELS).map(label =>
 );
 
 /**
- * Get confidence score emoji
- * @param {string} confidenceScore - The confidence score (High, Medium, Low)
- * @returns {string} Appropriate emoji for the confidence level
+ * Get production readiness score emoji
+ * @param {number} score - The production readiness score (0-10)
+ * @returns {string} Appropriate emoji for the production readiness level
  */
-function getConfidenceEmoji(confidenceScore) {
-  switch (confidenceScore?.toLowerCase()) {
-    case 'high':
-      return '✅';
-    case 'medium':
-      return '⚠️';
-    case 'low':
-      return '❌';
-    default:
-      return '❓';
-  }
+function getProductionReadinessEmoji(score) {
+  if (score >= 9) return '🚀';
+  if (score >= 7) return '✅';
+  if (score >= 5) return '⚠️';
+  if (score >= 3) return '❌';
+  return '🚨';
+}
+
+/**
+ * Get production readiness score emoji
+ * @param {number} score - The production readiness score (0-10)
+ * @returns {string} Appropriate emoji for the production readiness level
+ */
+function getProductionReadinessEmoji(score) {
+  if (score >= 8) return '✅';
+  if (score >= 5) return '⚠️';
+  return '❌';
 }
 
 /**
@@ -954,8 +960,17 @@ ${aiInsights.data.changeReview.smartQuestions.map(q => `- ${q}`).join('\n')}
 **Risks:**
 ${aiInsights.data.changeReview.risks.map(r => `- ${r}`).join('\n')}
 
-**Confidence Score:** ${getConfidenceEmoji(aiInsights.data.changeReview.confidenceScore)} ${aiInsights.data.changeReview.confidenceScore}
-${aiInsights.data.changeReview.confidenceReason ? `*${aiInsights.data.changeReview.confidenceReason}*` : ''}
+**Production Readiness Score:** ${getProductionReadinessEmoji(aiInsights.data.changeReview.productionReadinessScore.score)} **${aiInsights.data.changeReview.productionReadinessScore.score}/10 - ${aiInsights.data.changeReview.productionReadinessScore.level}**
+
+${aiInsights.data.changeReview.productionReadinessScore.reasoning ? `*${aiInsights.data.changeReview.productionReadinessScore.reasoning}*` : ''}
+
+${aiInsights.data.changeReview.productionReadinessScore.criticalIssues && aiInsights.data.changeReview.productionReadinessScore.criticalIssues.length > 0 ? `
+**🚨 Critical Issues:**
+${aiInsights.data.changeReview.productionReadinessScore.criticalIssues.map(issue => `- ${issue}`).join('\n')}` : ''}
+
+${aiInsights.data.changeReview.productionReadinessScore.recommendations && aiInsights.data.changeReview.productionReadinessScore.recommendations.length > 0 ? `
+**💡 Recommendations:**
+${aiInsights.data.changeReview.productionReadinessScore.recommendations.map(rec => `- ${rec}`).join('\n')}` : ''}
 
 ---
 

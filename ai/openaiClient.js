@@ -94,8 +94,13 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
         }
         
         // Validate changeReview structure
-        if (!insights.changeReview.smartQuestions || !insights.changeReview.risks || !insights.changeReview.confidenceScore) {
+        if (!insights.changeReview.smartQuestions || !insights.changeReview.risks || !insights.changeReview.productionReadinessScore) {
           throw new Error('Invalid changeReview structure from OpenAI');
+        }
+        
+        // Validate productionReadinessScore structure
+        if (!insights.changeReview.productionReadinessScore.score || !insights.changeReview.productionReadinessScore.level || !insights.changeReview.productionReadinessScore.reasoning) {
+          throw new Error('Invalid productionReadinessScore structure from OpenAI');
         }
         
         // Validate testRecipe structure

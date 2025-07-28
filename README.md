@@ -171,7 +171,7 @@ When you comment `/test` on a PR, Ovi automatically:
    - Identifies potential ambiguity or missing requirements
    - Generates smart questions a QA engineer would ask
    - Assesses risks and edge cases
-   - Provides a confidence score based on code quality and test coverage
+   - Provides a **Production Readiness Score** (1-10) with business-focused assessment
 
 2. **🧪 Test Recipe**
    - Creates comprehensive test scenarios (Critical Path, General, Edge Cases)
@@ -182,6 +182,18 @@ When you comment `/test` on a PR, Ovi automatically:
    - Identifies affected modules and dependencies
    - Analyzes existing test coverage and gaps
    - Recommends best practices and improvements
+
+### Production Readiness Scoring
+
+Ovi uses a business-focused scoring system (1-10) to assess release readiness:
+
+- **🚀 9-10: Ship It!** - No critical issues, ready for production
+- **✅ 7-8: Ship with Monitoring** - Minor issues, can be monitored and fixed quickly
+- **⚠️ 5-6: Needs More Testing** - Potential issues affecting some users
+- **❌ 3-4: Block Release** - Issues that could significantly impact customer experience
+- **🚨 1-2: Critical Block** - Critical bugs that will definitely affect customers
+
+The scoring considers business impact, customer happiness, and technical quality from a Founder/PM/QA perspective.
 
 ### Example Output
 
@@ -197,7 +209,9 @@ When you comment `/test` on a PR, Ovi automatically:
 - Potential security vulnerability in token validation
 - Missing rate limiting on login endpoints
 
-**Confidence Score:** ⚠️ Medium
+**Production Readiness Score:** ✅ **8/10 - Ship with Monitoring**
+
+*This change is ready for production with minor monitoring needed. Core functionality works well, but some edge cases should be watched.*
 
 #### 🧪 Test Recipe
 **Critical Path:**

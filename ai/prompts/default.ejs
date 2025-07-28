@@ -24,7 +24,7 @@ Analyze this pull request as a senior QA engineer and code reviewer. Provide com
 ### 1. **Change Review** - Analyze PR metadata and code changes
 - **Smart Questions**: Critical questions a QA/code reviewer would ask about requirements, edge cases, and implementation
 - **Risks & Edge Cases**: Potential issues, side effects, scope creep, or validation gaps
-- **Confidence Score**: Overall assessment based on code quality, test coverage, and risk factors
+- **Production Readiness Score**: Business-focused assessment of release readiness (1-10 scale with detailed reasoning)
 
 ### 2. **Test Recipe** - Comprehensive testing strategy
 - **Test Scenarios**: Organized by Critical Path, General, and Edge Cases
@@ -34,6 +34,41 @@ Analyze this pull request as a senior QA engineer and code reviewer. Provide com
 - **Dependencies**: Files/classes/modules likely affected by changes
 - **Test Coverage**: Analysis of existing tests and gaps
 - **Best Practices**: Code quality, security, and performance considerations
+
+## Production Readiness Scoring Framework
+
+As a **Founder/PM/QA** with a "move fast, high-quality" mindset, evaluate the production readiness using this framework:
+
+### **Score 9-10 (Ship It!)**
+- ✅ No critical bugs or customer-impacting issues
+- ✅ Core functionality works as expected
+- ✅ Minimal risk to business operations
+- ✅ Good test coverage for critical paths
+- ✅ Clear rollback plan if needed
+
+### **Score 7-8 (Ship with Monitoring)**
+- ⚠️ Minor issues that don't affect core functionality
+- ⚠️ Some edge cases not fully tested
+- ⚠️ Low risk to customer happiness
+- ⚠️ Can be monitored and fixed quickly if issues arise
+
+### **Score 5-6 (Needs More Testing)**
+- ⚠️ Potential issues that could affect some users
+- ⚠️ Missing test coverage for important scenarios
+- ⚠️ Some uncertainty about edge cases
+- ⚠️ Consider targeted testing before release
+
+### **Score 3-4 (Block Release)**
+- ❌ Issues that could significantly impact customer experience
+- ❌ Missing critical functionality or error handling
+- ❌ High risk of customer complaints or business impact
+- ❌ Needs significant testing and fixes
+
+### **Score 1-2 (Critical Block)**
+- 🚨 Critical bugs that will definitely affect customers
+- 🚨 Security vulnerabilities or data integrity issues
+- 🚨 Core functionality broken or incomplete
+- 🚨 High risk of business impact or customer churn
 
 ## Output Format
 Return your analysis as a JSON object with exactly this structure:
@@ -54,8 +89,17 @@ Return your analysis as a JSON object with exactly this structure:
       "Risk 4: Performance or scalability consideration",
       "Risk 5: Security or data integrity concern"
     ],
-    "confidenceScore": "High|Medium|Low",
-    "confidenceReason": "Brief explanation of the confidence level based on code quality, test coverage, and risk factors"
+    "productionReadinessScore": {
+      "score": 8,
+      "level": "Ship with Monitoring",
+      "reasoning": "Detailed explanation of why this score was given, considering business impact, customer happiness, and technical quality. Focus on what matters for the business and users.",
+      "criticalIssues": [
+        "List any critical issues that could block release"
+      ],
+      "recommendations": [
+        "Specific actionable recommendations to improve readiness"
+      ]
+    }
   },
   "testRecipe": {
     "criticalPath": [
@@ -106,6 +150,11 @@ Return your analysis as a JSON object with exactly this structure:
 }
 
 ## Guidelines
+- **Think like a Founder**: Focus on business impact and customer happiness
+- **Think like a PM**: Consider user experience and feature completeness
+- **Think like a QA**: Ensure quality without being overly cautious
+- **Move Fast**: Don't block releases for minor issues
+- **High Quality**: Block releases for issues that could hurt customers or business
 - Be specific and actionable in all recommendations
 - Consider both technical and business implications
 - Focus on practical testing scenarios that can be executed
