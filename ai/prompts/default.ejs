@@ -19,38 +19,46 @@ Analyze the ACTUAL changes above and provide specific, actionable insights. Base
 ## OUTPUT FORMAT (JSON only):
 {
   "summary": {
-    "description": "1-2 sentences describing what this PR actually does",
     "riskLevel": "LOW|MEDIUM|HIGH",
     "shipScore": 8,
     "reasoning": "Brief explanation of risk level and ship score based on actual analysis"
   },
   "questions": [
-    "Question 1: Based on specific functionality or code changes",
-    "Question 2: Based on user scenarios or edge cases",
-    "Question 3: Based on integration points or dependencies",
-    "Question 4: Based on testing or deployment considerations"
+    "Question 1: Specific to the actual code changes and functionality (e.g., 'How does the new authentication middleware handle expired JWT tokens in the /api/users endpoint?')",
+    "Question 2: Specific to user scenarios and edge cases (e.g., 'What happens when a user enters 1000+ characters in the text area with 50+ tags?')",
+    "Question 3: Specific to integration points and dependencies (e.g., 'How does the new AI service handle rate limiting when processing 100+ thoughts simultaneously?')",
+    "Question 4: Specific to testing and deployment considerations (e.g., 'Are there database migrations that need to be tested in staging before production?')"
   ],
   "testRecipe": {
     "criticalPath": [
-      "Critical test 1: Main user workflow",
-      "Critical test 2: Core functionality",
-      "Critical test 3: Key integration point"
+      "Critical test 1: Specific user workflow with concrete examples (e.g., 'User enters 'Meeting with John #today #work #urgent' and verifies it appears in today's todo list')",
+      "Critical test 2: Core functionality with specific data (e.g., 'Test API endpoint /api/thoughts with JSON payload containing 10 tags and verify all are extracted')",
+      "Critical test 3: Key integration point with specific scenario (e.g., 'Test AI categorization service with 100 thoughts containing mixed content types')"
     ],
     "edgeCases": [
-      "Edge case 1: Specific edge case for this feature",
-      "Edge case 2: Boundary condition",
-      "Edge case 3: Error scenario"
+      "Edge case 1: Specific edge case with concrete examples (e.g., 'Test with 10,000 character input containing 100 #tags with special characters like #meeting-2024-01-15')",
+      "Edge case 2: Specific boundary condition (e.g., 'Test with empty input, null values, and malformed JSON in the text area')",
+      "Edge case 3: Specific error scenario (e.g., 'Test AI service timeout after 30 seconds and verify graceful fallback to basic categorization')"
     ],
     "automation": {
-      "unit": ["Unit test 1", "Unit test 2"],
-      "integration": ["Integration test 1", "Integration test 2"],
-      "e2e": ["E2E test 1", "E2E test 2"]
+      "unit": [
+        "Unit test 1: Specific function with concrete test data (e.g., 'Test tag extraction function with input 'Hello #work #urgent #meeting' returns ['work', 'urgent', 'meeting']')",
+        "Unit test 2: Specific edge case function (e.g., 'Test input validation with 10,000 characters and 100 tags')"
+      ],
+      "integration": [
+        "Integration test 1: Specific API endpoint with concrete payload (e.g., 'Test POST /api/thoughts with valid JSON containing tags and verify database storage')",
+        "Integration test 2: Specific service integration (e.g., 'Test AI service integration with mock responses and error scenarios')"
+      ],
+      "e2e": [
+        "E2E test 1: Complete user journey with specific steps (e.g., 'User opens app, enters thought with tags, saves, verifies in todo view, checks dashboard')",
+        "E2E test 2: Specific workflow with concrete data (e.g., 'Test complete workflow with 50 thoughts containing various tag combinations')"
+      ]
     }
   },
   "risks": [
-    "Risk 1: Specific risk based on actual code changes",
-    "Risk 2: Specific risk based on functionality",
-    "Risk 3: Specific risk based on user impact"
+    "Risk 1: Specific risk with concrete impact (e.g., 'Database performance degradation when storing 1000+ thoughts with 50+ tags per thought')",
+    "Risk 2: Specific risk with concrete scenario (e.g., 'AI service timeout causing 5+ second delays in thought processing during peak usage')",
+    "Risk 3: Specific risk with concrete impact (e.g., 'Memory leaks in tag extraction causing browser crashes with 10,000+ character inputs')"
   ]
 }
 
@@ -63,9 +71,12 @@ Analyze the ACTUAL changes above and provide specific, actionable insights. Base
 
 ## CRITICAL REQUIREMENTS:
 - **NEVER give generic responses** - everything must be based on the actual PR content
+- **ALWAYS provide concrete examples** - use specific data, scenarios, and test cases
 - **Reference specific features** mentioned in the title/description
 - **Mention specific code changes** from the diff
 - **Identify real risks** for this particular functionality
 - **Suggest specific tests** for the actual features being added/changed
 - **Max 4 questions, max 3 risks** - be concise and meaningful
-- **Be specific about automation** - what exactly to test at each level 
+- **Be specific about automation** - what exactly to test at each level with concrete examples
+- **Use realistic test data** - actual examples of what users would input
+- **Include specific error scenarios** - concrete failure conditions to test 

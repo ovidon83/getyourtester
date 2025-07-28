@@ -1125,8 +1125,6 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
     acknowledgmentComment += `## 🤖 Ovi QA Assistant by GetYourTester
 
 ### 📋 Summary
-${aiData.summary?.description || 'No description provided'}
-
 **Risk Level:** ${riskEmoji} ${aiData.summary?.riskLevel || 'UNKNOWN'}
 **Ship Score:** ${shipScore}/10 - ${shipStatus}
 ${aiData.summary?.reasoning ? `*${aiData.summary.reasoning}*` : ''}

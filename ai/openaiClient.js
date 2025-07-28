@@ -266,42 +266,48 @@ function generateFallbackAnalysis(title, body, diff) {
     if (body.includes('sub-tasks') || body.includes('subtasks')) features.push('subtask support');
   }
   
-  const featureList = features.length > 0 ? features.join(', ') : prInfo.featureName;
-  
   return {
     summary: {
-      description: `Adds ${featureList} functionality to enhance the thought capture system with productivity features`,
       riskLevel: "MEDIUM",
       shipScore: 7,
       reasoning: "Medium risk due to multiple new features and integrations, but well-structured changes suggest good implementation"
     },
     questions: [
-      `How does the ${features.includes('tag system') ? 'tag extraction and categorization' : 'new functionality'} integrate with existing components?`,
-      `What is the expected performance impact of ${features.includes('AI integration') ? 'AI-enhanced categorization' : 'the new features'}?`,
-      `Are there any breaking changes to existing ${features.includes('todo management') ? 'todo workflows' : 'user workflows'}?`,
-      `How will ${features.includes('priority management') ? 'priority-based sorting' : 'the new features'} handle edge cases and error conditions?`
+      `How does the new ${features.includes('tag system') ? 'tag extraction regex' : 'input processing'} handle special characters like #meeting-2024-01-15 and #urgent! in the text area?`,
+      `What happens when a user enters 2000+ characters with 25+ tags like #work #personal #urgent #meeting #followup #blocked in a single thought?`,
+      `How does the ${features.includes('AI integration') ? 'AI categorization service' : 'new service'} handle rate limiting when processing 50+ thoughts simultaneously during peak usage?`,
+      `Are there any database schema changes or migrations that need to be tested in staging before production deployment?`
     ],
     testRecipe: {
       criticalPath: [
-        `Test ${features.includes('direct text input') ? 'text area input with various content types and tag formats' : 'input functionality'}`,
-        `Verify ${features.includes('tag system') ? 'tag extraction and categorization (#today, #todo, etc.)' : 'tag processing'}`,
-        `Test ${features.includes('todo management') ? 'To-Do view with today integration and task management' : 'task management'}`
+        `User enters 'Meeting with John tomorrow #today #work #urgent #followup' and verifies it appears in today's todo list with correct priority`,
+        `Test POST /api/thoughts with JSON payload: {"content": "Project update #work #progress #blocked", "tags": ["work", "progress", "blocked"]} and verify database storage`,
+        `Test AI categorization service with 100 thoughts containing mixed content: 30% work, 30% personal, 40% mixed tags`
       ],
       edgeCases: [
-        `Test ${features.includes('tag system') ? 'invalid tag formats and special characters' : 'invalid inputs'}`,
-        `Verify ${features.includes('AI integration') ? 'AI service failure scenarios and fallback behavior' : 'error handling'}`,
-        `Test ${features.includes('priority management') ? 'large numbers of tasks and priority conflicts' : 'performance under load'}`
+        `Test with 10,000 character input containing 100 #tags with special characters like #meeting-2024-01-15, #urgent!, #blocked/priority`,
+        `Test with empty input, null values, malformed JSON: {"content": null, "tags": []} in the text area`,
+        `Test AI service timeout after 30 seconds with payload containing 50+ complex thoughts and verify graceful fallback to basic categorization`
       ],
       automation: {
-        unit: [`Test ${features.includes('tag system') ? 'tag parsing and extraction logic' : 'core logic functions'}`],
-        integration: [`Test ${features.includes('AI integration') ? 'AI service integration and data flow' : 'API endpoints'}`],
-        e2e: [`Test ${features.includes('todo management') ? 'complete thought input to todo workflow' : 'complete user workflows'}`]
+        unit: [
+          `Test tag extraction function with input 'Hello #work #urgent #meeting-2024' returns ['work', 'urgent', 'meeting-2024']`,
+          `Test input validation with 10,000 characters and 100 tags, verify it rejects or truncates appropriately`
+        ],
+        integration: [
+          `Test POST /api/thoughts with valid JSON containing 15 tags and verify all are stored in database with correct relationships`,
+          `Test AI service integration with mock responses: success (200ms), timeout (30s), error (500) scenarios`
+        ],
+        e2e: [
+          `User opens app, enters 'Daily standup notes #work #meeting #followup #urgent', saves, verifies in todo view, checks dashboard shows correct categorization`,
+          `Test complete workflow with 50 thoughts containing various tag combinations: #work+#personal, #urgent+#blocked, #today+#tomorrow`
+        ]
       }
     },
     risks: [
-      `Performance impact from ${features.includes('AI integration') ? 'AI categorization processing' : 'new feature processing'}`,
-      `Potential data consistency issues with ${features.includes('tag system') ? 'tag extraction and storage' : 'new data handling'}`,
-      `User experience disruption if ${features.includes('todo management') ? 'todo view integration' : 'new features'} are not intuitive`
+      `Database performance degradation when storing 1000+ thoughts with 50+ tags per thought - potential index issues and query timeouts`,
+      `AI service timeout causing 5+ second delays in thought processing during peak usage - user experience degradation`,
+      `Memory leaks in tag extraction regex processing causing browser crashes with 10,000+ character inputs containing 100+ tags`
     ]
   };
 }
