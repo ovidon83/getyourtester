@@ -7,6 +7,7 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 ## Features
 
 - 🚀 **Simple Integration**: Request testing with a single comment (`/test`)
+- 🤖 **Ovi QA Agent**: AI-powered comprehensive PR analysis and test planning
 - 📊 **Dashboard**: View and manage test requests 
 - 🏷️ **Status Tracking**: Automatically label PRs with testing status
 - 💬 **Detailed Reports**: Provide comprehensive test feedback
@@ -130,7 +131,8 @@ For backward compatibility, GetYourTester can also use a Personal Access Token (
 3. Comment `/test` on the PR to request testing
 4. The webhook server will:
    - Add a "testing-requested" label to the PR
-   - Post an acknowledgment comment
+   - **🤖 Ovi QA Agent analyzes the PR** and generates comprehensive insights
+   - Post an acknowledgment comment with AI-powered analysis
    - Store the test request in the local database
    - (Optionally) Send a notification email
 
@@ -151,9 +153,70 @@ GitHub PR Comment → GitHub Webhook → smee.io → fixed-webhook.js → webhoo
 
 The githubService then:
 1. Creates a test request record
-2. Posts an acknowledgment comment on the PR
-3. Adds a label to the PR
-4. Stores the test request for the dashboard
+2. **🤖 Ovi QA Agent analyzes the PR** (code changes, risks, test coverage)
+3. Posts an acknowledgment comment with comprehensive AI insights
+4. Adds a label to the PR
+5. Stores the test request for the dashboard
+
+## 🤖 Ovi QA Agent
+
+GetYourTester now features **Ovi**, an AI-powered QA Agent that provides comprehensive analysis of your pull requests.
+
+### What Ovi Analyzes
+
+When you comment `/test` on a PR, Ovi automatically:
+
+1. **🔍 Change Review**
+   - Analyzes PR metadata (title, description, comments)
+   - Identifies potential ambiguity or missing requirements
+   - Generates smart questions a QA engineer would ask
+   - Assesses risks and edge cases
+   - Provides a confidence score based on code quality and test coverage
+
+2. **🧪 Test Recipe**
+   - Creates comprehensive test scenarios (Critical Path, General, Edge Cases)
+   - Suggests automation plans (Unit, Integration, E2E tests)
+   - Provides specific test cases with actionable steps
+
+3. **📊 Code Quality Assessment**
+   - Identifies affected modules and dependencies
+   - Analyzes existing test coverage and gaps
+   - Recommends best practices and improvements
+
+### Example Output
+
+```
+### 🤖 Ovi QA Assistant by GetYourTester
+
+#### 🔍 Change Review
+**Key Questions:**
+- How does this authentication change affect existing user sessions?
+- Are there proper error handling mechanisms for invalid tokens?
+
+**Risks:**
+- Potential security vulnerability in token validation
+- Missing rate limiting on login endpoints
+
+**Confidence Score:** ⚠️ Medium
+
+#### 🧪 Test Recipe
+**Critical Path:**
+- [ ] User login with valid credentials
+- [ ] Token validation for protected routes
+
+**Automation Plan:**
+- Unit: Test JWT token generation and validation functions
+- Integration: Test login endpoint with database integration
+- E2E: Complete user authentication flow
+```
+
+### Testing Ovi QA Agent
+
+Run the test script to verify Ovi's functionality:
+
+```bash
+npm run test:ovi
+```
 
 ## Troubleshooting
 

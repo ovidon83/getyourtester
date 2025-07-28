@@ -222,7 +222,7 @@ router.get('/waitlist-thank-you', (req, res) => {
   res.render('waitlist-thank-you', { title: 'Thanks for Joining the Waitlist - GetYourTester' });
 });
 
-// Test Recipe Generation endpoint for AI insights
+// Ovi QA Agent endpoint for comprehensive PR analysis
 router.post('/generate-test-recipe', async (req, res) => {
   try {
     const { generateQAInsights } = require('../../ai/openaiClient');
@@ -239,7 +239,7 @@ router.post('/generate-test-recipe', async (req, res) => {
       });
     }
     
-    console.log(`🤖 Generating QA insights for PR #${pr_number} in ${repo}`);
+    console.log(`🤖 Ovi QA Agent analyzing PR #${pr_number} in ${repo}`);
     console.log('🔍 Input Debug:');
     console.log(`   Repo: ${repo}`);
     console.log(`   PR #: ${pr_number}`);
@@ -257,14 +257,14 @@ router.post('/generate-test-recipe', async (req, res) => {
     });
     
     if (aiInsights && aiInsights.success) {
-      console.log('✅ QA insights generated successfully via API');
+      console.log('✅ Ovi QA Agent analysis completed successfully via API');
       res.json({
         success: true,
         data: aiInsights.data,
         metadata: aiInsights.metadata
       });
     } else {
-      console.error('❌ AI insights failed via API:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ Ovi QA Agent analysis failed via API:', aiInsights?.error, aiInsights?.details);
       res.status(500).json({
         success: false,
         error: aiInsights?.error || 'Failed to generate insights',
@@ -273,12 +273,12 @@ router.post('/generate-test-recipe', async (req, res) => {
     }
     
   } catch (error) {
-    console.error('❌ Exception in test recipe generation:', error.message);
+    console.error('❌ Exception in Ovi QA Agent analysis:', error.message);
     console.error('Stack trace:', error.stack);
     
     res.status(500).json({
       success: false,
-      error: 'AI generation failed',
+      error: 'Ovi QA Agent analysis failed',
       details: error.message
     });
   }

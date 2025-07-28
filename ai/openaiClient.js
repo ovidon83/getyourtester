@@ -56,7 +56,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       diff: diff || 'No diff provided'
     });
 
-    console.log(`🤖 Generating QA insights for PR #${pr_number} in ${repo}`);
+    console.log(`🤖 Ovi QA Agent generating insights for PR #${pr_number} in ${repo}`);
 
     // Get model from environment or use default
     const model = process.env.OPENAI_MODEL || 'gpt-4o';
@@ -76,7 +76,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
             }
           ],
           temperature: 0.7,
-          max_tokens: 2000,
+          max_tokens: 3000, // Increased for more comprehensive analysis
           response_format: { type: 'json_object' }
         });
 
@@ -88,12 +88,27 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
         // Parse the JSON response
         const insights = JSON.parse(response);
         
-        // Validate the expected structure
-        if (!insights.smartQuestions || !insights.testCases || !insights.risks) {
-          throw new Error('Invalid response structure from OpenAI');
+        // Validate the expected structure for the new format
+        if (!insights.changeReview || !insights.testRecipe || !insights.codeQuality) {
+          throw new Error('Invalid response structure from OpenAI - missing required sections');
+        }
+        
+        // Validate changeReview structure
+        if (!insights.changeReview.smartQuestions || !insights.changeReview.risks || !insights.changeReview.confidenceScore) {
+          throw new Error('Invalid changeReview structure from OpenAI');
+        }
+        
+        // Validate testRecipe structure
+        if (!insights.testRecipe.criticalPath || !insights.testRecipe.general || !insights.testRecipe.edgeCases || !insights.testRecipe.automationPlan) {
+          throw new Error('Invalid testRecipe structure from OpenAI');
+        }
+        
+        // Validate automationPlan structure
+        if (!insights.testRecipe.automationPlan.unit || !insights.testRecipe.automationPlan.integration || !insights.testRecipe.automationPlan.e2e) {
+          throw new Error('Invalid automationPlan structure from OpenAI');
         }
 
-        console.log('✅ QA insights generated successfully');
+        console.log('✅ Ovi QA Agent insights generated successfully');
         return {
           success: true,
           data: insights,
@@ -121,7 +136,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
     }
 
     // All attempts failed
-    console.error('❌ Failed to generate QA insights after 2 attempts');
+    console.error('❌ Failed to generate Ovi QA Agent insights after 2 attempts');
     return {
       success: false,
       error: 'Failed to generate insights',

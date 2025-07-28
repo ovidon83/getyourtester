@@ -85,6 +85,24 @@ const STATUS_LABEL_PATTERNS = Object.values(STATUS_LABELS).map(label =>
 );
 
 /**
+ * Get confidence score emoji
+ * @param {string} confidenceScore - The confidence score (High, Medium, Low)
+ * @returns {string} Appropriate emoji for the confidence level
+ */
+function getConfidenceEmoji(confidenceScore) {
+  switch (confidenceScore?.toLowerCase()) {
+    case 'high':
+      return '✅';
+    case 'medium':
+      return '⚠️';
+    case 'low':
+      return '❌';
+    default:
+      return '❓';
+  }
+}
+
+/**
  * Call the /generate-test-recipe endpoint for AI insights
  */
 async function callTestRecipeEndpoint(data) {
@@ -859,7 +877,7 @@ async function handleTestRequest(repository, issue, comment, sender) {
   console.log(`   Diff length: ${prDiff?.length || 0}`);
   
   // Generate AI insights for the PR via API endpoint
-  console.log('🤖 Generating AI insights for PR...');
+  console.log('🤖 Ovi QA Agent analyzing PR...');
   let aiInsights;
   try {
     aiInsights = await callTestRecipeEndpoint({
@@ -871,18 +889,18 @@ async function handleTestRequest(repository, issue, comment, sender) {
     });
     
     if (aiInsights && aiInsights.success) {
-      console.log('✅ AI insights generated successfully');
+      console.log('✅ Ovi QA Agent analysis completed successfully');
     } else {
-      console.error('❌ AI insights failed:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ Ovi QA Agent analysis failed:', aiInsights?.error, aiInsights?.details);
     }
   } catch (error) {
-    console.error('❌ AI insights threw exception:', error.message);
+    console.error('❌ Ovi QA Agent analysis threw exception:', error.message);
     console.error('Stack trace:', error.stack);
     
     // Create error result
     aiInsights = {
       success: false,
-      error: 'AI generation failed',
+      error: 'Ovi QA Agent analysis failed',
       details: error.message
     };
   }
@@ -927,26 +945,56 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
   if (aiInsights && aiInsights.success) {
     acknowledgmentComment += `
 
-## 🤖 AI-Generated QA Insights
+### 🤖 Ovi QA Assistant by GetYourTester
 
-Based on the code changes in this PR, here are some AI-generated testing insights:
+#### 🔍 Change Review
+**Key Questions:**
+${aiInsights.data.changeReview.smartQuestions.map(q => `- ${q}`).join('\n')}
 
-### 🤔 Key Questions for Testing
-${aiInsights.data.smartQuestions.map(q => `• ${q}`).join('\n')}
+**Risks:**
+${aiInsights.data.changeReview.risks.map(r => `- ${r}`).join('\n')}
 
-### 🧪 Suggested Test Cases
-${aiInsights.data.testCases.map(tc => `• ${tc}`).join('\n')}
-
-### ⚠️ Potential Risks & Areas of Focus
-${aiInsights.data.risks.map(r => `• ${r}`).join('\n')}
+**Confidence Score:** ${getConfidenceEmoji(aiInsights.data.changeReview.confidenceScore)} ${aiInsights.data.changeReview.confidenceScore}
+${aiInsights.data.changeReview.confidenceReason ? `*${aiInsights.data.changeReview.confidenceReason}*` : ''}
 
 ---
-*These insights are AI-generated to help guide the manual testing process. A human tester will review and expand on these recommendations.*
+
+#### 🧪 Test Recipe
+**Critical Path:**
+${aiInsights.data.testRecipe.criticalPath.map(tc => `- [ ] ${tc}`).join('\n')}
+
+**General Scenarios:**
+${aiInsights.data.testRecipe.general.map(tc => `- [ ] ${tc}`).join('\n')}
+
+**Edge Cases:**
+${aiInsights.data.testRecipe.edgeCases.map(tc => `- [ ] ${tc}`).join('\n')}
+
+**Automation Plan:**
+- **Unit:** ${aiInsights.data.testRecipe.automationPlan.unit.map(tc => tc).join('; ')}
+- **Integration:** ${aiInsights.data.testRecipe.automationPlan.integration.map(tc => tc).join('; ')}
+- **E2E:** ${aiInsights.data.testRecipe.automationPlan.e2e.map(tc => tc).join('; ')}
+
+---
+
+#### 📊 Code Quality Assessment
+**Affected Modules:**
+${aiInsights.data.codeQuality.affectedModules.map(m => `- ${m}`).join('\n')}
+
+**Test Coverage:**
+- **Existing:** ${aiInsights.data.codeQuality.testCoverage.existing}
+- **Gaps:** ${aiInsights.data.codeQuality.testCoverage.gaps}
+- **Recommendations:** ${aiInsights.data.codeQuality.testCoverage.recommendations}
+
+**Best Practices:**
+${aiInsights.data.codeQuality.bestPractices.map(bp => `- ${bp}`).join('\n')}
+
+---
+*🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*
     `;
   } else if (aiInsights && !aiInsights.success) {
     acknowledgmentComment += `
 
-*Note: AI insights could not be generated for this PR (${aiInsights.error}), but manual testing will proceed as normal.*
+*Note: Ovi QA Agent insights could not be generated for this PR (${aiInsights.error}), but manual testing will proceed as normal.*
     `;
   }
   
