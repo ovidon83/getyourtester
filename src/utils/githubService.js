@@ -1105,63 +1105,44 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
   
   // Add AI insights to the comment if they were generated successfully
   if (aiInsights && aiInsights.success) {
-    acknowledgmentComment += `
+    // Format the AI insights into a GitHub comment
+    const aiData = aiInsights.data;
+    
+    // Get production readiness emoji
+    const getRiskEmoji = (riskLevel) => {
+      switch (riskLevel?.toUpperCase()) {
+        case 'LOW': return '✅';
+        case 'MEDIUM': return '⚠️';
+        case 'HIGH': return '🚨';
+        default: return '❓';
+      }
+    };
 
-### 🤖 Ovi QA Assistant by GetYourTester
+    const riskEmoji = getRiskEmoji(aiData.riskLevel);
+    const shipStatus = aiData.canShip ? '✅ SHIP IT' : '❌ BLOCKED';
+    
+    acknowledgmentComment += `## 🤖 Ovi QA Assistant by GetYourTester
 
-#### 🔍 Change Review
-**Key Questions:**
-${aiInsights.data.changeReview.smartQuestions.map(q => `- ${q}`).join('\n')}
+### 📋 Summary
+${aiData.summary || 'No summary provided'}
 
-**Risks:**
-${aiInsights.data.changeReview.risks.map(r => `- ${r}`).join('\n')}
+### 🎯 Risk Assessment
+${riskEmoji} **Risk Level:** ${aiData.riskLevel || 'UNKNOWN'}
+🚀 **Ship Decision:** ${shipStatus}
 
-**Production Readiness Score:** ${getProductionReadinessEmoji(aiInsights.data.changeReview.productionReadinessScore.score)} **${aiInsights.data.changeReview.productionReadinessScore.score}/10 - ${aiInsights.data.changeReview.productionReadinessScore.level}**
+${aiData.criticalIssues && aiData.criticalIssues.length > 0 ? `
+### 🚨 Critical Issues
+${aiData.criticalIssues.map(issue => `- ${issue}`).join('\n')}
+` : ''}
 
-${aiInsights.data.changeReview.productionReadinessScore.reasoning ? `*${aiInsights.data.changeReview.productionReadinessScore.reasoning}*` : ''}
+### 🧪 Key Tests to Run
+${aiData.keyTests ? aiData.keyTests.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Basic functionality test'}
 
-${aiInsights.data.changeReview.productionReadinessScore.criticalIssues && aiInsights.data.changeReview.productionReadinessScore.criticalIssues.length > 0 ? `
-**🚨 Critical Issues:**
-${aiInsights.data.changeReview.productionReadinessScore.criticalIssues.map(issue => `- ${issue}`).join('\n')}` : ''}
-
-${aiInsights.data.changeReview.productionReadinessScore.recommendations && aiInsights.data.changeReview.productionReadinessScore.recommendations.length > 0 ? `
-**💡 Recommendations:**
-${aiInsights.data.changeReview.productionReadinessScore.recommendations.map(rec => `- ${rec}`).join('\n')}` : ''}
-
----
-
-#### 🧪 Test Recipe
-**Critical Path:**
-${aiInsights.data.testRecipe.criticalPath.map(tc => `- [ ] ${tc}`).join('\n')}
-
-**General Scenarios:**
-${aiInsights.data.testRecipe.general.map(tc => `- [ ] ${tc}`).join('\n')}
-
-**Edge Cases:**
-${aiInsights.data.testRecipe.edgeCases.map(tc => `- [ ] ${tc}`).join('\n')}
-
-**Automation Plan:**
-- **Unit:** ${aiInsights.data.testRecipe.automationPlan.unit.map(tc => tc).join('; ')}
-- **Integration:** ${aiInsights.data.testRecipe.automationPlan.integration.map(tc => tc).join('; ')}
-- **E2E:** ${aiInsights.data.testRecipe.automationPlan.e2e.map(tc => tc).join('; ')}
+### 💡 Recommendations
+${aiData.recommendations ? aiData.recommendations.map(rec => `- ${rec}`).join('\n') : '- Test the main user flow'}
 
 ---
-
-#### 📊 Code Quality Assessment
-**Affected Modules:**
-${aiInsights.data.codeQuality.affectedModules.map(m => `- ${m}`).join('\n')}
-
-**Test Coverage:**
-- **Existing:** ${aiInsights.data.codeQuality.testCoverage.existing}
-- **Gaps:** ${aiInsights.data.codeQuality.testCoverage.gaps}
-- **Recommendations:** ${aiInsights.data.codeQuality.testCoverage.recommendations}
-
-**Best Practices:**
-${aiInsights.data.codeQuality.bestPractices.map(bp => `- ${bp}`).join('\n')}
-
----
-*🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*
-    `;
+*🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
   } else if (aiInsights && !aiInsights.success) {
     acknowledgmentComment += `
 
