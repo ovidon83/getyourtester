@@ -6,6 +6,7 @@ const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 const githubAppAuth = require('./githubAppAuth');
 
 // Initialize GitHub client with token (for backward compatibility)
@@ -110,55 +111,124 @@ function getProductionReadinessEmoji(score) {
 
 /**
  * Call the /generate-test-recipe endpoint for AI insights
+ * @param {Object} data - PR data
+ * @returns {Promise<Object>} AI insights or fallback
  */
 async function callTestRecipeEndpoint(data) {
   try {
-    const axios = require('axios');
+    // Determine the base URL
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
     
-    // Determine the base URL for the API call
-    const baseUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.BASE_URL || 'https://getyourtester.onrender.com'
-      : 'http://localhost:3000';
+    console.log(`📡 Calling AI endpoint: ${baseUrl}/generate-test-recipe`);
     
+    // Make the API call
     const response = await axios.post(`${baseUrl}/generate-test-recipe`, data, {
       headers: {
         'Content-Type': 'application/json'
       },
-      timeout: 30000 // 30 second timeout
+      timeout: 60000 // 60 second timeout
     });
     
-    return {
-      success: true,
-      data: response.data.data,
-      metadata: response.data.metadata
-    };
+    if (response.data && response.data.success) {
+      console.log('✅ AI analysis successful');
+      return response.data;
+    } else {
+      console.error('❌ AI analysis failed:', response.data?.error);
+      throw new Error(response.data?.error || 'AI analysis failed');
+    }
     
   } catch (error) {
-    console.error('❌ Error calling test recipe endpoint:', error.message);
+    console.error('❌ Error calling AI endpoint:', error.message);
     
-    if (error.response) {
-      // Server responded with error status
-      console.error('Response status:', error.response.status);
-      console.error('Response data:', error.response.data);
+    // Use the new intelligent fallback system
+    console.log('🔄 Using intelligent fallback analysis');
+    const { generateQAInsights } = require('../../ai/openaiClient');
+    
+    try {
+      // This will use the new bulletproof system with intelligent fallbacks
+      const fallbackResult = await generateQAInsights(data);
+      console.log('✅ Intelligent fallback analysis completed');
+      return fallbackResult;
+    } catch (fallbackError) {
+      console.error('❌ Even fallback failed:', fallbackError.message);
       
+      // Ultimate fallback - generate basic analysis
       return {
-        success: false,
-        error: error.response.data?.error || 'API endpoint error',
-        details: error.response.data?.details || error.message
-      };
-    } else if (error.request) {
-      // Request timeout or network error
-      return {
-        success: false,
-        error: 'Network error',
-        details: 'Could not reach test recipe endpoint'
-      };
-    } else {
-      // Other error
-      return {
-        success: false,
-        error: 'Request setup error',
-        details: error.message
+        success: true,
+        data: {
+          changeReview: {
+            smartQuestions: [
+              "What is the main purpose of these changes?",
+              "Are there any breaking changes that could affect existing functionality?",
+              "Have you tested the core functionality manually?",
+              "Are there any dependencies or integrations that might be affected?",
+              "What is the expected user impact of these changes?"
+            ],
+            risks: [
+              "Unable to perform detailed risk analysis due to system error",
+              "Please review the changes manually for potential issues",
+              "Consider testing the affected functionality thoroughly"
+            ],
+            productionReadinessScore: {
+              score: 5,
+              level: "Needs Manual Review",
+              reasoning: "System error occurred - manual review required to assess production readiness",
+              criticalIssues: [
+                "System analysis could not be completed - manual review needed"
+              ],
+              recommendations: [
+                "Review the changes manually before proceeding",
+                "Test the affected functionality thoroughly",
+                "Consider running the full test suite"
+              ]
+            }
+          },
+          testRecipe: {
+            criticalPath: [
+              "Test the main functionality that was changed",
+              "Verify that existing features still work as expected",
+              "Check for any new error conditions or edge cases"
+            ],
+            general: [
+              "Run the existing test suite",
+              "Test the user interface if UI changes were made",
+              "Verify API endpoints if backend changes were made"
+            ],
+            edgeCases: [
+              "Test with invalid or unexpected inputs",
+              "Check error handling and recovery",
+              "Verify performance under load if applicable"
+            ],
+            automationPlan: {
+              unit: ["Add unit tests for new functionality"],
+              integration: ["Test integration points and dependencies"],
+              e2e: ["Verify end-to-end user workflows"]
+            }
+          },
+          codeQuality: {
+            affectedModules: [
+              "Manual review needed to identify affected modules"
+            ],
+            testCoverage: {
+              existing: "Unable to analyze existing test coverage",
+              gaps: "Manual review needed to identify test gaps",
+              recommendations: "Add tests for new functionality and affected areas"
+            },
+            bestPractices: [
+              "Review code for security best practices",
+              "Ensure proper error handling is in place"
+            ]
+          }
+        },
+        metadata: {
+          repo: data.repo,
+          pr_number: data.pr_number,
+          model: 'ultimate-fallback',
+          attempt: 'ultimate-fallback',
+          timestamp: new Date().toISOString(),
+          error: error.message,
+          note: 'Ultimate fallback due to system error'
+        }
       };
     }
   }
