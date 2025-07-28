@@ -85,32 +85,103 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
           throw new Error('Empty response from OpenAI');
         }
 
-        // Parse the JSON response
-        const insights = JSON.parse(response);
+        // Try to parse the JSON response
+        let insights;
+        try {
+          insights = JSON.parse(response);
+        } catch (jsonError) {
+          console.warn('⚠️ Failed to parse JSON response, attempting to extract JSON from text:', jsonError.message);
+          
+          // Try to extract JSON from the response if it's wrapped in markdown or other text
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              insights = JSON.parse(jsonMatch[0]);
+            } catch (secondError) {
+              throw new Error(`Failed to parse JSON even after extraction: ${secondError.message}`);
+            }
+          } else {
+            throw new Error('No valid JSON found in response');
+          }
+        }
         
-        // Validate the expected structure for the new format
+        // Validate the expected structure for the new format with more flexibility
         if (!insights.changeReview || !insights.testRecipe || !insights.codeQuality) {
           throw new Error('Invalid response structure from OpenAI - missing required sections');
         }
         
-        // Validate changeReview structure
-        if (!insights.changeReview.smartQuestions || !insights.changeReview.risks || !insights.changeReview.productionReadinessScore) {
-          throw new Error('Invalid changeReview structure from OpenAI');
+        // Validate changeReview structure with flexibility
+        if (!insights.changeReview.smartQuestions || !insights.changeReview.risks) {
+          throw new Error('Invalid changeReview structure from OpenAI - missing smartQuestions or risks');
         }
         
-        // Validate productionReadinessScore structure
-        if (!insights.changeReview.productionReadinessScore.score || !insights.changeReview.productionReadinessScore.level || !insights.changeReview.productionReadinessScore.reasoning) {
-          throw new Error('Invalid productionReadinessScore structure from OpenAI');
+        // Handle productionReadinessScore with fallback
+        if (!insights.changeReview.productionReadinessScore) {
+          // Create a fallback structure if missing
+          insights.changeReview.productionReadinessScore = {
+            score: 5,
+            level: "Needs More Testing",
+            reasoning: "Unable to determine production readiness due to incomplete analysis",
+            criticalIssues: [],
+            recommendations: []
+          };
+        } else {
+          // Ensure required fields exist with defaults
+          if (!insights.changeReview.productionReadinessScore.score) {
+            insights.changeReview.productionReadinessScore.score = 5;
+          }
+          if (!insights.changeReview.productionReadinessScore.level) {
+            insights.changeReview.productionReadinessScore.level = "Needs More Testing";
+          }
+          if (!insights.changeReview.productionReadinessScore.reasoning) {
+            insights.changeReview.productionReadinessScore.reasoning = "Analysis completed but reasoning not provided";
+          }
+          if (!insights.changeReview.productionReadinessScore.criticalIssues) {
+            insights.changeReview.productionReadinessScore.criticalIssues = [];
+          }
+          if (!insights.changeReview.productionReadinessScore.recommendations) {
+            insights.changeReview.productionReadinessScore.recommendations = [];
+          }
         }
         
-        // Validate testRecipe structure
-        if (!insights.testRecipe.criticalPath || !insights.testRecipe.general || !insights.testRecipe.edgeCases || !insights.testRecipe.automationPlan) {
-          throw new Error('Invalid testRecipe structure from OpenAI');
+        // Validate testRecipe structure with flexibility
+        if (!insights.testRecipe.criticalPath || !insights.testRecipe.general || !insights.testRecipe.edgeCases) {
+          throw new Error('Invalid testRecipe structure from OpenAI - missing test scenario arrays');
         }
         
-        // Validate automationPlan structure
-        if (!insights.testRecipe.automationPlan.unit || !insights.testRecipe.automationPlan.integration || !insights.testRecipe.automationPlan.e2e) {
-          throw new Error('Invalid automationPlan structure from OpenAI');
+        // Handle automationPlan with fallback
+        if (!insights.testRecipe.automationPlan) {
+          insights.testRecipe.automationPlan = {
+            unit: ["Unit tests not specified"],
+            integration: ["Integration tests not specified"],
+            e2e: ["E2E tests not specified"]
+          };
+        } else {
+          // Ensure all automation plan arrays exist
+          if (!insights.testRecipe.automationPlan.unit) {
+            insights.testRecipe.automationPlan.unit = ["Unit tests not specified"];
+          }
+          if (!insights.testRecipe.automationPlan.integration) {
+            insights.testRecipe.automationPlan.integration = ["Integration tests not specified"];
+          }
+          if (!insights.testRecipe.automationPlan.e2e) {
+            insights.testRecipe.automationPlan.e2e = ["E2E tests not specified"];
+          }
+        }
+        
+        // Handle codeQuality with fallback
+        if (!insights.codeQuality.affectedModules) {
+          insights.codeQuality.affectedModules = ["Modules analysis not available"];
+        }
+        if (!insights.codeQuality.testCoverage) {
+          insights.codeQuality.testCoverage = {
+            existing: "Test coverage analysis not available",
+            gaps: "Gaps analysis not available",
+            recommendations: "No specific recommendations available"
+          };
+        }
+        if (!insights.codeQuality.bestPractices) {
+          insights.codeQuality.bestPractices = ["Best practices analysis not available"];
         }
 
         console.log('✅ Ovi QA Agent insights generated successfully');
@@ -129,6 +200,11 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       } catch (parseError) {
         lastError = parseError;
         console.warn(`⚠️ Attempt ${attempt} failed:`, parseError.message);
+        
+        // Log the actual response for debugging
+        if (parseError.message.includes('JSON')) {
+          console.warn('🔍 Raw response that failed to parse:', response);
+        }
         
         if (attempt === 2) {
           // Final attempt failed
