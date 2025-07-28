@@ -35,12 +35,13 @@ if (!fs.existsSync(dataDir)) {
 
 // Middleware
 app.use(bodyParser.json({
+  limit: '10mb', // Increase limit to handle larger PR data
   verify: (req, res, buf) => {
     // Store the raw request body for webhook verification
     req.rawBody = buf.toString();
   }
 }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 app.use('/bootstrap-icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')));
@@ -62,6 +63,68 @@ app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
 app.use('/support', supportRoutes);
 app.use('/email', emailRoutes);
+
+// Special route for generate-test-recipe with larger payload support
+app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req, res) => {
+  try {
+    const { generateQAInsights } = require('./ai/openaiClient');
+    
+    // Extract required fields from request body
+    const { repo, pr_number, title, body, diff } = req.body;
+    
+    // Validate required fields
+    if (!repo || !pr_number || !title) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        details: 'repo, pr_number, and title are required'
+      });
+    }
+    
+    console.log(`🤖 Ovi QA Agent analyzing PR #${pr_number} in ${repo}`);
+    console.log('🔍 Input Debug:');
+    console.log(`   Repo: ${repo}`);
+    console.log(`   PR #: ${pr_number}`);
+    console.log(`   Title: ${title}`);
+    console.log(`   Body length: ${body?.length || 0}`);
+    console.log(`   Diff length: ${diff?.length || 0}`);
+    
+    // Generate AI insights
+    const aiInsights = await generateQAInsights({
+      repo,
+      pr_number,
+      title,
+      body,
+      diff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ Ovi QA Agent analysis completed successfully via webhook server');
+      res.json({
+        success: true,
+        data: aiInsights.data,
+        metadata: aiInsights.metadata
+      });
+    } else {
+      console.error('❌ Ovi QA Agent analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
+      res.status(500).json({
+        success: false,
+        error: aiInsights?.error || 'Failed to generate insights',
+        details: aiInsights?.details || 'Unknown error occurred'
+      });
+    }
+    
+  } catch (error) {
+    console.error('❌ Exception in Ovi QA Agent analysis:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Ovi QA Agent analysis failed',
+      details: error.message
+    });
+  }
+});
 
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {
