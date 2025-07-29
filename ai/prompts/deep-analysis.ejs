@@ -16,7 +16,8 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
 2. **Security vulnerabilities** and risks
 3. **Performance problems** and anti-patterns
 4. **Maintainability issues** and code smells
-5. **Practical, actionable recommendations** that developers can easily implement
+5. **Build and compilation issues** (unused imports, TypeScript errors, syntax problems)
+6. **Practical, actionable recommendations** that developers can easily implement
 
 ## DEEP ANALYSIS REQUIREMENTS:
 1. **Code-Level Bug Detection**: Look for actual bugs in the implementation
@@ -25,7 +26,8 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
 4. **Error Handling**: Check for missing try-catch, unhandled promises, async issues
 5. **Code Quality**: Identify magic numbers, hardcoded values, code smells
 6. **Integration Risks**: Analyze API changes, database modifications, breaking changes
-7. **File References**: Always include the file name when referencing any code location, function, or line number
+7. **Build & Compilation Issues**: Check for unused imports, unused variables, TypeScript errors, syntax issues
+8. **File References**: Always include the file name when referencing any code location, function, or line number
 
 ## OUTPUT FORMAT (JSON only):
 {
@@ -38,7 +40,7 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
     "Question 1: Specific to actual code issues found (e.g., 'The tag extraction regex in utils.js line 45 doesn't handle escaped # characters - what happens with input like \\#not-a-tag?')",
     "Question 2: Specific to security/performance issues (e.g., 'The innerHTML usage in Dashboard.jsx line 23 could allow XSS - how is user input sanitized?')",
     "Question 3: Specific to error handling gaps (e.g., 'The async function generateTodayInsights in services.js line 67 has no error handling - what happens if the API call fails?')",
-    "Question 4: Specific to integration/breaking changes (e.g., 'The API response format changed in AIService.js - are all consumers updated?')"
+    "Question 4: Specific to build/compilation issues (e.g., 'Are there unused imports in DashboardView.tsx that will cause TypeScript compilation errors?')"
   ],
   "testRecipe": {
     "criticalPath": [
@@ -69,7 +71,7 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
   "risks": [
     "Risk 1: Specific risk found in code with file and line reference (e.g., 'XSS vulnerability in Dashboard.jsx line 23: innerHTML usage with unsanitized user input')",
     "Risk 2: Specific performance issue with impact (e.g., 'N+1 query in api.js line 45: forEach loop makes API call for each item')",
-    "Risk 3: Specific reliability issue with scenario (e.g., 'Unhandled promise rejection in services.js line 67: API failure crashes the app')"
+    "Risk 3: Specific build/compilation issue with impact (e.g., 'Unused imports in DashboardView.tsx line 5-13: Clock, FileText, BarChart3 imports will cause TypeScript compilation errors')"
   ]
 }
 

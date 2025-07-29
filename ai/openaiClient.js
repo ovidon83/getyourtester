@@ -523,7 +523,8 @@ function detectRiskPatterns(diff, changedFiles) {
     security: [],
     performance: [],
     reliability: [],
-    maintainability: []
+    maintainability: [],
+    build: []
   };
 
   const diffLower = diff.toLowerCase();
@@ -568,6 +569,37 @@ function detectRiskPatterns(diff, changedFiles) {
   }
   if (diffLower.includes('hardcoded') || diffLower.includes('hard-coded')) {
     risks.maintainability.push('Hardcoded values detected - consider configuration');
+  }
+
+  // Build risks - detect potential unused imports and variables
+  const lines = diff.split('\n');
+  const importLines = lines.filter(line => line.includes('import') && line.includes('from'));
+  const declaredVariables = [];
+  
+  // Look for variable declarations
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    if (trimmedLine.startsWith('const ') || trimmedLine.startsWith('let ') || trimmedLine.startsWith('var ')) {
+      const match = trimmedLine.match(/(?:const|let|var)\s+(\w+)/);
+      if (match) {
+        declaredVariables.push(match[1]);
+      }
+    }
+  }
+
+  // Check for potential unused imports (imports that might not be used)
+  if (importLines.length > 5) {
+    risks.build.push('Multiple imports detected - verify all imports are actually used to avoid TypeScript compilation errors');
+  }
+
+  // Check for potential unused variables
+  if (declaredVariables.length > 10) {
+    risks.build.push('Multiple variable declarations detected - verify all variables are used to avoid TypeScript compilation errors');
+  }
+
+  // Look for specific patterns that often lead to unused imports
+  if (diffLower.includes('import') && diffLower.includes('{') && diffLower.includes('}')) {
+    risks.build.push('Destructured imports detected - verify all imported items are used');
   }
 
   return risks;
@@ -695,6 +727,9 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
   }
   if (codeContext.risks.maintainability.length > 0) {
     risks.push(`Maintainability risks identified in code: ${codeContext.risks.maintainability.join(', ')}`);
+  }
+  if (codeContext.risks.build.length > 0) {
+    risks.push(`Build risks identified in code: ${codeContext.risks.build.join(', ')}`);
   }
 
   return {
