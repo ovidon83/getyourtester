@@ -600,12 +600,12 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
   // Generate specific questions based on the type of change
   const questions = [];
   if (isFrontendChange) {
-    questions.push(`How does the new ${features.includes('tag system') ? 'tag extraction regex' : 'input processing'} handle special characters like #meeting-2024-01-15 and #urgent! in the text area?`);
+    questions.push(`How does the new ${features.includes('tag system') ? 'tag extraction regex in utils.js' : 'input processing'} handle special characters like #meeting-2024-01-15 and #urgent! in the text area?`);
     questions.push(`What happens when a user enters 2000+ characters with 25+ tags like #work #personal #urgent #meeting #followup #blocked in a single thought?`);
-    questions.push(`How does the ${features.includes('AI integration') ? 'AI categorization service' : 'new service'} handle rate limiting when processing 50+ thoughts simultaneously during peak usage?`);
+    questions.push(`How does the ${features.includes('AI integration') ? 'AI categorization service in services.js' : 'new service'} handle rate limiting when processing 50+ thoughts simultaneously during peak usage?`);
     questions.push(`Are there any database schema changes or migrations that need to be tested in staging before production deployment?`);
   } else if (isBackendChange) {
-    questions.push(`How does the new ${prInfo.featureName} handle rate limiting when processing 50+ requests simultaneously during peak usage?`);
+    questions.push(`How does the new ${prInfo.featureName} in api.js handle rate limiting when processing 50+ requests simultaneously during peak usage?`);
     questions.push(`Are there any database schema changes or migrations that need to be tested in staging before production deployment?`);
   } else {
     questions.push(`How does the new ${prInfo.featureName} handle rate limiting when processing 50+ requests simultaneously during peak usage?`);
@@ -616,14 +616,14 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
   const testRecipe = {};
   if (isFrontendChange) {
     testRecipe.criticalPath = [
-      `User enters 'Meeting with John tomorrow #today #work #urgent #followup' and verifies it appears in today's todo list with correct priority`,
-      `Test POST /api/thoughts with JSON payload: {"content": "Project update #work #progress #blocked", "tags": ["work", "progress", "blocked"]} and verify database storage`,
-      `Test AI categorization service with 100 thoughts containing mixed content: 30% work, 30% personal, 40% mixed tags`
+      `As a user, I can add a thought with tags and see it categorized correctly in the today view`,
+      `As a user, I can mark a thought as urgent and see the priority icon change immediately`,
+      `As a user, I can view today's insights and see AI-generated recommendations`
     ];
     testRecipe.edgeCases = [
-      `Test with 10,000 character input containing 100 #tags with special characters like #meeting-2024-01-15, #urgent!, #blocked/priority`,
-      `Test with empty input, null values, malformed JSON: {"content": null, "tags": []} in the text area`,
-      `Test AI service timeout after 30 seconds with payload containing 50+ complex thoughts and verify graceful fallback to basic categorization`
+      `As a user, I can add a thought with 50+ tags and the system handles it gracefully`,
+      `As a user, I can try to add a thought with empty content and get appropriate feedback`,
+      `As a user, I can still use the app when the AI service is down`
     ];
     testRecipe.automation = {
       unit: [
@@ -641,14 +641,14 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
     };
   } else if (isBackendChange) {
     testRecipe.criticalPath = [
-      `Test the main functionality that was changed`,
-      `Verify that existing features still work as expected`,
-      `Check for any new error conditions or edge cases`
+      `As a user, I can use the main functionality that was changed`,
+      `As a user, I can still access existing features without issues`,
+      `As a user, I get appropriate error messages when something goes wrong`
     ];
     testRecipe.edgeCases = [
-      `Test with invalid or unexpected inputs`,
-      `Check error handling and recovery`,
-      `Verify performance under load if applicable`
+      `As a user, I can handle invalid inputs gracefully`,
+      `As a user, I can recover from errors and continue using the app`,
+      `As a user, I can use the app under normal load conditions`
     ];
     testRecipe.automation = {
       unit: [`Add unit tests for new functionality`],
@@ -657,14 +657,14 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
     };
   } else {
     testRecipe.criticalPath = [
-      `Test the main functionality that was changed`,
-      `Verify that existing features still work as expected`,
-      `Check for any new error conditions or edge cases`
+      `As a user, I can use the main functionality that was changed`,
+      `As a user, I can still access existing features without issues`,
+      `As a user, I get appropriate error messages when something goes wrong`
     ];
     testRecipe.edgeCases = [
-      `Test with invalid or unexpected inputs`,
-      `Check error handling and recovery`,
-      `Verify performance under load if applicable`
+      `As a user, I can handle invalid inputs gracefully`,
+      `As a user, I can recover from errors and continue using the app`,
+      `As a user, I can use the app under normal load conditions`
     ];
     testRecipe.automation = {
       unit: [`Add unit tests for new functionality`],
@@ -685,16 +685,16 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
     risks.push(`Significant deletions (${codeContext.complexity.deletions} lines) - potential for regressions and missing functionality`);
   }
   if (codeContext.risks.security.length > 0) {
-    risks.push(`Security risks identified: ${codeContext.risks.security.join(', ')}`);
+    risks.push(`Security risks identified in code: ${codeContext.risks.security.join(', ')}`);
   }
   if (codeContext.risks.performance.length > 0) {
-    risks.push(`Performance risks identified: ${codeContext.risks.performance.join(', ')}`);
+    risks.push(`Performance risks identified in code: ${codeContext.risks.performance.join(', ')}`);
   }
   if (codeContext.risks.reliability.length > 0) {
-    risks.push(`Reliability risks identified: ${codeContext.risks.reliability.join(', ')}`);
+    risks.push(`Reliability risks identified in code: ${codeContext.risks.reliability.join(', ')}`);
   }
   if (codeContext.risks.maintainability.length > 0) {
-    risks.push(`Maintainability risks identified: ${codeContext.risks.maintainability.join(', ')}`);
+    risks.push(`Maintainability risks identified in code: ${codeContext.risks.maintainability.join(', ')}`);
   }
 
   return {

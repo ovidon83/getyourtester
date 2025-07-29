@@ -31,21 +31,21 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
     "reasoning": "Brief explanation based on actual code analysis"
   },
   "questions": [
-    "Question 1: Specific to actual code issues found (e.g., 'The tag extraction regex on line 45 doesn't handle escaped # characters - what happens with input like \\#not-a-tag?')",
-    "Question 2: Specific to security/performance issues (e.g., 'The innerHTML usage on line 23 could allow XSS - how is user input sanitized?')",
-    "Question 3: Specific to error handling gaps (e.g., 'The async function on line 67 has no error handling - what happens if the API call fails?')",
-    "Question 4: Specific to integration/breaking changes (e.g., 'The API response format changed - are all consumers updated?')"
+    "Question 1: Specific to actual code issues found (e.g., 'The tag extraction regex in utils.js line 45 doesn't handle escaped # characters - what happens with input like \\#not-a-tag?')",
+    "Question 2: Specific to security/performance issues (e.g., 'The innerHTML usage in Dashboard.jsx line 23 could allow XSS - how is user input sanitized?')",
+    "Question 3: Specific to error handling gaps (e.g., 'The async function in api.js line 67 has no error handling - what happens if the API call fails?')",
+    "Question 4: Specific to integration/breaking changes (e.g., 'The API response format changed in services.js - are all consumers updated?')"
   ],
   "testRecipe": {
     "criticalPath": [
-      "Critical test 1: Test the specific bug/issue found in the code (e.g., 'Test tag extraction with escaped characters: \\#not-a-tag should not be extracted')",
-      "Critical test 2: Test the specific security vulnerability (e.g., 'Test XSS prevention: <script>alert(1)</script> should be sanitized')",
-      "Critical test 3: Test the specific performance issue (e.g., 'Test N+1 query: verify only 1 database query is made for 10 items')"
+      "Critical test 1: User-focused test based on requirements (e.g., 'As a user, I can add a thought with tags and see it categorized correctly in the today view')",
+      "Critical test 2: User workflow test (e.g., 'As a user, I can mark a thought as urgent and see the priority icon change immediately')",
+      "Critical test 3: Core functionality test (e.g., 'As a user, I can view today's insights and see AI-generated recommendations')"
     ],
     "edgeCases": [
-      "Edge case 1: Specific edge case found in code (e.g., 'Test with null/undefined values that the code doesn't handle')",
-      "Edge case 2: Specific boundary condition (e.g., 'Test with maximum input size that causes the regex to timeout')",
-      "Edge case 3: Specific error scenario (e.g., 'Test API failure scenario that the code doesn't handle gracefully')"
+      "Edge case 1: User scenario with edge data (e.g., 'As a user, I can add a thought with 50+ tags and the system handles it gracefully')",
+      "Edge case 2: User scenario with invalid input (e.g., 'As a user, I can try to add a thought with empty content and get appropriate feedback')",
+      "Edge case 3: User scenario with system issues (e.g., 'As a user, I can still use the app when the AI service is down')"
     ],
     "automation": {
       "unit": [
@@ -63,9 +63,9 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
     }
   },
   "risks": [
-    "Risk 1: Specific risk found in code with line reference (e.g., 'XSS vulnerability on line 23: innerHTML usage with unsanitized user input')",
-    "Risk 2: Specific performance issue with impact (e.g., 'N+1 query on line 45: forEach loop makes API call for each item')",
-    "Risk 3: Specific reliability issue with scenario (e.g., 'Unhandled promise rejection on line 67: API failure crashes the app')"
+    "Risk 1: Specific risk found in code with file and line reference (e.g., 'XSS vulnerability in Dashboard.jsx line 23: innerHTML usage with unsanitized user input')",
+    "Risk 2: Specific performance issue with impact (e.g., 'N+1 query in api.js line 45: forEach loop makes API call for each item')",
+    "Risk 3: Specific reliability issue with scenario (e.g., 'Unhandled promise rejection in services.js line 67: API failure crashes the app')"
   ]
 }
 
