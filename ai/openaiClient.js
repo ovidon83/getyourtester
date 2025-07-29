@@ -25,6 +25,128 @@ try {
 }
 
 /**
+ * Generate SHORT CRITICAL SUMMARY for a pull request (used on PR opening)
+ * @param {Object} options - PR details
+ * @param {string} options.repo - Repository name (e.g., "owner/repo")
+ * @param {number} options.pr_number - Pull request number
+ * @param {string} options.title - PR title
+ * @param {string} options.body - PR description/body
+ * @param {string} options.diff - Code diff
+ * @returns {Promise<Object>} Short critical summary or error object
+ */
+async function generateShortSummary({ repo, pr_number, title, body, diff }) {
+  try {
+    // Validate OpenAI client
+    if (!openai) {
+      throw new Error('OpenAI client not initialized. Check OPENAI_API_KEY.');
+    }
+
+    console.log(`⚡ Starting SHORT CRITICAL SUMMARY for PR #${pr_number} in ${repo}`);
+
+    // Sanitize inputs with limits optimized for short analysis
+    const sanitizedTitle = (title || 'No title provided').substring(0, 200);
+    const sanitizedBody = (body || 'No description provided').substring(0, 1000);
+    const sanitizedDiff = (diff || 'No diff provided').substring(0, 4000);
+
+    console.log(`⚡ Short summary input: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
+
+    // Load and render the short summary prompt template
+    const promptTemplatePath = path.join(__dirname, 'prompts', 'short-summary.ejs');
+    let prompt;
+    
+    if (!fs.existsSync(promptTemplatePath)) {
+      throw new Error('Short summary template not found at: ' + promptTemplatePath);
+    }
+
+    console.log('✅ Using short summary template for critical issues analysis');
+    const promptTemplate = fs.readFileSync(promptTemplatePath, 'utf8');
+    prompt = ejs.render(promptTemplate, {
+      repo,
+      pr_number,
+      title: sanitizedTitle,
+      body: sanitizedBody,
+      diff: sanitizedDiff
+    });
+
+    console.log(`🤖 Ovi QA Agent performing SHORT CRITICAL SUMMARY for PR #${pr_number} in ${repo}`);
+
+    // Get model from environment or use default
+    const model = process.env.OPENAI_MODEL || 'gpt-4o';
+
+    // Attempt to get short summary (with retry logic)
+    let lastError;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        console.log(`🔄 Attempt ${attempt}/2 to generate short summary`);
+        
+        const response = await openai.chat.completions.create({
+          model: model,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are Ovi, a senior QA engineer. Respond only with valid JSON containing the critical summary analysis.'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          max_tokens: 800, // Shorter for critical summary
+          temperature: 0.3
+        });
+
+        console.log(`✅ Ovi QA Agent short summary response received (attempt ${attempt})`);
+        
+        const rawResponse = response.choices[0].message.content.trim();
+        console.log('🔍 Raw AI response preview:', rawResponse.substring(0, 200) + '...');
+
+        // Parse and validate the response
+        const summary = parseAndValidateShortSummary(rawResponse);
+        
+        if (summary && summary.riskLevel && typeof summary.shipScore === 'number') {
+          console.log(`✅ Short summary validation successful. Risk: ${summary.riskLevel}, Ship Score: ${summary.shipScore}, Critical Issues: ${summary.criticalIssues?.length || 0}`);
+          return {
+            success: true,
+            data: summary,
+            type: 'short-summary'
+          };
+        } else {
+          throw new Error('Invalid short summary structure received from AI');
+        }
+
+      } catch (error) {
+        console.error(`❌ Attempt ${attempt} failed:`, error.message);
+        lastError = error;
+        
+        if (attempt < 2) {
+          console.log('🔄 Retrying short summary analysis...');
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+    }
+
+    // If all attempts failed, create a fallback
+    console.log('🔄 Creating fallback short summary due to AI failure');
+    return generateShortSummaryFallback({
+      repo,
+      pr_number,
+      title: sanitizedTitle,
+      body: sanitizedBody,
+      diff: sanitizedDiff,
+      error: lastError
+    });
+
+  } catch (error) {
+    console.error('❌ Error in generateShortSummary:', error.message);
+    return {
+      success: false,
+      error: 'Short summary generation failed',
+      details: error.message
+    };
+  }
+}
+
+/**
  * Generate QA insights for a pull request with DEEP CODE ANALYSIS
  * @param {Object} options - PR details
  * @param {string} options.repo - Repository name (e.g., "owner/repo")
@@ -744,7 +866,60 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
   };
 }
 
+/**
+ * Parse and validate the structure of the short summary response
+ */
+function parseAndValidateShortSummary(response) {
+  try {
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.log('Short summary response does not contain valid JSON.');
+      return null;
+    }
+
+    const summary = JSON.parse(jsonMatch[0]);
+
+    if (summary && 
+        summary.riskLevel && 
+        typeof summary.shipScore === 'number' && 
+        Array.isArray(summary.criticalIssues)) {
+      return summary;
+    }
+    console.log('Short summary response structure is invalid.');
+    return null;
+  } catch (e) {
+    console.error('Error parsing or validating short summary response:', e.message);
+    return null;
+  }
+}
+
+/**
+ * Generate a fallback short summary when AI fails
+ */
+function generateShortSummaryFallback({ repo, pr_number, title, body, diff, error }) {
+  console.log('🔄 Generating fallback short summary due to AI failure:', error?.message || 'Unknown error');
+  
+  const sanitizedTitle = (title || 'No title provided').substring(0, 200);
+  const sanitizedBody = (body || 'No description provided').substring(0, 1000);
+  const sanitizedDiff = (diff || 'No diff provided').substring(0, 4000);
+
+  return {
+    success: true,
+    data: {
+      riskLevel: "MEDIUM",
+      shipScore: 5,
+      canShip: false,
+      criticalIssues: [
+        "AI analysis temporarily unavailable - manual review required"
+      ],
+      reasoning: `Unable to analyze PR automatically. Please review the changes in "${sanitizedTitle}" manually for critical issues.`
+    },
+    type: 'short-summary-fallback'
+  };
+}
+
 module.exports = {
   generateQAInsights,
-  testConnection
+  testConnection,
+  generateShortSummary
 }; 

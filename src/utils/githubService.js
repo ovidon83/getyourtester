@@ -1180,6 +1180,225 @@ ${aiData.risks ? aiData.risks.map(risk => `- ${risk}`).join('\n') : '- No signif
 }
 
 /**
+ * Handle PR opened event - generate a short summary analysis
+ */
+async function handlePROpened(repository, pr) {
+  console.log(`⚡ Handling PR opened event for ${repository.full_name}#${pr.number}`);
+  
+  // Get PR description and diff for analysis
+  const prDescription = await fetchPRDescription(repository.full_name, pr.number);
+  const prDiff = await fetchPRDiff(repository.full_name, pr.number);
+  
+  console.log(`⚡ Generating SHORT CRITICAL SUMMARY for PR #${pr.number}`);
+  
+  // Generate short summary using the new AI function
+  const { generateShortSummary } = require('../../ai/openaiClient');
+  let shortSummary;
+  
+  try {
+    shortSummary = await generateShortSummary({
+      repo: repository.full_name,
+      pr_number: pr.number,
+      title: pr.title,
+      body: prDescription,
+      diff: prDiff
+    });
+    
+    if (shortSummary && shortSummary.success) {
+      console.log('✅ Short summary generated successfully');
+    } else {
+      console.error('❌ Short summary generation failed:', shortSummary?.error);
+    }
+  } catch (error) {
+    console.error('❌ Short summary threw exception:', error.message);
+    shortSummary = {
+      success: false,
+      error: 'Short summary generation failed',
+      details: error.message
+    };
+  }
+  
+  // Create the short summary comment
+  let shortComment;
+  if (shortSummary && shortSummary.success && shortSummary.data) {
+    const data = shortSummary.data;
+    const canShipEmoji = data.canShip ? '✅' : '❌';
+    const riskEmoji = data.riskLevel === 'HIGH' ? '🚨' : data.riskLevel === 'MEDIUM' ? '⚠️' : '✅';
+    
+    shortComment = `## 🤖 Ovi QA Assistant - Quick Analysis
+
+${riskEmoji} **Risk Level:** ${data.riskLevel} | ${canShipEmoji} **Ship Score:** ${data.shipScore}/10 | **Can Ship:** ${data.canShip ? 'YES' : 'NO'}
+
+${data.reasoning}
+
+${data.criticalIssues && data.criticalIssues.length > 0 ? `### 🚨 Critical Issues:
+${data.criticalIssues.map(issue => `- ${issue}`).join('\n')}` : '### ✅ No critical issues detected'}
+
+---
+💡 Want detailed analysis? Comment \`/ovi-details\` for comprehensive test recipe and recommendations.
+
+*🤖 AI-powered critical analysis by Ovi QA Agent*`;
+  } else {
+    // Fallback comment if AI fails
+    shortComment = `## 🤖 Ovi QA Assistant - Quick Analysis
+
+⚠️ **Unable to generate automatic analysis** - AI service temporarily unavailable.
+
+Please review this PR manually for:
+- Breaking changes or API modifications
+- Security vulnerabilities or data handling issues  
+- Performance impacts or database changes
+- Missing error handling or edge cases
+
+---
+💡 Comment \`/ovi-details\` to try detailed analysis, or \`/test\` for manual testing.
+
+*🤖 AI-powered analysis by Ovi QA Agent*`;
+  }
+  
+  return await postComment(repository.full_name, pr.number, shortComment);
+}
+
+/**
+ * Handle /ovi-details command - generate a detailed analysis of the PR
+ */
+async function handleDetailedAnalysisRequest(repository, issue, comment, sender) {
+  console.log(`Handling /ovi-details command from ${sender.login} on PR #${issue.number}`);
+  const prDescription = await fetchPRDescription(repository.full_name, issue.number);
+  const prDiff = await fetchPRDiff(repository.full_name, issue.number);
+
+  console.log('🤖 Ovi QA Agent analyzing PR...');
+  let aiInsights;
+  try {
+    aiInsights = await callTestRecipeEndpoint({
+      repo: repository.full_name,
+      pr_number: issue.number,
+      title: issue.title,
+      body: prDescription,
+      diff: prDiff
+    });
+
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ Ovi QA Agent analysis completed successfully');
+    } else {
+      console.error('❌ Ovi QA Agent analysis failed:', aiInsights?.error, aiInsights?.details);
+    }
+  } catch (error) {
+    console.error('❌ Ovi QA Agent analysis threw exception:', error.message);
+    console.error('Stack trace:', error.stack);
+    aiInsights = {
+      success: false,
+      error: 'Ovi QA Agent analysis failed',
+      details: error.message
+    };
+  }
+
+  if (!aiInsights || !aiInsights.success) {
+    console.log('🔄 Creating fallback analysis due to AI failure');
+    aiInsights = {
+      success: true,
+      data: {
+        changeReview: {
+          smartQuestions: [
+            "What is the main purpose of these changes?",
+            "Are there any breaking changes that could affect existing functionality?",
+            "Have you tested the core functionality manually?",
+            "Are there any dependencies or integrations that might be affected?",
+            "What is the expected user impact of these changes?"
+          ],
+          risks: [
+            "Unable to perform detailed risk analysis due to AI processing error",
+            "Please review the changes manually for potential issues",
+            "Consider testing the affected functionality thoroughly"
+          ],
+          productionReadinessScore: {
+            score: 5,
+            level: "Needs Manual Review",
+            reasoning: "AI analysis failed - manual review required to assess production readiness",
+            criticalIssues: [
+              "AI analysis could not be completed - manual review needed"
+            ],
+            recommendations: [
+              "Review the changes manually before proceeding",
+              "Test the affected functionality thoroughly",
+              "Consider running the full test suite"
+            ]
+          }
+        },
+        testRecipe: {
+          criticalPath: [
+            "Test the main functionality that was changed",
+            "Verify that existing features still work as expected",
+            "Check for any new error conditions or edge cases"
+          ],
+          general: [
+            "Run the existing test suite",
+            "Test the user interface if UI changes were made",
+            "Verify API endpoints if backend changes were made"
+          ],
+          edgeCases: [
+            "Test with invalid or unexpected inputs",
+            "Check error handling and recovery",
+            "Verify performance under load if applicable"
+          ],
+          automationPlan: {
+            unit: ["Add unit tests for new functionality"],
+            integration: ["Test integration points and dependencies"],
+            e2e: ["Verify end-to-end user workflows"]
+          }
+        },
+        codeQuality: {
+          affectedModules: [
+            "Manual review needed to identify affected modules"
+          ],
+          testCoverage: {
+            existing: "Unable to analyze existing test coverage",
+            gaps: "Manual review needed to identify test gaps",
+            recommendations: "Add tests for new functionality and affected areas"
+          },
+          bestPractices: [
+            "Review code for security best practices",
+            "Ensure proper error handling is in place",
+            "Check for performance implications"
+          ]
+        }
+      }
+    };
+  }
+
+  const detailedComment = `
+## 🤖 Ovi QA Assistant by GetYourTester
+
+### 📋 Summary
+**Risk Level:** ${getProductionReadinessEmoji(aiInsights.data.summary?.shipScore)} ${aiInsights.data.summary?.riskLevel || 'UNKNOWN'}
+**Ship Score:** ${aiInsights.data.summary?.shipScore || 5}/10 - ${aiInsights.data.summary?.shipScore >= 7 ? '✅ SHIP IT' : aiInsights.data.summary?.shipScore >= 5 ? '⚠️ REVIEW FIRST' : '❌ BLOCKED'}
+${aiInsights.data.summary?.reasoning ? `*${aiInsights.data.summary.reasoning}*` : ''}
+
+### ❓ Critical Questions
+${aiInsights.data.questions ? aiInsights.data.questions.map(q => `- ${q}`).join('\n') : '- No specific questions identified'}
+
+### 🧪 Test Recipe
+**Critical Path:**
+${aiInsights.data.testRecipe?.criticalPath ? aiInsights.data.testRecipe.criticalPath.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test main functionality'}
+
+**Edge Cases:**
+${aiInsights.data.testRecipe?.edgeCases ? aiInsights.data.testRecipe.edgeCases.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test error scenarios'}
+
+**Automation Plan:**
+- **Unit:** ${aiInsights.data.testRecipe?.automation?.unit ? aiInsights.data.testRecipe.automation.unit.join(', ') : 'Core logic functions'}
+- **Integration:** ${aiInsights.data.testRecipe?.automation?.integration ? aiInsights.data.testRecipe.automation.integration.join(', ') : 'API endpoints and data flow'}
+- **E2E:** ${aiInsights.data.testRecipe?.automation?.e2e ? aiInsights.data.testRecipe.automation.e2e.join(', ') : 'Complete user workflows'}
+
+### ⚠️ Key Risks
+${aiInsights.data.risks ? aiInsights.data.risks.map(risk => `- ${risk}`).join('\n') : '- No significant risks identified'}
+
+   ---
+   *🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
+   
+   return await postComment(repository.full_name, issue.number, detailedComment);
+}
+
+/**
  * Process a GitHub webhook event
  */
 async function processWebhookEvent(event) {
@@ -1194,9 +1413,9 @@ async function processWebhookEvent(event) {
       ? payloadString.substring(0, 500) + '...(truncated)' 
       : payloadString);
     
-    // Handle pull_request event (for PR creation)
+    // Handle pull_request event (for PR opening - NEW BEHAVIOR)
     if (eventType === 'pull_request' && payload.action === 'opened') {
-      console.log('🔄 New PR opened');
+      console.log('🚀 New PR opened - generating short summary analysis');
       const { repository, pull_request: pr } = payload;
       
       if (!repository || !pr) {
@@ -1204,12 +1423,12 @@ async function processWebhookEvent(event) {
         return { success: false, message: 'Missing required properties in payload' };
       }
       
-      console.log(`📝 Posting welcome comment to PR #${pr.number}`);
-      await postWelcomeComment(repository.full_name, pr.number);
-      return { success: true, message: 'Welcome comment posted' };
+      // Generate short summary for the PR
+      console.log(`⚡ Generating short critical summary for PR #${pr.number}`);
+      return await handlePROpened(repository, pr);
     }
     
-    // Handle issue comment event (for /test commands)
+    // Handle issue comment event (for /ovi-details commands)
     if (eventType === 'issue_comment' && payload.action === 'created') {
       console.log('💬 New comment detected');
       const { repository, issue, comment, sender } = payload;
@@ -1232,9 +1451,15 @@ async function processWebhookEvent(event) {
 
       console.log(`Comment body: ${comment.body}`);
       
-      // Check for /test command
+      // Check for /ovi-details command (NEW BEHAVIOR)
+      if (comment.body.trim().startsWith('/ovi-details')) {
+        console.log('🔍 /ovi-details command detected!');
+        return await handleDetailedAnalysisRequest(repository, issue, comment, sender);
+      }
+      
+      // Legacy support: Check for /test command (for backward compatibility)
       if (comment.body.trim().startsWith('/test')) {
-        console.log('🧪 /test command detected!');
+        console.log('🧪 /test command detected! (legacy mode)');
         return await handleTestRequest(repository, issue, comment, sender);
       }
     }

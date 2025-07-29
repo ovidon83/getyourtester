@@ -6,8 +6,11 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 
 ## Features
 
-- 🚀 **Simple Integration**: Request testing with a single comment (`/test`)
-- 🤖 **Ovi QA Agent**: AI-powered comprehensive PR analysis and test planning
+- ⚡ **Automatic PR Analysis**: Instant critical issue detection when PRs are opened
+- 🤖 **Ovi QA Agent**: AI-powered comprehensive PR analysis and test planning with two analysis modes:
+  - **Quick Analysis**: Automatic short summary focusing on deal-breakers and critical issues
+  - **Detailed Analysis**: On-demand comprehensive review via `/ovi-details` command
+- 🚀 **Legacy Support**: Still supports `/test` commands for manual testing requests
 - 📊 **Dashboard**: View and manage test requests 
 - 🏷️ **Status Tracking**: Automatically label PRs with testing status
 - 💬 **Detailed Reports**: Provide comprehensive test feedback
@@ -124,19 +127,22 @@ For backward compatibility, GetYourTester can also use a Personal Access Token (
 
 1. Make sure your GitHub repository has a webhook configured to:
    - Send events to your smee.io URL
-   - Send "Issue comments" events
+   - Send "Pull requests" and "Issue comments" events
    - Content type should be "application/json"
 
-2. Create a pull request in your repository
-3. Comment `/test` on the PR to request testing
-4. The webhook server will:
-   - Add a "testing-requested" label to the PR
-   - **🤖 Ovi QA Agent analyzes the PR** and generates comprehensive insights
-   - Post an acknowledgment comment with AI-powered analysis
-   - Store the test request in the local database
-   - (Optionally) Send a notification email
+2. **Automatic Analysis**: When you create a pull request, Ovi QA Agent automatically:
+   - ⚡ Analyzes the PR for critical issues and deal-breakers
+   - 🚨 Posts a quick summary highlighting any blocking issues
+   - ✅ Provides a ship/no-ship recommendation with reasoning
 
-5. View the test request in the dashboard at http://localhost:3000/dashboard
+3. **Detailed Analysis**: For comprehensive analysis, comment `/ovi-details` on the PR to get:
+   - 🔍 Detailed change review with smart questions
+   - 🧪 Complete test recipe (critical path, edge cases, automation plan)
+   - ⚠️ Risk assessment and recommendations
+
+4. **Legacy Support**: You can still use `/test` for traditional manual testing requests
+
+5. View all requests in the dashboard at http://localhost:3000/dashboard
 
 ## Webhook Implementation
 
@@ -160,11 +166,30 @@ The githubService then:
 
 ## 🤖 Ovi QA Agent
 
-GetYourTester now features **Ovi**, an AI-powered QA Agent that provides comprehensive analysis of your pull requests.
+GetYourTester features **Ovi**, an AI-powered QA Agent that provides two levels of analysis for your pull requests.
+
+### Two Analysis Modes
+
+**1. ⚡ Quick Analysis (Automatic on PR opening)**
+- Focuses only on critical issues and deal-breakers
+- Provides ship/no-ship recommendation with reasoning
+- Fast analysis optimized for speed and business impact
+
+**2. 🔍 Detailed Analysis (On-demand via `/ovi-details`)**
+- Comprehensive code review and test planning
+- Complete risk assessment and recommendations
+- Full test recipe with automation suggestions
 
 ### What Ovi Analyzes
 
-When you comment `/test` on a PR, Ovi automatically:
+**Quick Analysis** automatically checks for:
+- Critical security vulnerabilities
+- Breaking changes that could crash production
+- Data integrity issues
+- Performance problems
+- Build and compilation errors
+
+**Detailed Analysis** provides:
 
 1. **🔍 Change Review**
    - Analyzes PR metadata (title, description, comments)
