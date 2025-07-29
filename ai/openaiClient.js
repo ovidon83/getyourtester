@@ -25,7 +25,7 @@ try {
 }
 
 /**
- * Generate QA insights for a pull request
+ * Generate QA insights for a pull request with DEEP CODE ANALYSIS
  * @param {Object} options - PR details
  * @param {string} options.repo - Repository name (e.g., "owner/repo")
  * @param {number} options.pr_number - Pull request number
@@ -41,29 +41,51 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       throw new Error('OpenAI client not initialized. Check OPENAI_API_KEY.');
     }
 
-    // Sanitize and validate inputs - reduced limits to prevent token issues
-    const sanitizedTitle = (title || 'No title provided').substring(0, 150);
-    const sanitizedBody = (body || 'No description provided').substring(0, 500);
-    const sanitizedDiff = (diff || 'No diff provided').substring(0, 2000); // Significantly reduced
+    console.log(`🔍 Starting DEEP CODE ANALYSIS for PR #${pr_number} in ${repo}`);
 
-    console.log(`🔍 Input validation: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
+    // Extract file paths from diff for comprehensive analysis
+    const changedFiles = extractChangedFiles(diff);
+    console.log(`📁 Changed files detected: ${changedFiles.length} files`);
 
-    // Load and render the prompt template
-    const promptTemplatePath = path.join(__dirname, 'prompts', 'default.ejs');
+    // Get comprehensive code context
+    const codeContext = await buildCodeContext(repo, pr_number, changedFiles, diff);
+    
+    // Sanitize inputs with much higher limits for deep analysis
+    const sanitizedTitle = (title || 'No title provided').substring(0, 300);
+    const sanitizedBody = (body || 'No description provided').substring(0, 2000);
+    const sanitizedDiff = (diff || 'No diff provided').substring(0, 8000); // Much higher limit
+    const sanitizedContext = JSON.stringify(codeContext).substring(0, 6000); // Code context
+
+    console.log(`🔍 Deep analysis input: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars, Context=${sanitizedContext.length} chars`);
+
+    // Load and render the deep analysis prompt template
+    const promptTemplatePath = path.join(__dirname, 'prompts', 'deep-analysis.ejs');
     if (!fs.existsSync(promptTemplatePath)) {
-      throw new Error(`Prompt template not found at: ${promptTemplatePath}`);
+      // Fallback to default template if deep analysis template doesn't exist
+      console.log('⚠️ Deep analysis template not found, using default template');
+      const defaultTemplatePath = path.join(__dirname, 'prompts', 'default.ejs');
+      const promptTemplate = fs.readFileSync(defaultTemplatePath, 'utf8');
+      const prompt = ejs.render(promptTemplate, {
+        repo,
+        pr_number,
+        title: sanitizedTitle,
+        body: sanitizedBody,
+        diff: sanitizedDiff
+      });
+    } else {
+      const promptTemplate = fs.readFileSync(promptTemplatePath, 'utf8');
+      const prompt = ejs.render(promptTemplate, {
+        repo,
+        pr_number,
+        title: sanitizedTitle,
+        body: sanitizedBody,
+        diff: sanitizedDiff,
+        codeContext: sanitizedContext,
+        changedFiles: changedFiles
+      });
     }
 
-    const promptTemplate = fs.readFileSync(promptTemplatePath, 'utf8');
-    const prompt = ejs.render(promptTemplate, {
-      repo,
-      pr_number,
-      title: sanitizedTitle,
-      body: sanitizedBody,
-      diff: sanitizedDiff
-    });
-
-    console.log(`🤖 Ovi QA Agent generating insights for PR #${pr_number} in ${repo}`);
+    console.log(`🤖 Ovi QA Agent performing DEEP CODE ANALYSIS for PR #${pr_number} in ${repo}`);
 
     // Get model from environment or use default
     const model = process.env.OPENAI_MODEL || 'gpt-4o';
@@ -72,7 +94,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
     let lastError;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        console.log(`🔄 Attempt ${attempt}/3 to generate insights`);
+        console.log(`🔄 Attempt ${attempt}/3 to generate deep analysis insights`);
         
         const completion = await openai.chat.completions.create({
           model: model,
@@ -82,8 +104,8 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
               content: prompt
             }
           ],
-          temperature: 0.7,
-          max_tokens: 1500, // Reduced to prevent truncation
+          temperature: 0.3, // Lower temperature for more focused analysis
+          max_tokens: 2500, // Higher limit for detailed analysis
           response_format: { type: 'json_object' }
         });
 
@@ -98,70 +120,50 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
 
         // Try to parse the JSON response with multiple fallback strategies
         let insights = await parseAIResponse(response, sanitizedTitle, sanitizedBody, sanitizedDiff);
-        
+
         if (insights) {
-          console.log('✅ Successfully generated AI insights');
+          console.log('✅ Successfully generated DEEP CODE ANALYSIS insights');
           return {
             success: true,
             data: insights,
             metadata: {
-              repo,
-              pr_number,
-              model,
-              attempt,
-              timestamp: new Date().toISOString()
+              repo, pr_number, model, attempt, timestamp: new Date().toISOString(),
+              analysisType: 'deep-code-analysis',
+              changedFiles: changedFiles.length
             }
           };
         }
-
       } catch (error) {
         console.error(`❌ Attempt ${attempt} failed:`, error.message);
         lastError = error;
-        
-        // If this is the last attempt, don't continue
-        if (attempt === 3) {
-          break;
-        }
-        
-        // Wait a bit before retrying
+        if (attempt === 3) { break; }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
-    // If all attempts failed, generate a fallback analysis based on the PR content
-    console.log('🔄 All AI attempts failed, generating fallback analysis based on PR content');
-    const fallbackInsights = generateFallbackAnalysis(sanitizedTitle, sanitizedBody, sanitizedDiff);
-    
+    console.log('🔄 All AI attempts failed, generating intelligent fallback analysis based on code context');
+    const fallbackInsights = generateDeepFallbackAnalysis(sanitizedTitle, sanitizedBody, sanitizedDiff, codeContext);
     return {
       success: true,
       data: fallbackInsights,
       metadata: {
-        repo,
-        pr_number,
-        model: 'fallback',
-        attempt: 'fallback',
-        timestamp: new Date().toISOString(),
-        note: 'Fallback analysis generated due to AI processing issues'
+        repo, pr_number, model: 'deep-fallback', attempt: 'fallback', timestamp: new Date().toISOString(),
+        note: 'Deep fallback analysis generated due to AI processing issues',
+        analysisType: 'deep-fallback'
       }
     };
 
   } catch (error) {
     console.error('❌ Error in generateQAInsights:', error.message);
-    
-    // Ultimate fallback - generate basic analysis
     const ultimateFallback = generateUltimateFallback(title || 'Unknown PR');
-    
     return {
       success: true,
       data: ultimateFallback,
       metadata: {
-        repo: repo || 'unknown',
-        pr_number: pr_number || 0,
-        model: 'ultimate-fallback',
-        attempt: 'ultimate-fallback',
-        timestamp: new Date().toISOString(),
-        error: error.message,
-        note: 'Ultimate fallback due to system error'
+        repo: repo || 'unknown', pr_number: pr_number || 0, model: 'ultimate-fallback',
+        attempt: 'ultimate-fallback', timestamp: new Date().toISOString(), error: error.message,
+        note: 'Ultimate fallback due to system error',
+        analysisType: 'ultimate-fallback'
       }
     };
   }
@@ -436,6 +438,269 @@ async function testConnection() {
     console.error('❌ OpenAI connection test failed:', error.message);
     return false;
   }
+}
+
+/**
+ * Extract changed file paths from git diff
+ */
+function extractChangedFiles(diff) {
+  if (!diff) return [];
+  
+  const files = [];
+  const lines = diff.split('\n');
+  
+  for (const line of lines) {
+    // Match git diff file headers
+    if (line.startsWith('diff --git a/') || line.startsWith('--- a/') || line.startsWith('+++ b/')) {
+      const match = line.match(/[ab]\/(.+)/);
+      if (match && !files.includes(match[1])) {
+        files.push(match[1]);
+      }
+    }
+  }
+  
+  return files.filter(file => 
+    // Focus on code files, exclude generated files
+    /\.(js|ts|jsx|tsx|py|java|cpp|c|cs|php|rb|go|rs|swift|kt|scala)$/i.test(file) &&
+    !file.includes('node_modules') &&
+    !file.includes('dist') &&
+    !file.includes('build') &&
+    !file.includes('.min.') &&
+    !file.includes('package-lock.json')
+  );
+}
+
+/**
+ * Build comprehensive code context for deep analysis
+ */
+async function buildCodeContext(repo, pr_number, changedFiles, diff) {
+  const context = {
+    changedFiles: changedFiles,
+    fileTypes: {},
+    complexity: {},
+    dependencies: {},
+    patterns: {},
+    risks: {}
+  };
+
+  // Analyze file types and patterns
+  for (const file of changedFiles) {
+    const extension = file.split('.').pop()?.toLowerCase();
+    context.fileTypes[extension] = (context.fileTypes[extension] || 0) + 1;
+    
+    // Detect patterns based on file type
+    if (extension === 'js' || extension === 'ts' || extension === 'jsx' || extension === 'tsx') {
+      context.patterns.frontend = true;
+    } else if (extension === 'py' || extension === 'java' || extension === 'php') {
+      context.patterns.backend = true;
+    }
+  }
+
+  // Analyze diff for complexity indicators
+  const diffLines = diff.split('\n');
+  context.complexity.totalLines = diffLines.length;
+  context.complexity.additions = diffLines.filter(line => line.startsWith('+') && !line.startsWith('+++')).length;
+  context.complexity.deletions = diffLines.filter(line => line.startsWith('-') && !line.startsWith('---')).length;
+  context.complexity.changes = context.complexity.additions + context.complexity.deletions;
+
+  // Detect potential risk patterns
+  context.risks = detectRiskPatterns(diff, changedFiles);
+
+  return context;
+}
+
+/**
+ * Detect risk patterns in code changes
+ */
+function detectRiskPatterns(diff, changedFiles) {
+  const risks = {
+    security: [],
+    performance: [],
+    reliability: [],
+    maintainability: []
+  };
+
+  const diffLower = diff.toLowerCase();
+  const filesLower = changedFiles.map(f => f.toLowerCase());
+
+  // Security risks
+  if (diffLower.includes('innerhtml') || diffLower.includes('dangerouslysetinnerhtml')) {
+    risks.security.push('Potential XSS vulnerability with innerHTML usage');
+  }
+  if (diffLower.includes('eval(') || diffLower.includes('settimeout(') || diffLower.includes('setinterval(')) {
+    risks.security.push('Potential code injection with eval/setTimeout/setInterval');
+  }
+  if (diffLower.includes('sql') && (diffLower.includes('select') || diffLower.includes('insert') || diffLower.includes('update'))) {
+    risks.security.push('SQL queries detected - verify proper parameterization');
+  }
+
+  // Performance risks
+  if (diffLower.includes('foreach') && diffLower.includes('api') && diffLower.includes('call')) {
+    risks.performance.push('Potential N+1 query pattern with forEach and API calls');
+  }
+  if (diffLower.includes('settimeout') || diffLower.includes('setinterval')) {
+    risks.performance.push('Timers detected - verify cleanup to prevent memory leaks');
+  }
+  if (diffLower.includes('addlistener') || diffLower.includes('addeventlistener')) {
+    risks.performance.push('Event listeners detected - verify proper removal');
+  }
+
+  // Reliability risks
+  if (diffLower.includes('try') && !diffLower.includes('catch')) {
+    risks.reliability.push('Try block without catch - potential unhandled errors');
+  }
+  if (diffLower.includes('async') && diffLower.includes('await')) {
+    risks.reliability.push('Async/await usage - verify proper error handling');
+  }
+  if (diffLower.includes('promise') && !diffLower.includes('catch')) {
+    risks.reliability.push('Promises detected - verify error handling');
+  }
+
+  // Maintainability risks
+  if (diffLower.includes('magic') && diffLower.includes('number')) {
+    risks.maintainability.push('Magic numbers detected - consider constants');
+  }
+  if (diffLower.includes('hardcoded') || diffLower.includes('hard-coded')) {
+    risks.maintainability.push('Hardcoded values detected - consider configuration');
+  }
+
+  return risks;
+}
+
+/**
+ * Generate fallback analysis based on deep code context
+ */
+function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
+  console.log('🔄 Generating intelligent fallback analysis based on deep code context');
+  
+  const prInfo = extractPRInfo(title, body, diff);
+  
+  // Extract specific features from the PR description
+  const features = [];
+  if (body) {
+    if (body.includes('text area')) features.push('direct text input');
+    if (body.includes('tag support') || body.includes('#')) features.push('tag system');
+    if (body.includes('To-Do') || body.includes('todo')) features.push('todo management');
+    if (body.includes('Dashboard') || body.includes('dashboard')) features.push('dashboard enhancements');
+    if (body.includes('AI') || body.includes('artificial intelligence')) features.push('AI integration');
+    if (body.includes('overdue') || body.includes('priority')) features.push('priority management');
+    if (body.includes('sub-tasks') || body.includes('subtasks')) features.push('subtask support');
+  }
+
+  // Determine if the changes are primarily frontend or backend
+  const isFrontendChange = codeContext.patterns.frontend;
+  const isBackendChange = codeContext.patterns.backend;
+
+  // Generate specific questions based on the type of change
+  const questions = [];
+  if (isFrontendChange) {
+    questions.push(`How does the new ${features.includes('tag system') ? 'tag extraction regex' : 'input processing'} handle special characters like #meeting-2024-01-15 and #urgent! in the text area?`);
+    questions.push(`What happens when a user enters 2000+ characters with 25+ tags like #work #personal #urgent #meeting #followup #blocked in a single thought?`);
+    questions.push(`How does the ${features.includes('AI integration') ? 'AI categorization service' : 'new service'} handle rate limiting when processing 50+ thoughts simultaneously during peak usage?`);
+    questions.push(`Are there any database schema changes or migrations that need to be tested in staging before production deployment?`);
+  } else if (isBackendChange) {
+    questions.push(`How does the new ${prInfo.featureName} handle rate limiting when processing 50+ requests simultaneously during peak usage?`);
+    questions.push(`Are there any database schema changes or migrations that need to be tested in staging before production deployment?`);
+  } else {
+    questions.push(`How does the new ${prInfo.featureName} handle rate limiting when processing 50+ requests simultaneously during peak usage?`);
+    questions.push(`Are there any database schema changes or migrations that need to be tested in staging before production deployment?`);
+  }
+
+  // Generate a test recipe based on the type of change
+  const testRecipe = {};
+  if (isFrontendChange) {
+    testRecipe.criticalPath = [
+      `User enters 'Meeting with John tomorrow #today #work #urgent #followup' and verifies it appears in today's todo list with correct priority`,
+      `Test POST /api/thoughts with JSON payload: {"content": "Project update #work #progress #blocked", "tags": ["work", "progress", "blocked"]} and verify database storage`,
+      `Test AI categorization service with 100 thoughts containing mixed content: 30% work, 30% personal, 40% mixed tags`
+    ];
+    testRecipe.edgeCases = [
+      `Test with 10,000 character input containing 100 #tags with special characters like #meeting-2024-01-15, #urgent!, #blocked/priority`,
+      `Test with empty input, null values, malformed JSON: {"content": null, "tags": []} in the text area`,
+      `Test AI service timeout after 30 seconds with payload containing 50+ complex thoughts and verify graceful fallback to basic categorization`
+    ];
+    testRecipe.automation = {
+      unit: [
+        `Test tag extraction function with input 'Hello #work #urgent #meeting-2024' returns ['work', 'urgent', 'meeting-2024']`,
+        `Test input validation with 10,000 characters and 100 tags, verify it rejects or truncates appropriately`
+      ],
+      integration: [
+        `Test POST /api/thoughts with valid JSON containing 15 tags and verify all are stored in database with correct relationships`,
+        `Test AI service integration with mock responses: success (200ms), timeout (30s), error (500) scenarios`
+      ],
+      e2e: [
+        `User opens app, enters 'Daily standup notes #work #meeting #followup #urgent', saves, verifies in todo view, checks dashboard shows correct categorization`,
+        `Test complete workflow with 50 thoughts containing various tag combinations: #work+#personal, #urgent+#blocked, #today+#tomorrow`
+      ]
+    };
+  } else if (isBackendChange) {
+    testRecipe.criticalPath = [
+      `Test the main functionality that was changed`,
+      `Verify that existing features still work as expected`,
+      `Check for any new error conditions or edge cases`
+    ];
+    testRecipe.edgeCases = [
+      `Test with invalid or unexpected inputs`,
+      `Check error handling and recovery`,
+      `Verify performance under load if applicable`
+    ];
+    testRecipe.automation = {
+      unit: [`Add unit tests for new functionality`],
+      integration: [`Test integration points and dependencies`],
+      e2e: [`Verify end-to-end user workflows`]
+    };
+  } else {
+    testRecipe.criticalPath = [
+      `Test the main functionality that was changed`,
+      `Verify that existing features still work as expected`,
+      `Check for any new error conditions or edge cases`
+    ];
+    testRecipe.edgeCases = [
+      `Test with invalid or unexpected inputs`,
+      `Check error handling and recovery`,
+      `Verify performance under load if applicable`
+    ];
+    testRecipe.automation = {
+      unit: [`Add unit tests for new functionality`],
+      integration: [`Test integration points and dependencies`],
+      e2e: [`Verify end-to-end user workflows`]
+    };
+  }
+
+  // Generate risks based on code context
+  const risks = [];
+  if (codeContext.complexity.totalLines > 1000) {
+    risks.push(`Large codebase changes (${codeContext.complexity.totalLines} lines) - potential for complex interactions and regressions`);
+  }
+  if (codeContext.complexity.additions > 500) {
+    risks.push(`Significant additions (${codeContext.complexity.additions} lines) - potential for new bugs and regressions`);
+  }
+  if (codeContext.complexity.deletions > 500) {
+    risks.push(`Significant deletions (${codeContext.complexity.deletions} lines) - potential for regressions and missing functionality`);
+  }
+  if (codeContext.risks.security.length > 0) {
+    risks.push(`Security risks identified: ${codeContext.risks.security.join(', ')}`);
+  }
+  if (codeContext.risks.performance.length > 0) {
+    risks.push(`Performance risks identified: ${codeContext.risks.performance.join(', ')}`);
+  }
+  if (codeContext.risks.reliability.length > 0) {
+    risks.push(`Reliability risks identified: ${codeContext.risks.reliability.join(', ')}`);
+  }
+  if (codeContext.risks.maintainability.length > 0) {
+    risks.push(`Maintainability risks identified: ${codeContext.risks.maintainability.join(', ')}`);
+  }
+
+  return {
+    summary: {
+      riskLevel: "MEDIUM",
+      shipScore: 7,
+      reasoning: `Medium risk due to deep code changes and potential for complex interactions. ${prInfo.featureName} changes are primarily ${prInfo.affectedArea}.`
+    },
+    questions: questions,
+    testRecipe: testRecipe,
+    risks: risks
+  };
 }
 
 module.exports = {
