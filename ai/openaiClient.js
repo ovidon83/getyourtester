@@ -60,12 +60,14 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
 
     // Load and render the deep analysis prompt template
     const promptTemplatePath = path.join(__dirname, 'prompts', 'deep-analysis.ejs');
+    let prompt;
+    
     if (!fs.existsSync(promptTemplatePath)) {
       // Fallback to default template if deep analysis template doesn't exist
       console.log('⚠️ Deep analysis template not found, using default template');
       const defaultTemplatePath = path.join(__dirname, 'prompts', 'default.ejs');
       const promptTemplate = fs.readFileSync(defaultTemplatePath, 'utf8');
-      const prompt = ejs.render(promptTemplate, {
+      prompt = ejs.render(promptTemplate, {
         repo,
         pr_number,
         title: sanitizedTitle,
@@ -73,8 +75,9 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
         diff: sanitizedDiff
       });
     } else {
+      console.log('✅ Using deep analysis template for comprehensive code review');
       const promptTemplate = fs.readFileSync(promptTemplatePath, 'utf8');
-      const prompt = ejs.render(promptTemplate, {
+      prompt = ejs.render(promptTemplate, {
         repo,
         pr_number,
         title: sanitizedTitle,
@@ -241,11 +244,14 @@ function fixCommonJSONIssues(response) {
  */
 function validateInsightsStructure(insights) {
   return insights && 
-         insights.changeReview && 
-         insights.testRecipe && 
-         insights.codeQuality &&
-         insights.changeReview.smartQuestions &&
-         insights.changeReview.risks;
+         insights.summary && 
+         insights.questions && 
+         insights.testRecipe &&
+         insights.risks &&
+         insights.summary.riskLevel &&
+         insights.summary.shipScore &&
+         Array.isArray(insights.questions) &&
+         Array.isArray(insights.risks);
 }
 
 /**
