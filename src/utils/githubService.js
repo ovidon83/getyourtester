@@ -1080,7 +1080,7 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
   // Add AI insights to the comment if they were generated successfully
   if (aiInsights && aiInsights.success) {
     // Use the same hybrid formatting as the automatic PR analysis
-    acknowledgmentComment += await formatHybridAnalysisForComment(aiInsights);
+    acknowledgmentComment += formatHybridAnalysisForComment(aiInsights);
   } else if (aiInsights && !aiInsights.success) {
     acknowledgmentComment += `
 
@@ -1117,55 +1117,120 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
-  // Get ship status based on score
+  // Get ship status with color indicators
   const getShipStatus = (score) => {
-    if (score >= 8) return 'SHIP IT';
-    if (score >= 6) return 'SHIP WITH MONITORING';
-    return 'BLOCK';
+    if (score >= 8) return '✅ SHIP IT';
+    if (score >= 6) return '⚠️ SHIP WITH MONITORING';
+    return '❌ BLOCK';
   };
 
-  // Combine feature and technical test recipes into unified table
+  // Get risk level with color emoji
+  const getRiskLevel = (level) => {
+    const riskLevel = (level || 'MEDIUM').toUpperCase();
+    switch(riskLevel) {
+      case 'LOW': return '🟢 LOW';
+      case 'HIGH': return '🔴 HIGH';
+      default: return '🟡 MEDIUM';
+    }
+  };
+
+  // Get confidence factor emojis
+  const getConfidenceEmoji = (factor) => {
+    if (factor && factor.toLowerCase().includes('full')) return '🎯';
+    if (factor && factor.toLowerCase().includes('partial')) return '🔶';
+    if (factor && factor.toLowerCase().includes('missing')) return '⚠️';
+    return '🔶';
+  };
+
+  // Question type emojis for variety
+  const questionEmojis = ['❓', '🔧', '✅', '🎨', '🛡️'];
+
+  // Combine feature and technical test recipes into unified table with emojis
   const allTests = [
     ...(aiData.featureTestRecipe || []),
     ...(aiData.technicalTestRecipe || [])
   ];
+
+  const getPriorityEmoji = (priority) => {
+    const p = (priority || 'Medium').toLowerCase();
+    if (p.includes('high') || p.includes('critical')) return '🔥';
+    if (p.includes('low')) return '🔵';
+    return '🟡';
+  };
+
+  const getTypeEmoji = (type) => {
+    const t = (type || 'functional').toLowerCase();
+    if (t.includes('functional')) return '⚙️';
+    if (t.includes('ux') || t.includes('ui')) return '🎨';
+    if (t.includes('technical')) return '🔧';
+    if (t.includes('security')) return '🛡️';
+    if (t.includes('performance')) return '⚡';
+    return '🧪';
+  };
+
+  const getAutomationEmoji = (automation) => {
+    const a = (automation || 'manual').toLowerCase();
+    if (a.includes('e2e')) return '🤖';
+    if (a.includes('unit')) return '⚙️';
+    if (a.includes('integration')) return '🔗';
+    if (a.includes('manual')) return '👤';
+    return '🧪';
+  };
 
   const testRecipeTable = allTests.length > 0 ? 
     `| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n${allTests.map(test => {
       // Determine test type based on scenario content
       const testType = test.scenario && test.scenario.toLowerCase().includes('user') ? 'Functional' : 
                       test.scenario && (test.scenario.toLowerCase().includes('ui') || test.scenario.toLowerCase().includes('ux')) ? 'UX' : 'Technical';
-      return `| ${test.scenario || 'Test scenario'} | ${test.priority || 'Medium'} | ${testType} | ${test.automation || 'Manual'} |`;
+      const priority = test.priority || 'Medium';
+      const automation = test.automation || 'Manual';
+      return `| ${test.scenario || 'Test scenario'} | ${getPriorityEmoji(priority)} ${priority} | ${getTypeEmoji(testType)} ${testType} | ${getAutomationEmoji(automation)} ${automation} |`;
     }).join('\n')}` : 
-    '| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n| Core functionality testing | High | Functional | E2E |';
+    '| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n| Core functionality testing | 🔥 High | ⚙️ Functional | 🤖 E2E |';
 
-  // Combine bugs and critical risks into unified list
+  // Combine bugs and critical risks with specific emojis
   const bugsAndRisks = [
     ...(aiData.bugs || []),
     ...(aiData.criticalRisks || [])
   ];
+
+  const formatRiskItem = (item) => {
+    const itemLower = item.toLowerCase();
+    let emoji = '🚨'; // default
+    
+    if (itemLower.includes('race') || itemLower.includes('concurrent')) emoji = '🏃';
+    else if (itemLower.includes('memory') || itemLower.includes('leak')) emoji = '🧠';
+    else if (itemLower.includes('validation') || itemLower.includes('input')) emoji = '❌';
+    else if (itemLower.includes('logic') || itemLower.includes('algorithm')) emoji = '🔀';
+    else if (itemLower.includes('test') || itemLower.includes('coverage')) emoji = '🧪';
+    else if (itemLower.includes('performance')) emoji = '⚡';
+    else if (itemLower.includes('security')) emoji = '🛡️';
+    else if (itemLower.includes('ui') || itemLower.includes('ux')) emoji = '🎨';
+    
+    return `- ${emoji} ${item}`;
+  };
 
   return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
 
 ### 📋 Summary
-**Risk Level:** ${aiData.summary?.riskLevel || 'MEDIUM'}
-**Ship Score:** ${aiData.summary?.shipScore || 5}/10 – ${getShipStatus(aiData.summary?.shipScore || 5)}
+**Risk Level:** ${getRiskLevel(aiData.summary?.riskLevel)}
+**Ship Score:** ${aiData.summary?.shipScore || 5}/10 — ${getShipStatus(aiData.summary?.shipScore || 5)}
 **Confidence Factors:**
-- Coverage: ${aiData.summary?.coverage || 'Partial edge-case test coverage'}
-- Implementation: ${aiData.summary?.implementation || 'Debounce logic and error handling need verification'}
-- Business Impact: ${aiData.summary?.businessImpact || 'Impacts core UX (ADHD-friendly thought capture)'}
+- ${getConfidenceEmoji(aiData.summary?.coverage)} Coverage: ${aiData.summary?.coverage || 'Partial edge-case test coverage'}
+- ${getConfidenceEmoji(aiData.summary?.implementation)} Implementation: ${aiData.summary?.implementation || 'Debounce logic and error handling need verification'}
+- ${getConfidenceEmoji(aiData.summary?.businessImpact)} Business Impact: ${aiData.summary?.businessImpact || 'Impacts core UX (ADHD-friendly thought capture)'}
 
 ---
 
 ### 🧠 Review Focus
-${aiData.questions ? aiData.questions.slice(0, 5).map((q, i) => `${i + 1}. ${q}`).join('\n') : '1. How does the core functionality handle edge cases?\n2. Are error conditions properly managed?\n3. Is the user experience intuitive and accessible?\n4. Are performance implications considered?\n5. Is the implementation secure and maintainable?'}
+${aiData.questions ? aiData.questions.slice(0, 5).map((q, i) => `${i + 1}. ${questionEmojis[i] || '❓'} ${q}`).join('\n') : '1. ❓ How does the core functionality handle edge cases?\n2. 🔧 Are error conditions properly managed?\n3. ✅ Is the user experience intuitive and accessible?\n4. 🎨 Are performance implications considered?\n5. 🛡️ Is the implementation secure and maintainable?'}
 
 ---
 
 ### 🐞 Bugs & Risks
-${bugsAndRisks.length > 0 ? bugsAndRisks.map(item => `- ${item}`).join('\n') : '- No critical bugs or risks identified'}
+${bugsAndRisks.length > 0 ? bugsAndRisks.map(formatRiskItem).join('\n') : '- ✅ No critical bugs or risks identified'}
 
 ---
 
@@ -1174,7 +1239,7 @@ ${testRecipeTable}
 
 ---
 
-*Hybrid QA + Product insight generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
+*🚀 Hybrid QA + Product insight generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
 }
 
 /**
@@ -1525,5 +1590,6 @@ module.exports = {
   submitTestReport,
   postWelcomeComment,
   backupTestRequests,
-  restoreFromBackup
+  restoreFromBackup,
+  formatHybridAnalysisForComment
 };
