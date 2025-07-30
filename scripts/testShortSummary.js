@@ -101,6 +101,15 @@ async function testShortSummary() {
       } else {
         console.log('\n✅ No critical issues detected');
       }
+
+      if (data.testRecipe && data.testRecipe.length > 0) {
+        console.log('\n🧪 TEST RECIPE:');
+        console.log('Scenario | Priority | Automation');
+        console.log('-'.repeat(45));
+        data.testRecipe.forEach(test => {
+          console.log(`${test.scenario} | ${test.priority} | ${test.automation}`);
+        });
+      }
       
       console.log('\n' + '=' .repeat(50));
       console.log('🎉 Short summary test completed successfully!');

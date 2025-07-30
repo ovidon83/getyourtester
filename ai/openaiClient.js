@@ -369,11 +369,12 @@ function validateInsightsStructure(insights) {
          insights.summary && 
          insights.questions && 
          insights.testRecipe &&
-         insights.risks &&
+         insights.criticalRisks &&
          insights.summary.riskLevel &&
          insights.summary.shipScore &&
          Array.isArray(insights.questions) &&
-         Array.isArray(insights.risks);
+         Array.isArray(insights.testRecipe) &&
+         Array.isArray(insights.criticalRisks);
 }
 
 /**
@@ -882,7 +883,9 @@ function parseAndValidateShortSummary(response) {
     if (summary && 
         summary.riskLevel && 
         typeof summary.shipScore === 'number' && 
-        Array.isArray(summary.criticalIssues)) {
+        typeof summary.canShip === 'boolean' &&
+        Array.isArray(summary.criticalIssues) &&
+        Array.isArray(summary.testRecipe)) {
       return summary;
     }
     console.log('Short summary response structure is invalid.');
@@ -912,7 +915,19 @@ function generateShortSummaryFallback({ repo, pr_number, title, body, diff, erro
       criticalIssues: [
         "AI analysis temporarily unavailable - manual review required"
       ],
-      reasoning: `Unable to analyze PR automatically. Please review the changes in "${sanitizedTitle}" manually for critical issues.`
+      reasoning: `Unable to analyze PR automatically. Please review the changes in "${sanitizedTitle}" manually for critical issues.`,
+      testRecipe: [
+        {
+          scenario: "Core functionality testing",
+          priority: "Critical",
+          automation: "Manual"
+        },
+        {
+          scenario: "Error handling validation",
+          priority: "High", 
+          automation: "Manual"
+        }
+      ]
     },
     type: 'short-summary-fallback'
   };

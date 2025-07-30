@@ -1225,14 +1225,24 @@ async function handlePROpened(repository, pr) {
     const canShipEmoji = data.canShip ? '✅' : '❌';
     const riskEmoji = data.riskLevel === 'HIGH' ? '🚨' : data.riskLevel === 'MEDIUM' ? '⚠️' : '✅';
     
+    // Format test recipe table
+    const testRecipeTable = data.testRecipe && data.testRecipe.length > 0 ? 
+      `| Scenario | Priority | Automation |\n|----------|----------|------------|\n${data.testRecipe.map(test => 
+        `| ${test.scenario} | ${test.priority} | ${test.automation} |`
+      ).join('\n')}` : 
+      '| Scenario | Priority | Automation |\n|----------|----------|------------|\n| Core functionality testing | Critical | E2E |';
+    
     shortComment = `## 🤖 Ovi QA Assistant - Quick Analysis
 
 ${riskEmoji} **Risk Level:** ${data.riskLevel} | ${canShipEmoji} **Ship Score:** ${data.shipScore}/10 | **Can Ship:** ${data.canShip ? 'YES' : 'NO'}
 
-${data.reasoning}
+**${data.reasoning}**
 
 ${data.criticalIssues && data.criticalIssues.length > 0 ? `### 🚨 Critical Issues:
 ${data.criticalIssues.map(issue => `- ${issue}`).join('\n')}` : '### ✅ No critical issues detected'}
+
+### 🧪 Essential Test Recipe:
+${testRecipeTable}
 
 ---
 💡 Want detailed analysis? Comment \`/ovi-details\` for comprehensive test recipe and recommendations.
@@ -1298,73 +1308,52 @@ async function handleDetailedAnalysisRequest(repository, issue, comment, sender)
     aiInsights = {
       success: true,
       data: {
-        changeReview: {
-          smartQuestions: [
-            "What is the main purpose of these changes?",
-            "Are there any breaking changes that could affect existing functionality?",
-            "Have you tested the core functionality manually?",
-            "Are there any dependencies or integrations that might be affected?",
-            "What is the expected user impact of these changes?"
-          ],
-          risks: [
-            "Unable to perform detailed risk analysis due to AI processing error",
-            "Please review the changes manually for potential issues",
-            "Consider testing the affected functionality thoroughly"
-          ],
-          productionReadinessScore: {
-            score: 5,
-            level: "Needs Manual Review",
-            reasoning: "AI analysis failed - manual review required to assess production readiness",
-            criticalIssues: [
-              "AI analysis could not be completed - manual review needed"
-            ],
-            recommendations: [
-              "Review the changes manually before proceeding",
-              "Test the affected functionality thoroughly",
-              "Consider running the full test suite"
-            ]
-          }
+        summary: {
+          riskLevel: "MEDIUM",
+          shipScore: 5,
+          reasoning: "AI analysis failed - manual review required to assess production readiness"
         },
-        testRecipe: {
-          criticalPath: [
-            "Test the main functionality that was changed",
-            "Verify that existing features still work as expected",
-            "Check for any new error conditions or edge cases"
-          ],
-          general: [
-            "Run the existing test suite",
-            "Test the user interface if UI changes were made",
-            "Verify API endpoints if backend changes were made"
-          ],
-          edgeCases: [
-            "Test with invalid or unexpected inputs",
-            "Check error handling and recovery",
-            "Verify performance under load if applicable"
-          ],
-          automationPlan: {
-            unit: ["Add unit tests for new functionality"],
-            integration: ["Test integration points and dependencies"],
-            e2e: ["Verify end-to-end user workflows"]
-          }
-        },
-        codeQuality: {
-          affectedModules: [
-            "Manual review needed to identify affected modules"
-          ],
-          testCoverage: {
-            existing: "Unable to analyze existing test coverage",
-            gaps: "Manual review needed to identify test gaps",
-            recommendations: "Add tests for new functionality and affected areas"
+        questions: [
+          "What is the main purpose of these changes?",
+          "Are there any breaking changes that could affect existing functionality?",
+          "Have you tested the core functionality manually?",
+          "Are there any dependencies or integrations that might be affected?"
+        ],
+        testRecipe: [
+          {
+            scenario: "Test main functionality changes",
+            priority: "Critical", 
+            automation: "Manual",
+            description: "Verify core changes work as expected"
           },
-          bestPractices: [
-            "Review code for security best practices",
-            "Ensure proper error handling is in place",
-            "Check for performance implications"
-          ]
-        }
+          {
+            scenario: "Verify existing features still work",
+            priority: "High",
+            automation: "Manual", 
+            description: "Ensure no regressions in existing functionality"
+          },
+          {
+            scenario: "Test error handling and edge cases",
+            priority: "Medium",
+            automation: "Manual",
+            description: "Validate error scenarios and boundary conditions"
+          }
+        ],
+        criticalRisks: [
+          "AI analysis could not be completed - manual review needed",
+          "Unable to perform detailed risk analysis due to AI processing error",
+          "Consider testing the affected functionality thoroughly"
+        ]
       }
     };
   }
+
+  // Format detailed test recipe table
+  const detailedTestTable = aiInsights.data.testRecipe && Array.isArray(aiInsights.data.testRecipe) && aiInsights.data.testRecipe.length > 0 ? 
+    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiInsights.data.testRecipe.map(test => 
+      `| ${test.scenario || 'Test scenario'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
+    ).join('\n')}` : 
+    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Core functionality testing | Critical | E2E | Verify main user workflows work correctly |';
 
   const detailedComment = `
 ## 🤖 Ovi QA Assistant by GetYourTester
@@ -1372,28 +1361,20 @@ async function handleDetailedAnalysisRequest(repository, issue, comment, sender)
 ### 📋 Summary
 **Risk Level:** ${getProductionReadinessEmoji(aiInsights.data.summary?.shipScore)} ${aiInsights.data.summary?.riskLevel || 'UNKNOWN'}
 **Ship Score:** ${aiInsights.data.summary?.shipScore || 5}/10 - ${aiInsights.data.summary?.shipScore >= 7 ? '✅ SHIP IT' : aiInsights.data.summary?.shipScore >= 5 ? '⚠️ REVIEW FIRST' : '❌ BLOCKED'}
-${aiInsights.data.summary?.reasoning ? `*${aiInsights.data.summary.reasoning}*` : ''}
+
+**${aiInsights.data.summary?.reasoning || 'Analysis completed'}**
 
 ### ❓ Critical Questions
 ${aiInsights.data.questions ? aiInsights.data.questions.map(q => `- ${q}`).join('\n') : '- No specific questions identified'}
 
 ### 🧪 Test Recipe
-**Critical Path:**
-${aiInsights.data.testRecipe?.criticalPath ? aiInsights.data.testRecipe.criticalPath.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test main functionality'}
+${detailedTestTable}
 
-**Edge Cases:**
-${aiInsights.data.testRecipe?.edgeCases ? aiInsights.data.testRecipe.edgeCases.map(test => `- [ ] ${test}`).join('\n') : '- [ ] Test error scenarios'}
+### ⚠️ Critical Risks & Edge Cases
+${aiInsights.data.criticalRisks ? aiInsights.data.criticalRisks.map(risk => `- ${risk}`).join('\n') : '- No critical risks identified'}
 
-**Automation Plan:**
-- **Unit:** ${aiInsights.data.testRecipe?.automation?.unit ? aiInsights.data.testRecipe.automation.unit.join(', ') : 'Core logic functions'}
-- **Integration:** ${aiInsights.data.testRecipe?.automation?.integration ? aiInsights.data.testRecipe.automation.integration.join(', ') : 'API endpoints and data flow'}
-- **E2E:** ${aiInsights.data.testRecipe?.automation?.e2e ? aiInsights.data.testRecipe.automation.e2e.join(', ') : 'Complete user workflows'}
-
-### ⚠️ Key Risks
-${aiInsights.data.risks ? aiInsights.data.risks.map(risk => `- ${risk}`).join('\n') : '- No significant risks identified'}
-
-   ---
-   *🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
+---
+*🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
    
    return await postComment(repository.full_name, issue.number, detailedComment);
 }

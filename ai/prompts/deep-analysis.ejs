@@ -42,54 +42,62 @@ Perform **DEEP CODE ANALYSIS** of the actual implementation. Focus on:
     "Question 3: Specific to error handling gaps (e.g., 'The async function generateTodayInsights in services.js line 67 has no error handling - what happens if the API call fails?')",
     "Question 4: Specific to build/compilation issues (e.g., 'Are there unused imports in DashboardView.tsx that will cause TypeScript compilation errors?')"
   ],
-  "testRecipe": {
-    "criticalPath": [
-      "Critical test 1: User-focused test based on requirements (e.g., 'As a user, I can add a thought with tags and see it categorized correctly in the today view')",
-      "Critical test 2: User workflow test (e.g., 'As a user, I can mark a thought as urgent and see the priority icon change immediately')",
-      "Critical test 3: Core functionality test (e.g., 'As a user, I can view today's insights and see AI-generated recommendations')"
-    ],
-    "edgeCases": [
-      "Edge case 1: User scenario with edge data (e.g., 'As a user, I can add a thought with 50+ tags and the system handles it gracefully')",
-      "Edge case 2: User scenario with invalid input (e.g., 'As a user, I can try to add a thought with empty content and get appropriate feedback')",
-      "Edge case 3: User scenario with system issues (e.g., 'As a user, I can still use the app when the AI service is down')"
-    ],
-    "automation": {
-      "unit": [
-        "Unit test 1: Test the specific function with the bug (e.g., 'Test extractTags() with input containing escaped # characters')",
-        "Unit test 2: Test the specific edge case function (e.g., 'Test validateInput() with null, undefined, empty string')"
-      ],
-      "integration": [
-        "Integration test 1: Test the specific API endpoint with the issue (e.g., 'Test POST /api/thoughts with malformed JSON payload')",
-        "Integration test 2: Test the specific service integration (e.g., 'Test database connection failure handling')"
-      ],
-      "e2e": [
-        "E2E test 1: Test the specific user workflow with the bug (e.g., 'Test complete flow with input that triggers the XSS vulnerability')",
-        "E2E test 2: Test the specific error scenario (e.g., 'Test network failure during thought submission')"
-      ]
+  "testRecipe": [
+    {
+      "scenario": "User adds thought with tags - core functionality",
+      "priority": "Critical",
+      "automation": "Unit + E2E",
+      "description": "Verify tag parsing and categorization works correctly"
+    },
+    {
+      "scenario": "AI service error handling", 
+      "priority": "High",
+      "automation": "Integration",
+      "description": "Test system behavior when AI service is unavailable"
+    },
+    {
+      "scenario": "Component memory cleanup",
+      "priority": "Medium", 
+      "automation": "Unit",
+      "description": "Ensure React components clean up properly"
     }
-  },
-  "risks": [
-    "Risk 1: Specific risk found in code with file and line reference (e.g., 'XSS vulnerability in Dashboard.jsx line 23: innerHTML usage with unsanitized user input')",
-    "Risk 2: Specific performance issue with impact (e.g., 'N+1 query in api.js line 45: forEach loop makes API call for each item')",
-    "Risk 3: Specific build/compilation issue with impact (e.g., 'Unused imports in DashboardView.tsx line 5-13: Clock, FileText, BarChart3 imports will cause TypeScript compilation errors')"
+  ],
+  "criticalRisks": [
+    "Risk 1: Specific, realistic risk with file reference (e.g., 'Memory leak in ThoughtsView.tsx useEffect - could cause browser crash after 50+ thoughts')",
+    "Risk 2: Specific business impact (e.g., 'API timeout in thoughts.js could lose user data during save operations')",
+    "Risk 3: Specific integration issue (e.g., 'Database schema change in migration-001.sql could break existing user sessions')"
   ]
 }
 
-## SHIP SCORE CRITERIA:
-- **9-10**: No critical issues, well-tested, ready to ship
-- **7-8**: Minor issues, good coverage, ship with fixes
-- **5-6**: Some issues, needs fixes before shipping
-- **3-4**: Significant issues, major fixes needed
-- **1-2**: Critical issues, do not ship
+## FOCUS ON REALISTIC SCENARIOS:
+- **Avoid unrealistic edge cases** like "user enters 1000 tags" or "50+ tags"
+- **Focus on real user behaviors** and common failure scenarios
+- **Prioritize business impact** - what actually affects users and revenue
+- **Consider system limits** - memory, performance, network failures
+- **Think about integration points** - API failures, database issues, third-party services
 
-## CRITICAL REQUIREMENTS:
-- **ANALYZE THE ACTUAL CODE** - look at the diff, find real issues
-- **REFERENCE SPECIFIC FILES AND LINES** - always include the file path when referencing line numbers (e.g., "Dashboard.jsx line 23", "utils.js line 45")
-- **IDENTIFY REAL BUGS** - not theoretical, actual implementation issues
-- **PROVIDE PRACTICAL FIXES** - specific code changes developers can make
-- **FOCUS ON HIGH-IMPACT ISSUES** - prioritize bugs that will actually happen
-- **BE SPECIFIC ABOUT IMPACT** - explain what will break and when
-- **SUGGEST CONCRETE SOLUTIONS** - exact code changes to fix issues
-- **AVOID THEORETICAL EDGE CASES** - focus on realistic scenarios
-- **MAKE RECOMMENDATIONS ACTIONABLE** - developers should be able to implement immediately
-- **ALWAYS INCLUDE FILE NAMES** - when referencing any function, method, or line number, include the file path 
+## TEST RECIPE GUIDELINES:
+- **Critical**: Core user workflows, data integrity, security
+- **High**: Error handling, performance, integration points  
+- **Medium**: UI/UX, edge cases, optimization
+- **Automation levels**: Manual, Unit, Integration, E2E, Unit + E2E
+
+## CRITICAL RISKS GUIDELINES:
+- **Max 3 risks** - most impactful and realistic
+- **Include specific file references** and potential business impact
+- **Focus on** memory leaks, data loss, security vulnerabilities, performance degradation
+- **Avoid** theoretical scenarios that are unlikely to happen
+
+## EXAMPLES:
+
+**Good Critical Risk:**
+"Memory leak in src/components/ThoughtsView.tsx useEffect hook - missing cleanup could cause browser slowdown after viewing 20+ thoughts"
+
+**Bad Critical Risk:** 
+"Edge case where user enters exactly 847 characters might cause UI misalignment"
+
+**Good Test Scenario:**
+"AI service timeout handling - verify graceful degradation when categorization fails"
+
+**Bad Test Scenario:**
+"User adds thought with 127 tags and system handles it perfectly" 
