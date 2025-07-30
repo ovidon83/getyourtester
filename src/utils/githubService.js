@@ -1117,45 +1117,64 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
-  // Format feature test recipe table
-  const featureTestTable = aiData.featureTestRecipe && Array.isArray(aiData.featureTestRecipe) && aiData.featureTestRecipe.length > 0 ? 
-    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiData.featureTestRecipe.map(test => 
-      `| ${test.scenario || 'Feature test'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
-    ).join('\n')}` : 
-    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Core user workflow testing | Critical | E2E | Verify main user workflows work correctly |';
+  // Get ship status based on score
+  const getShipStatus = (score) => {
+    if (score >= 8) return 'SHIP IT';
+    if (score >= 6) return 'SHIP WITH MONITORING';
+    return 'BLOCK';
+  };
 
-  // Format technical test recipe table
-  const technicalTestTable = aiData.technicalTestRecipe && Array.isArray(aiData.technicalTestRecipe) && aiData.technicalTestRecipe.length > 0 ? 
-    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiData.technicalTestRecipe.map(test => 
-      `| ${test.scenario || 'Technical test'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
-    ).join('\n')}` : 
-    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Technical functionality testing | High | Unit | Verify technical implementation works correctly |';
+  // Combine feature and technical test recipes into unified table
+  const allTests = [
+    ...(aiData.featureTestRecipe || []),
+    ...(aiData.technicalTestRecipe || [])
+  ];
 
-  return `## 🤖 Ovi QA Assistant by GetYourTester
+  const testRecipeTable = allTests.length > 0 ? 
+    `| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n${allTests.map(test => {
+      // Determine test type based on scenario content
+      const testType = test.scenario && test.scenario.toLowerCase().includes('user') ? 'Functional' : 
+                      test.scenario && (test.scenario.toLowerCase().includes('ui') || test.scenario.toLowerCase().includes('ux')) ? 'UX' : 'Technical';
+      return `| ${test.scenario || 'Test scenario'} | ${test.priority || 'Medium'} | ${testType} | ${test.automation || 'Manual'} |`;
+    }).join('\n')}` : 
+    '| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n| Core functionality testing | High | Functional | E2E |';
 
-### 📋 Summary
-**Risk Level:** ${getProductionReadinessEmoji(aiData.summary?.shipScore)} ${aiData.summary?.riskLevel || 'UNKNOWN'}
-**Ship Score:** ${aiData.summary?.shipScore || 5}/10 - ${aiData.summary?.shipScore >= 7 ? '✅ SHIP IT' : aiData.summary?.shipScore >= 5 ? '⚠️ REVIEW FIRST' : '❌ BLOCKED'}
+  // Combine bugs and critical risks into unified list
+  const bugsAndRisks = [
+    ...(aiData.bugs || []),
+    ...(aiData.criticalRisks || [])
+  ];
 
-**${aiData.summary?.reasoning || 'Analysis completed'}**
-
-### ❓ Critical Questions
-${aiData.questions ? aiData.questions.map(q => `- ${q}`).join('\n') : '- No specific questions identified'}
-
-${aiData.bugs && aiData.bugs.length > 0 ? `### 🐛 Bugs Found
-${aiData.bugs.map(bug => `- ${bug}`).join('\n')}
-
-` : ''}### 🎯 Feature Testing
-${featureTestTable}
-
-### 🔧 Technical Testing  
-${technicalTestTable}
-
-### ⚠️ Critical Risks
-${aiData.criticalRisks ? aiData.criticalRisks.map(risk => `- ${risk}`).join('\n') : '- No critical risks identified'}
+  return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
-*🤖 AI-powered hybrid analysis by Ovi QA Agent. Combining business requirements with technical implementation review.*`;
+
+### 📋 Summary
+**Risk Level:** ${aiData.summary?.riskLevel || 'MEDIUM'}
+**Ship Score:** ${aiData.summary?.shipScore || 5}/10 – ${getShipStatus(aiData.summary?.shipScore || 5)}
+**Confidence Factors:**
+- Coverage: ${aiData.summary?.coverage || 'Partial edge-case test coverage'}
+- Implementation: ${aiData.summary?.implementation || 'Debounce logic and error handling need verification'}
+- Business Impact: ${aiData.summary?.businessImpact || 'Impacts core UX (ADHD-friendly thought capture)'}
+
+---
+
+### 🧠 Review Focus
+${aiData.questions ? aiData.questions.slice(0, 5).map((q, i) => `${i + 1}. ${q}`).join('\n') : '1. How does the core functionality handle edge cases?\n2. Are error conditions properly managed?\n3. Is the user experience intuitive and accessible?\n4. Are performance implications considered?\n5. Is the implementation secure and maintainable?'}
+
+---
+
+### 🐞 Bugs & Risks
+${bugsAndRisks.length > 0 ? bugsAndRisks.map(item => `- ${item}`).join('\n') : '- No critical bugs or risks identified'}
+
+---
+
+### 🧪 Test Recipe
+${testRecipeTable}
+
+---
+
+*Hybrid QA + Product insight generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
 }
 
 /**
