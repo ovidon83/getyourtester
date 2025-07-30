@@ -1180,129 +1180,10 @@ ${aiData.risks ? aiData.risks.map(risk => `- ${risk}`).join('\n') : '- No signif
 }
 
 /**
- * Handle PR opened event - generate a short summary analysis
+ * Format and post detailed analysis with hybrid structure
  */
-async function handlePROpened(repository, pr) {
-  console.log(`⚡ Handling PR opened event for ${repository.full_name}#${pr.number}`);
-  
-  // Get PR description and diff for analysis
-  const prDescription = await fetchPRDescription(repository.full_name, pr.number);
-  const prDiff = await fetchPRDiff(repository.full_name, pr.number);
-  
-  console.log(`⚡ Generating SHORT CRITICAL SUMMARY for PR #${pr.number}`);
-  
-  // Generate short summary using the new AI function
-  const { generateShortSummary } = require('../../ai/openaiClient');
-  let shortSummary;
-  
-  try {
-    shortSummary = await generateShortSummary({
-      repo: repository.full_name,
-      pr_number: pr.number,
-      title: pr.title,
-      body: prDescription,
-      diff: prDiff
-    });
-    
-    if (shortSummary && shortSummary.success) {
-      console.log('✅ Short summary generated successfully');
-    } else {
-      console.error('❌ Short summary generation failed:', shortSummary?.error);
-    }
-  } catch (error) {
-    console.error('❌ Short summary threw exception:', error.message);
-    shortSummary = {
-      success: false,
-      error: 'Short summary generation failed',
-      details: error.message
-    };
-  }
-  
-  // Create the short summary comment
-  let shortComment;
-  if (shortSummary && shortSummary.success && shortSummary.data) {
-    const data = shortSummary.data;
-    const canShipEmoji = data.canShip ? '✅' : '❌';
-    const riskEmoji = data.riskLevel === 'HIGH' ? '🚨' : data.riskLevel === 'MEDIUM' ? '⚠️' : '✅';
-    
-    // Format test recipe table
-    const testRecipeTable = data.testRecipe && data.testRecipe.length > 0 ? 
-      `| Scenario | Priority | Automation |\n|----------|----------|------------|\n${data.testRecipe.map(test => 
-        `| ${test.scenario} | ${test.priority} | ${test.automation} |`
-      ).join('\n')}` : 
-      '| Scenario | Priority | Automation |\n|----------|----------|------------|\n| Core functionality testing | Critical | E2E |';
-    
-    shortComment = `## 🤖 Ovi QA Assistant - Quick Analysis
-
-${riskEmoji} **Risk Level:** ${data.riskLevel} | ${canShipEmoji} **Ship Score:** ${data.shipScore}/10 | **Can Ship:** ${data.canShip ? 'YES' : 'NO'}
-
-**${data.reasoning}**
-
-${data.criticalIssues && data.criticalIssues.length > 0 ? `### 🚨 Critical Issues:
-${data.criticalIssues.map(issue => `- ${issue}`).join('\n')}` : '### ✅ No critical issues detected'}
-
-### 🧪 Essential Test Recipe:
-${testRecipeTable}
-
----
-💡 Want detailed analysis? Comment \`/ovi-details\` for comprehensive test recipe and recommendations.
-
-*🤖 AI-powered critical analysis by Ovi QA Agent*`;
-  } else {
-    // Fallback comment if AI fails
-    shortComment = `## 🤖 Ovi QA Assistant - Quick Analysis
-
-⚠️ **Unable to generate automatic analysis** - AI service temporarily unavailable.
-
-Please review this PR manually for:
-- Breaking changes or API modifications
-- Security vulnerabilities or data handling issues  
-- Performance impacts or database changes
-- Missing error handling or edge cases
-
----
-💡 Comment \`/ovi-details\` to try detailed analysis, or \`/test\` for manual testing.
-
-*🤖 AI-powered analysis by Ovi QA Agent*`;
-  }
-  
-  return await postComment(repository.full_name, pr.number, shortComment);
-}
-
-/**
- * Handle /ovi-details command - generate a detailed analysis of the PR
- */
-async function handleDetailedAnalysisRequest(repository, issue, comment, sender) {
-  console.log(`Handling /ovi-details command from ${sender.login} on PR #${issue.number}`);
-  const prDescription = await fetchPRDescription(repository.full_name, issue.number);
-  const prDiff = await fetchPRDiff(repository.full_name, issue.number);
-
-  console.log('🤖 Ovi QA Agent analyzing PR...');
-  let aiInsights;
-  try {
-    aiInsights = await callTestRecipeEndpoint({
-      repo: repository.full_name,
-      pr_number: issue.number,
-      title: issue.title,
-      body: prDescription,
-      diff: prDiff
-    });
-
-    if (aiInsights && aiInsights.success) {
-      console.log('✅ Ovi QA Agent analysis completed successfully');
-    } else {
-      console.error('❌ Ovi QA Agent analysis failed:', aiInsights?.error, aiInsights?.details);
-    }
-  } catch (error) {
-    console.error('❌ Ovi QA Agent analysis threw exception:', error.message);
-    console.error('Stack trace:', error.stack);
-    aiInsights = {
-      success: false,
-      error: 'Ovi QA Agent analysis failed',
-      details: error.message
-    };
-  }
-
+async function formatAndPostDetailedAnalysis(repository, prNumber, aiInsights) {
+  // Handle fallback if AI insights failed
   if (!aiInsights || !aiInsights.success) {
     console.log('🔄 Creating fallback analysis due to AI failure');
     aiInsights = {
@@ -1319,18 +1200,20 @@ async function handleDetailedAnalysisRequest(repository, issue, comment, sender)
           "Have you tested the core functionality manually?",
           "Are there any dependencies or integrations that might be affected?"
         ],
-        testRecipe: [
+        featureTestRecipe: [
+          {
+            scenario: "Test core feature functionality",
+            priority: "Critical", 
+            automation: "Manual",
+            description: "Verify main user workflows work as expected"
+          }
+        ],
+        technicalTestRecipe: [
           {
             scenario: "Test main functionality changes",
             priority: "Critical", 
             automation: "Manual",
             description: "Verify core changes work as expected"
-          },
-          {
-            scenario: "Verify existing features still work",
-            priority: "High",
-            automation: "Manual", 
-            description: "Ensure no regressions in existing functionality"
           },
           {
             scenario: "Test error handling and edge cases",
@@ -1339,24 +1222,30 @@ async function handleDetailedAnalysisRequest(repository, issue, comment, sender)
             description: "Validate error scenarios and boundary conditions"
           }
         ],
+        bugs: [],
         criticalRisks: [
           "AI analysis could not be completed - manual review needed",
-          "Unable to perform detailed risk analysis due to AI processing error",
-          "Consider testing the affected functionality thoroughly"
+          "Unable to perform detailed risk analysis due to AI processing error"
         ]
       }
     };
   }
 
-  // Format detailed test recipe table
-  const detailedTestTable = aiInsights.data.testRecipe && Array.isArray(aiInsights.data.testRecipe) && aiInsights.data.testRecipe.length > 0 ? 
-    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiInsights.data.testRecipe.map(test => 
-      `| ${test.scenario || 'Test scenario'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
+  // Format feature test recipe table
+  const featureTestTable = aiInsights.data.featureTestRecipe && Array.isArray(aiInsights.data.featureTestRecipe) && aiInsights.data.featureTestRecipe.length > 0 ? 
+    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiInsights.data.featureTestRecipe.map(test => 
+      `| ${test.scenario || 'Feature test'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
     ).join('\n')}` : 
-    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Core functionality testing | Critical | E2E | Verify main user workflows work correctly |';
+    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Core user workflow testing | Critical | E2E | Verify main user workflows work correctly |';
 
-  const detailedComment = `
-## 🤖 Ovi QA Assistant by GetYourTester
+  // Format technical test recipe table
+  const technicalTestTable = aiInsights.data.technicalTestRecipe && Array.isArray(aiInsights.data.technicalTestRecipe) && aiInsights.data.technicalTestRecipe.length > 0 ? 
+    `| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n${aiInsights.data.technicalTestRecipe.map(test => 
+      `| ${test.scenario || 'Technical test'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ${test.description || 'No description'} |`
+    ).join('\n')}` : 
+    '| Scenario | Priority | Automation | Description |\n|----------|----------|------------|-------------|\n| Technical functionality testing | High | Unit | Verify technical implementation works correctly |';
+
+  const detailedComment = `## 🤖 Ovi QA Assistant by GetYourTester
 
 ### 📋 Summary
 **Risk Level:** ${getProductionReadinessEmoji(aiInsights.data.summary?.shipScore)} ${aiInsights.data.summary?.riskLevel || 'UNKNOWN'}
@@ -1367,17 +1256,66 @@ async function handleDetailedAnalysisRequest(repository, issue, comment, sender)
 ### ❓ Critical Questions
 ${aiInsights.data.questions ? aiInsights.data.questions.map(q => `- ${q}`).join('\n') : '- No specific questions identified'}
 
-### 🧪 Test Recipe
-${detailedTestTable}
+${aiInsights.data.bugs && aiInsights.data.bugs.length > 0 ? `### 🐛 Bugs Found
+${aiInsights.data.bugs.map(bug => `- ${bug}`).join('\n')}
 
-### ⚠️ Critical Risks & Edge Cases
+` : ''}### 🎯 Feature Testing
+${featureTestTable}
+
+### 🔧 Technical Testing  
+${technicalTestTable}
+
+### ⚠️ Critical Risks
 ${aiInsights.data.criticalRisks ? aiInsights.data.criticalRisks.map(risk => `- ${risk}`).join('\n') : '- No critical risks identified'}
 
 ---
-*🤖 AI-powered analysis by Ovi QA Agent. A human tester will review and expand on these recommendations.*`;
+*🤖 AI-powered hybrid analysis by Ovi QA Agent. Combining business requirements with technical implementation review.*`;
    
-   return await postComment(repository.full_name, issue.number, detailedComment);
+   return await postComment(repository, prNumber, detailedComment);
 }
+
+/**
+ * Handle PR opened event - generate comprehensive analysis
+ */
+async function handlePROpened(repository, pr) {
+  console.log(`🔍 Handling PR opened event for ${repository.full_name}#${pr.number}`);
+  
+  // Get PR description and diff for analysis
+  const prDescription = await fetchPRDescription(repository.full_name, pr.number);
+  const prDiff = await fetchPRDiff(repository.full_name, pr.number);
+  
+  console.log(`🔍 Generating COMPREHENSIVE ANALYSIS for PR #${pr.number}`);
+  
+  // Generate comprehensive analysis using the detailed endpoint
+  let aiInsights;
+  try {
+    aiInsights = await callTestRecipeEndpoint({
+      repo: repository.full_name,
+      pr_number: pr.number,
+      title: pr.title,
+      body: prDescription,
+      diff: prDiff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ Comprehensive analysis generated successfully');
+    } else {
+      console.error('❌ Comprehensive analysis generation failed:', aiInsights?.error);
+    }
+  } catch (error) {
+    console.error('❌ Comprehensive analysis threw exception:', error.message);
+    aiInsights = {
+      success: false,
+      error: 'Comprehensive analysis generation failed',
+      details: error.message
+    };
+  }
+
+  // Use the same detailed analysis formatting and fallback as /ovi-details
+  return await formatAndPostDetailedAnalysis(repository.full_name, pr.number, aiInsights);
+}
+
+
 
 /**
  * Process a GitHub webhook event
@@ -1432,15 +1370,9 @@ async function processWebhookEvent(event) {
 
       console.log(`Comment body: ${comment.body}`);
       
-      // Check for /ovi-details command (NEW BEHAVIOR)
-      if (comment.body.trim().startsWith('/ovi-details')) {
-        console.log('🔍 /ovi-details command detected!');
-        return await handleDetailedAnalysisRequest(repository, issue, comment, sender);
-      }
-      
-      // Legacy support: Check for /test command (for backward compatibility)
+      // Check for /test command (manual testing requests)
       if (comment.body.trim().startsWith('/test')) {
-        console.log('🧪 /test command detected! (legacy mode)');
+        console.log('🧪 /test command detected!');
         return await handleTestRequest(repository, issue, comment, sender);
       }
     }
