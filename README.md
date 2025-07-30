@@ -6,11 +6,12 @@ GetYourTester is a GitHub app that allows developers to request manual testing o
 
 ## Features
 
-- ⚡ **Automatic PR Analysis**: Instant critical issue detection when PRs are opened
-- 🤖 **Ovi QA Agent**: AI-powered comprehensive PR analysis and test planning with two analysis modes:
-  - **Quick Analysis**: Automatic short summary focusing on deal-breakers and critical issues
-  - **Detailed Analysis**: On-demand comprehensive review via `/ovi-details` command
-- 🚀 **Legacy Support**: Still supports `/test` commands for manual testing requests
+- ⚡ **Automatic Hybrid Analysis**: Comprehensive analysis triggered when PRs are opened
+- 🤖 **Ovi QA Agent**: AI-powered hybrid analysis combining business requirements with technical implementation:
+  - **🎯 Feature Testing**: Extracts user scenarios from PR description for business validation
+  - **🔧 Technical Testing**: Code-level analysis for bugs, security, and implementation issues  
+  - **🐛 Bugs Detection**: Real functional bugs found during code review with file references
+- 🚀 **Manual Testing**: `/test` command provides the same comprehensive hybrid analysis format
 - 📊 **Dashboard**: View and manage test requests 
 - 🏷️ **Status Tracking**: Automatically label PRs with testing status
 - 💬 **Detailed Reports**: Provide comprehensive test feedback
@@ -130,17 +131,15 @@ For backward compatibility, GetYourTester can also use a Personal Access Token (
    - Send "Pull requests" and "Issue comments" events
    - Content type should be "application/json"
 
-2. **Automatic Analysis**: When you create a pull request, Ovi QA Agent automatically:
-   - ⚡ Analyzes the PR for critical issues and deal-breakers
-   - 🚨 Posts a quick summary highlighting any blocking issues
-   - ✅ Provides a ship/no-ship recommendation with reasoning
+2. **Automatic Hybrid Analysis**: When you create a pull request, Ovi QA Agent automatically provides:
+   - 📋 Summary with risk level, ship score, and reasoning
+   - ❓ Critical questions about user workflows and technical implementation  
+   - 🐛 Real bugs detected in the code with file references
+   - 🎯 Feature testing scenarios extracted from PR description
+   - 🔧 Technical testing for code implementation validation
+   - ⚠️ Critical risks covering business, technical, and user experience
 
-3. **Detailed Analysis**: For comprehensive analysis, comment `/ovi-details` on the PR to get:
-   - 🔍 Detailed change review with smart questions
-   - 🧪 Complete test recipe (critical path, edge cases, automation plan)
-   - ⚠️ Risk assessment and recommendations
-
-4. **Legacy Support**: You can still use `/test` for traditional manual testing requests
+3. **Manual Testing**: Comment `/test` on any PR to trigger the same comprehensive hybrid analysis
 
 5. View all requests in the dashboard at http://localhost:3000/dashboard
 
@@ -151,10 +150,10 @@ The webhook implementation consists of two main components:
 1. **webhook-server.js**: The main Express server that receives webhook events and processes them
 2. **fixed-webhook.js**: A client that connects to smee.io and forwards events to the local server
 
-When a PR comment containing "/test" is received:
+When a PR is opened or "/test" comment is received:
 
 ```
-GitHub PR Comment → GitHub Webhook → smee.io → fixed-webhook.js → webhook-server.js → githubService
+GitHub PR/Comment → GitHub Webhook → smee.io → fixed-webhook.js → webhook-server.js → githubService
 ```
 
 The githubService then:
