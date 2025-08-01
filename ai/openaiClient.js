@@ -187,23 +187,23 @@ async function parseAIResponse(response, title, body, diff) {
     // Fallback: try to parse as JSON for backward compatibility
     try {
       const insights = JSON.parse(response);
-      if (validateInsightsStructure(insights)) {
+      if (insights && typeof insights === 'object' && validateInsightsStructure(insights)) {
         return insights;
       }
     } catch (e) {
       console.log('Not JSON format, treating as markdown...');
     }
 
-    // Extract JSON from markdown or text (backward compatibility)
+    // Try to extract JSON from markdown (backward compatibility)
     const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       try {
         const insights = JSON.parse(jsonMatch[0]);
-        if (validateInsightsStructure(insights)) {
+        if (insights && typeof insights === 'object' && validateInsightsStructure(insights)) {
           return insights;
         }
       } catch (e) {
-        console.log('Failed to parse embedded JSON, returning as text...');
+        console.log('Failed to parse embedded JSON, treating as markdown...');
       }
     }
 
@@ -751,5 +751,4 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
 module.exports = {
   generateQAInsights,
   testConnection
-}; 
 }; 
