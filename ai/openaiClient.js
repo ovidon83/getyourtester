@@ -110,8 +110,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
             }
           ],
           temperature: 0.3, // Lower temperature for more focused analysis
-          max_tokens: 2500, // Higher limit for detailed analysis
-          response_format: { type: 'json_object' }
+          max_tokens: 2500 // Higher limit for detailed analysis
         });
 
         const response = completion.choices[0]?.message?.content;
@@ -179,17 +178,23 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
  */
 async function parseAIResponse(response, title, body, diff) {
   try {
-    // Strategy 1: Direct JSON parse
+    // Check if response is the new compressed markdown format
+    if (response.includes('# Ovi QA Analysis') || response.includes('📋 Summary')) {
+      // Return the markdown response directly
+      return response.trim();
+    }
+    
+    // Fallback: try to parse as JSON for backward compatibility
     try {
       const insights = JSON.parse(response);
       if (validateInsightsStructure(insights)) {
         return insights;
       }
     } catch (e) {
-      console.log('Strategy 1 failed, trying Strategy 2...');
+      console.log('Not JSON format, treating as markdown...');
     }
 
-    // Strategy 2: Extract JSON from markdown or text
+    // Extract JSON from markdown or text (backward compatibility)
     const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       try {
@@ -198,22 +203,12 @@ async function parseAIResponse(response, title, body, diff) {
           return insights;
         }
       } catch (e) {
-        console.log('Strategy 2 failed, trying Strategy 3...');
+        console.log('Failed to parse embedded JSON, returning as text...');
       }
     }
 
-    // Strategy 3: Try to fix common JSON issues
-    const fixedResponse = fixCommonJSONIssues(response);
-    try {
-      const insights = JSON.parse(fixedResponse);
-      if (validateInsightsStructure(insights)) {
-        return insights;
-      }
-    } catch (e) {
-      console.log('Strategy 3 failed, using fallback...');
-    }
-
-    return null;
+    // If all else fails, return the response as-is (assume it's readable text)
+    return response.trim();
   } catch (error) {
     console.error('Error in parseAIResponse:', error.message);
     return null;
@@ -756,4 +751,5 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
 module.exports = {
   generateQAInsights,
   testConnection
+}; 
 }; 

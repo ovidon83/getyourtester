@@ -115,85 +115,17 @@ async function testOviQAAgent() {
       
       const data = response.data.data;
       
-      // Display Change Review
-      console.log('\n🔍 Change Review:');
-      console.log('Key Questions:');
-      data.changeReview.smartQuestions.forEach((q, i) => {
-        console.log(`  ${i + 1}. ${q}`);
-      });
-      
-      console.log('\nRisks:');
-      data.changeReview.risks.forEach((r, i) => {
-        console.log(`  ${i + 1}. ${r}`);
-      });
-      
-      console.log(`\nProduction Readiness Score: ${data.changeReview.productionReadinessScore.score}/10 - ${data.changeReview.productionReadinessScore.level}`);
-      console.log(`Reasoning: ${data.changeReview.productionReadinessScore.reasoning}`);
-      
-      if (data.changeReview.productionReadinessScore.criticalIssues && data.changeReview.productionReadinessScore.criticalIssues.length > 0) {
-        console.log('\n🚨 Critical Issues:');
-        data.changeReview.productionReadinessScore.criticalIssues.forEach((issue, i) => {
-          console.log(`  ${i + 1}. ${issue}`);
-        });
+      // Display the new compressed markdown format
+      if (typeof data === 'string') {
+        // New markdown format
+        console.log(data);
+      } else if (data.analysis) {
+        // New format with analysis property
+        console.log(data.analysis);
+      } else {
+        // Fallback - display raw data
+        console.log('Raw response:', JSON.stringify(data, null, 2));
       }
-      
-      if (data.changeReview.productionReadinessScore.recommendations && data.changeReview.productionReadinessScore.recommendations.length > 0) {
-        console.log('\n💡 Recommendations:');
-        data.changeReview.productionReadinessScore.recommendations.forEach((rec, i) => {
-          console.log(`  ${i + 1}. ${rec}`);
-        });
-      }
-      
-      // Display Test Recipe
-      console.log('\n🧪 Test Recipe:');
-      console.log('Critical Path:');
-      data.testRecipe.criticalPath.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      console.log('\nGeneral Scenarios:');
-      data.testRecipe.general.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      console.log('\nEdge Cases:');
-      data.testRecipe.edgeCases.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      // Display Automation Plan
-      console.log('\n🤖 Automation Plan:');
-      console.log('Unit Tests:');
-      data.testRecipe.automationPlan.unit.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      console.log('\nIntegration Tests:');
-      data.testRecipe.automationPlan.integration.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      console.log('\nE2E Tests:');
-      data.testRecipe.automationPlan.e2e.forEach((tc, i) => {
-        console.log(`  ${i + 1}. ${tc}`);
-      });
-      
-      // Display Code Quality Assessment
-      console.log('\n📊 Code Quality Assessment:');
-      console.log('Affected Modules:');
-      data.codeQuality.affectedModules.forEach((m, i) => {
-        console.log(`  ${i + 1}. ${m}`);
-      });
-      
-      console.log('\nTest Coverage:');
-      console.log(`  Existing: ${data.codeQuality.testCoverage.existing}`);
-      console.log(`  Gaps: ${data.codeQuality.testCoverage.gaps}`);
-      console.log(`  Recommendations: ${data.codeQuality.testCoverage.recommendations}`);
-      
-      console.log('\nBest Practices:');
-      data.codeQuality.bestPractices.forEach((bp, i) => {
-        console.log(`  ${i + 1}. ${bp}`);
-      });
       
       console.log('\n✅ Ovi QA Agent test completed successfully!');
       
