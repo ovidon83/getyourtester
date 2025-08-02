@@ -1117,8 +1117,12 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
+  console.log('🔍 Formatting analysis for comment. Data type:', typeof aiData);
+  console.log('🔍 Data preview:', typeof aiData === 'string' ? aiData.substring(0, 200) : JSON.stringify(aiData).substring(0, 200));
+
   // Check if we have the new compressed markdown format
-  if (typeof aiData === 'string' && aiData.includes('# Ovi QA Analysis')) {
+  if (typeof aiData === 'string' && (aiData.includes('# Ovi QA Analysis') || aiData.includes('📋 Summary'))) {
+    console.log('✅ Detected new compressed markdown format');
     // New compressed format - just add GetYourTester branding around it
     return `### 🤖 Ovi QA Assistant by GetYourTester
 
@@ -1200,13 +1204,22 @@ ${testRecipeTable}
   }
 
   // Final fallback for unexpected format
+  console.log('❌ Could not detect format. Data type:', typeof aiData);
+  console.log('❌ aiData content:', aiData);
+  console.log('❌ aiInsights structure:', Object.keys(aiInsights || {}));
+  
   return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
 
-**Analysis Status:** ✅ Complete
+**Analysis Status:** ⚠️ Format Issue
 
-Unfortunately, the analysis format could not be properly processed. Please check the logs for more details.
+The analysis was generated but the format could not be properly processed. 
+- Data type: ${typeof aiData}
+- Has data: ${!!aiData}
+- Data keys: ${typeof aiData === 'object' ? Object.keys(aiData || {}).join(', ') : 'N/A'}
+
+Please check the logs for more details.
 
 ---
 
@@ -1363,6 +1376,12 @@ async function processWebhookEvent(event) {
       if (!issue.pull_request) {
         console.log('Skipping non-PR comment');
         return { success: true, message: 'Skipped non-PR comment' };
+      }
+
+      // Skip comments from bots to avoid processing our own acknowledgment comments
+      if (sender.type === 'Bot' || sender.login.includes('bot') || comment.body.includes('🤖 Ovi QA Assistant')) {
+        console.log(`Skipping bot comment from ${sender.login}`);
+        return { success: true, message: 'Skipped bot comment' };
       }
 
       console.log(`Comment body: ${comment.body}`);
