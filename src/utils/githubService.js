@@ -1117,9 +1117,19 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
-  // Check if we have the new compressed markdown format
-  if (typeof aiData === 'string' && (aiData.includes('🎯 Ovi QA Analysis') || aiData.includes('📊 **Ship Assessment**') || aiData.includes('📋 Summary'))) {
-    // New compressed format - just add GetYourTester branding around it
+  // Check if we have the new simplified format (4 questions approach)
+  if (typeof aiData === 'string' && (
+    aiData.includes('Ship Score') || 
+    aiData.includes('Risk Level') || 
+    aiData.includes('Confidence Level') ||
+    aiData.includes('biggest risk') ||
+    aiData.includes('test manually') ||
+    aiData.includes('automated tests') ||
+    aiData.includes('🎯 Ovi QA Analysis') || 
+    aiData.includes('📊 **Ship Assessment**') || 
+    aiData.includes('📋 Summary')
+  )) {
+    // New format - just add GetYourTester branding around it
     return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
