@@ -1117,12 +1117,8 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
-  console.log('🔍 Formatting analysis for comment. Data type:', typeof aiData);
-  console.log('🔍 Data preview:', typeof aiData === 'string' ? aiData.substring(0, 200) : JSON.stringify(aiData).substring(0, 200));
-
   // Check if we have the new compressed markdown format
-  if (typeof aiData === 'string' && (aiData.includes('# Ovi QA Analysis') || aiData.includes('📋 Summary'))) {
-    console.log('✅ Detected new compressed markdown format');
+  if (typeof aiData === 'string' && (aiData.includes('🎯 Ovi QA Analysis') || aiData.includes('📊 **Ship Assessment**') || aiData.includes('📋 Summary'))) {
     // New compressed format - just add GetYourTester branding around it
     return `### 🤖 Ovi QA Assistant by GetYourTester
 
@@ -1204,22 +1200,13 @@ ${testRecipeTable}
   }
 
   // Final fallback for unexpected format
-  console.log('❌ Could not detect format. Data type:', typeof aiData);
-  console.log('❌ aiData content:', aiData);
-  console.log('❌ aiInsights structure:', Object.keys(aiInsights || {}));
-  
   return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
 
-**Analysis Status:** ⚠️ Format Issue
+**Analysis Status:** ⚠️ Processing Issue
 
-The analysis was generated but the format could not be properly processed. 
-- Data type: ${typeof aiData}
-- Has data: ${!!aiData}
-- Data keys: ${typeof aiData === 'object' ? Object.keys(aiData || {}).join(', ') : 'N/A'}
-
-Please check the logs for more details.
+The analysis was generated but could not be properly formatted. Please check the logs for more details.
 
 ---
 
