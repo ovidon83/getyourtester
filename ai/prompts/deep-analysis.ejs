@@ -12,13 +12,24 @@ Description: <%= body %>
 
 Based on THESE SPECIFIC CHANGES (not assumptions), answer these 4 questions:
 
-## 1. Release Assessment
-Provide a clear verdict and make it pretty with nice formatting and emojis:
-- **Risk Level**: [LOW/MEDIUM/HIGH/CRITICAL] with justification
-- **Ship Score**: [1-10] (10 = ship immediately, 1 = needs major work)
-- **Change Analysis**: Files changed, detect actual functionality changes, what are the user flows changed/introduced and the existing ones that are potentially impacted.
+## 🚀 Release Summary
+Provide a clear, visually appealing verdict with emojis and formatting:
 
-## 2. Risks & Questions
+### 📊 Ship Assessment
+- **🎯 Risk Level**: [🟢 LOW / 🟡 MEDIUM / 🟠 HIGH / 🔴 CRITICAL] with clear justification
+- **⭐ Ship Score**: [1-10] (10 = 🚀 ship immediately, 1 = 🛑 needs major work)  
+- **📈 Confidence**: [LOW/MEDIUM/HIGH] - how confident are you in this assessment?
+
+### 🔍 Change Analysis
+- **📁 Files Modified**: List key files changed
+- **⚡ Functionality Impact**: What user-facing changes are introduced?
+- **🔄 User Flows**: New flows introduced + existing flows potentially impacted
+- **💥 Blast Radius**: How many users/features could be affected?
+
+### 💡 Bottom Line
+One sentence verdict: Should this ship? What's the biggest concern?
+
+## ⚠️ Risks & Questions
 Analyze What's the biggest risk if this code breaks and ask smart QA/Product style questions to prevent bugs and bad UI/UX?. Analyze The actual changed code and identify the highest business impact failure scenarios. Consider:
 - User-facing functionality affected
 - Critical user flows impacted
@@ -26,7 +37,7 @@ Analyze What's the biggest risk if this code breaks and ask smart QA/Product sty
 - Data integrity risks
 - Security implications
 
-## 3. Testing Checklist
+## 🧪 Testing Checklist
 What should someone test manually before shipping this? Provide specific test scenarios based on the actual changes made in the PR and what else these changes might impact. Include:
 - Table: Test Scenario, Steps, Expected Result, Priority(low/medium/high), Automation(yes/no), Automation Level(unit, integration, e2e)
 - Test scenarios for both FE and BE changes and make it very clear, specific, and user-focused. Also include test scenarios for the new feature if it's a new feature.for functionalities potentially impacted by the PR changes.
