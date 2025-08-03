@@ -12,7 +12,13 @@ Description: <%= body %>
 
 Based on THESE SPECIFIC CHANGES (not assumptions), answer these 4 questions:
 
-## 1. Risks & Questions
+## 1. Release Assessment
+Provide a clear verdict and make it pretty with nice formatting and emojis:
+- **Risk Level**: [LOW/MEDIUM/HIGH/CRITICAL] with justification
+- **Ship Score**: [1-10] (10 = ship immediately, 1 = needs major work)
+- **Change Analysis**: Files changed, detect actual functionality changes, what are the user flows changed/introduced and the existing ones that are potentially impacted.
+
+## 2. Risks & Questions
 Analyze What's the biggest risk if this code breaks and ask smart QA/Product style questions to prevent bugs and bad UI/UX?. Analyze The actual changed code and identify the highest business impact failure scenarios. Consider:
 - User-facing functionality affected
 - Critical user flows impacted
@@ -20,7 +26,7 @@ Analyze What's the biggest risk if this code breaks and ask smart QA/Product sty
 - Data integrity risks
 - Security implications
 
-## 2. Testing Checklist
+## 3. Testing Checklist
 What should someone test manually before shipping this? Provide specific test scenarios based on the actual changes made in the PR and what else these changes might impact. Include:
 - Table: Test Scenario, Steps, Expected Result, Priority(low/medium/high), Automation(yes/no), Automation Level(unit, integration, e2e)
 - Test scenarios for both FE and BE changes and make it very clear, specific, and user-focused. Also include test scenarios for the new feature if it's a new feature.for functionalities potentially impacted by the PR changes.
@@ -28,20 +34,6 @@ What should someone test manually before shipping this? Provide specific test sc
 - User workflows to validate
 - Cross-browser/device considerations if UI changes
 - Integration points to test
-
-## 3. What automated tests are missing?
-Review the changed code and identify gaps in test coverage:
-- New functions/methods without unit tests
-- Modified logic missing test updates
-- Integration scenarios needing coverage
-- Regression tests for bug fixes
-- Performance tests if applicable
-
-## 4. Release Assessment
-Provide a clear verdict:
-- **Risk Level**: [LOW/MEDIUM/HIGH/CRITICAL] with justification
-- **Ship Score**: [1-10] (10 = ship immediately, 1 = needs major work)
-- **Change Analysis**: Files changed, detect actual functionality changes, and if it's a new feature, what are the user flows changed/introduced and the existing ones that are potentially impacted.
 
 **GUIDELINES:**
 - Be specific to the actual changes, not generic
