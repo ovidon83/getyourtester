@@ -53,18 +53,24 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 | Scenario | Steps | Expected Result | Priority | Type |
 |----------|-------|-----------------|----------|------|
-| [Primary user flow] | [Step-by-step actions] | [What should happen] | Critical | ✅ Auto (e2e) |
-| [Core functionality] | [Specific test steps] | [Expected outcome] | High | ✅ Auto (Integration) |
-| [Integration point] | [Test interaction] | [Result verification] | High | ❌ Manual |
-| [Error handling] | [Trigger error condition] | [Error state behavior] | Medium | ✅ Auto (e2e) |
-| [UI/UX validation] | [Interface interaction] | [Visual/behavioral result] | Medium | ❌ Manual |
-| [Edge case scenario] | [Boundary condition test] | [System behavior] | Edge Case | ❌ Manual |
-| [Cross-browser check] | [Test on different browsers] | [Consistent behavior] | Edge Case | ❌ Manual |
-| [Mobile responsiveness] | [Test on mobile devices] | [Proper mobile layout/function] | Edge Case | ❌ Manual |
+| [Main feature workflow] | [Complete user journey for new feature] | [End-to-end functionality works] | Critical | ✅ Auto (e2e) |
+| [Critical path integration] | [Test integration with existing systems] | [No breaking changes to core flows] | Critical | ✅ Auto (Integration) |
+| [Data integrity check] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual |
+| [Authentication/authorization] | [Test access controls if security-related] | [Proper permissions maintained] | Critical | ✅ Auto (Integration) |
+| [Error state handling] | [Trigger failure conditions] | [Graceful error handling and recovery] | High | ✅ Auto (e2e) |
+| [Performance validation] | [Test under expected load conditions] | [Acceptable response times maintained] | High | ❌ Manual |
+| [UI/UX consistency] | [Verify design and interaction patterns] | [Consistent user experience] | High | ❌ Manual |
+| [Cross-browser compatibility] | [Test on Chrome, Safari, Firefox] | [Consistent behavior across browsers] | High | ❌ Manual |
+| [Mobile responsiveness] | [Test on mobile devices and tablets] | [Proper mobile layout and functionality] | High | ❌ Manual |
+| [Edge case handling] | [Test boundary conditions and limits] | [System handles edge cases gracefully] | Medium | ❌ Manual |
+| [Accessibility compliance] | [Test with screen readers, keyboard nav] | [Accessible to users with disabilities] | Medium | ❌ Manual |
+| [Integration rollback] | [Test reverting changes if needed] | [Clean rollback without side effects] | Medium | ❌ Manual |
 
-**GUIDELINES:**
-- Focus on actual changes made, not generic scenarios
-- Prioritize by business impact and user experience
-- Provide specific, actionable test steps
-- Flag critical issues vs nice-to-haves clearly
-- Consider real user workflows and edge cases
+---
+
+**ANALYSIS INSTRUCTIONS (Do not include in output):**
+- Focus specifically on the actual code changes made in this PR
+- Prioritize tests by business impact: Critical = main feature + critical path, High = important supporting functionality, Medium = edge cases and nice-to-haves
+- Provide concrete, actionable test steps based on the real changes
+- Consider the full user journey and potential impact areas
+- Include comprehensive test coverage while being specific to this PR
