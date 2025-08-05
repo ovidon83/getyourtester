@@ -492,67 +492,8 @@ GetYourTester Bot
 async function fetchPRDescription(repository, prNumber) {
   try {
     if (simulatedMode || !octokit) {
-      console.log(`[SIMULATED] Would fetch PR description for ${repository}#${prNumber}`);
-      return 'This is a simulated PR description';
-    }
-    
-    const [owner, repoName] = repository.split('/');
-    if (!owner || !repoName) {
-      console.error(`Invalid repository format: ${repository}. Should be in format 'owner/repo'`);
-      return null;
-    }
-    
-    const response = await octokit.pulls.get({
-      owner,
-      repo: repoName,
-      pull_number: prNumber
-    });
-    
-    return response.data.body || 'No description provided';
-  } catch (error) {
-    console.error(`Failed to fetch PR description for ${repository}#${prNumber}:`, error.message);
-    return null;
-  }
-}
-
-/**
- * Fetch PR diff for AI analysis
- */
-async function fetchPRDiff(repository, prNumber) {
-  try {
-    if (simulatedMode || !octokit) {
-      console.log(`[SIMULATED] Would fetch PR diff for ${repository}#${prNumber}`);
-      return `diff --git a/src/auth.js b/src/auth.js
-new file mode 100644
-index 0000000..abc123
---- /dev/null
-+++ b/src/auth.js
-@@ -0,0 +1,25 @@
-+const jwt = require('jsonwebtoken');
-+const bcrypt = require('bcryptjs');
-+
-+function authenticateUser(email, password) {
-+  // Find user in database
-+  const user = findUserByEmail(email);
-+  if (!user) {
-+    throw new Error('User not found');
-+  }
-+
-+  // Verify password
-+  const isValid = bcrypt.compare(password, user.hashedPassword);
-+  if (!isValid) {
-+    throw new Error('Invalid password');
-+  }
-+
-+  // Generate JWT token
-+  const token = jwt.sign(
-+    { userId: user.id, email: user.email },
-+    process.env.JWT_SECRET,
-+    { expiresIn: '24h' }
-+  );
-+
-+  return { token, user };
-+}`;
+      console.error(`❌ Cannot fetch real PR description for ${repository}#${prNumber} - Authentication not available`);
+      return 'Error: Authentication not configured or app not installed';
     }
     
     const [owner, repoName] = repository.split('/');
@@ -561,8 +502,53 @@ index 0000000..abc123
       return 'Error: Invalid repository format';
     }
     
+    // Try to get repository-specific authentication first
+    let repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    if (!repoOctokit) {
+      console.error(`❌ Failed to get authentication for ${repository} - app may not be installed`);
+      return `Error: GitHub App not installed on ${repository} or insufficient permissions`;
+    }
+    
+    const response = await repoOctokit.pulls.get({
+      owner,
+      repo: repoName,
+      pull_number: prNumber
+    });
+    
+    return response.data.body || 'No description provided';
+  } catch (error) {
+    console.error(`Failed to fetch PR description for ${repository}#${prNumber}:`, error.message);
+    return `Error fetching PR description: ${error.message}`;
+  }
+}
+
+/**
+ * Fetch PR diff for AI analysis
+ */
+async function fetchPRDiff(repository, prNumber) {
+  try {
+    // Check if we're in simulated mode or don't have authentication
+    if (simulatedMode || !octokit) {
+      console.error(`❌ Cannot fetch real PR diff for ${repository}#${prNumber} - Authentication not available`);
+      console.log(`📋 Simulated mode: ${simulatedMode}, Octokit available: ${!!octokit}`);
+      return 'Error fetching PR diff: Authentication not configured or app not installed';
+    }
+    
+    const [owner, repoName] = repository.split('/');
+    if (!owner || !repoName) {
+      console.error(`Invalid repository format: ${repository}. Should be in format 'owner/repo'`);
+      return 'Error: Invalid repository format';
+    }
+    
+    // Try to get repository-specific authentication first
+    let repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    if (!repoOctokit) {
+      console.error(`❌ Failed to get authentication for ${repository} - app may not be installed`);
+      return `Error fetching PR diff: GitHub App not installed on ${repository} or insufficient permissions`;
+    }
+    
     // Get PR files to construct diff
-    const response = await octokit.pulls.listFiles({
+    const response = await repoOctokit.pulls.listFiles({
       owner,
       repo: repoName,
       pull_number: prNumber
@@ -1442,8 +1428,125 @@ async function testGitHubToken() {
   }
 }
 
+/**
+ * Get detailed authentication status for debugging
+ */
+async function getAuthenticationStatus() {
+  const status = {
+    timestamp: new Date().toISOString(),
+    simulatedMode: simulatedMode,
+    patToken: !!process.env.GITHUB_TOKEN,
+    githubApp: {
+      appId: !!process.env.GITHUB_APP_ID,
+      privateKey: !!process.env.GITHUB_PRIVATE_KEY,
+      webhookSecret: !!process.env.GITHUB_WEBHOOK_SECRET
+    },
+    octokitInitialized: !!octokit,
+    authenticationMethods: []
+  };
+
+  // Test PAT authentication
+  if (octokit && process.env.GITHUB_TOKEN) {
+    try {
+      const response = await octokit.users.getAuthenticated();
+      status.authenticationMethods.push({
+        type: 'PAT',
+        status: 'success',
+        user: response.data.login,
+        permissions: 'Standard user permissions'
+      });
+    } catch (error) {
+      status.authenticationMethods.push({
+        type: 'PAT',
+        status: 'failed',
+        error: error.message
+      });
+    }
+  }
+
+  // Test GitHub App authentication
+  const jwt = githubAppAuth.getGitHubAppJWT();
+  if (jwt) {
+    try {
+      const appOctokit = new Octokit({ auth: jwt });
+      const { data: app } = await appOctokit.apps.getAuthenticated();
+      status.authenticationMethods.push({
+        type: 'GitHub App',
+        status: 'success',
+        appName: app.name,
+        appId: app.id
+      });
+    } catch (error) {
+      status.authenticationMethods.push({
+        type: 'GitHub App',
+        status: 'failed',
+        error: error.message
+      });
+    }
+  }
+
+  return status;
+}
+
+/**
+ * Test repository access for a specific repo
+ */
+async function testRepositoryAccess(repository) {
+  const [owner, repoName] = repository.split('/');
+  if (!owner || !repoName) {
+    return { success: false, error: 'Invalid repository format' };
+  }
+
+  try {
+    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
+    if (!repoOctokit) {
+      return { 
+        success: false, 
+        error: 'No authentication available for this repository',
+        recommendation: 'Install the GitHub App on this repository'
+      };
+    }
+
+    // Test basic repository access
+    const repoResponse = await repoOctokit.repos.get({ owner, repo: repoName });
+    
+    // Test pull request access
+    const prResponse = await repoOctokit.pulls.list({ 
+      owner, 
+      repo: repoName, 
+      state: 'all',
+      per_page: 1 
+    });
+
+    return {
+      success: true,
+      repository: repoResponse.data.full_name,
+      permissions: {
+        repository: 'read',
+        pullRequests: 'read'
+      },
+      message: 'Repository access successful'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+      recommendation: error.status === 404 ? 
+        'Repository not found or GitHub App not installed' :
+        'Check repository permissions and GitHub App installation'
+    };
+  }
+}
+
 // Run the token test
 testGitHubToken();
+
+// Export new functions
+module.exports = {
+  ...module.exports,
+  getAuthenticationStatus,
+  testRepositoryAccess
+};
 
 // Run archiving operation when module is loaded
 setTimeout(() => {

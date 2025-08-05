@@ -180,4 +180,65 @@ router.post('/request/:id/update', isAuthenticated, async (req, res) => {
   }
 });
 
+// GitHub Authentication Status endpoint (protected)
+router.get('/auth-status', isAuthenticated, async (req, res) => {
+  try {
+    const authStatus = await githubService.getAuthenticationStatus();
+    res.json({
+      success: true,
+      ...authStatus
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Test repository access endpoint (protected)
+router.post('/test-repo', isAuthenticated, async (req, res) => {
+  try {
+    const { repository } = req.body;
+    if (!repository) {
+      return res.status(400).json({
+        success: false,
+        error: 'Repository parameter is required (format: owner/repo)'
+      });
+    }
+
+    const result = await githubService.testRepositoryAccess(repository);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Public endpoint for basic authentication status (for debugging)
+router.get('/auth-status-public', async (req, res) => {
+  try {
+    const authStatus = await githubService.getAuthenticationStatus();
+    // Return limited info for public access
+    res.json({
+      success: true,
+      timestamp: authStatus.timestamp,
+      simulatedMode: authStatus.simulatedMode,
+      hasPatToken: authStatus.patToken,
+      hasGitHubApp: authStatus.githubApp.appId && authStatus.githubApp.privateKey,
+      authenticationMethods: authStatus.authenticationMethods.map(method => ({
+        type: method.type,
+        status: method.status
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 module.exports = router; 

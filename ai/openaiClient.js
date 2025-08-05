@@ -52,10 +52,33 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
     // Get comprehensive code context
     const codeContext = await buildCodeContext(repo, pr_number, changedFiles, diff);
     
+    // Validate that we have real PR data, not simulated/fake data
+    const isSimulatedData = diff && (
+      diff.includes('This is a simulated PR description') ||
+      diff.includes('diff --git a/src/auth.js b/src/auth.js') ||
+      diff.includes('const jwt = require(\'jsonwebtoken\')') ||
+      diff.includes('Error fetching PR diff') ||
+      diff === 'No code changes detected'
+    );
+
+    if (isSimulatedData || !diff || diff.length < 50) {
+      console.log('⚠️ Detected simulated/fake data or missing PR diff - cannot perform real analysis');
+      const errorInsights = generateDataAccessError(title, repo, pr_number);
+      return {
+        success: true,
+        data: errorInsights,
+        metadata: {
+          repo, pr_number, model: 'data-access-error', timestamp: new Date().toISOString(),
+          note: 'Unable to access real PR data due to authentication or permission issues',
+          analysisType: 'data-access-error'
+        }
+      };
+    }
+
     // Sanitize inputs with much higher limits for deep analysis
     const sanitizedTitle = (title || 'No title provided').substring(0, 300);
     const sanitizedBody = (body || 'No description provided').substring(0, 2000);
-    const sanitizedDiff = (diff || 'No diff provided').substring(0, 8000); // Much higher limit
+    const sanitizedDiff = diff.substring(0, 8000); // Much higher limit
     const sanitizedContext = JSON.stringify(codeContext).substring(0, 6000); // Code context
 
     console.log(`🔍 Deep analysis input: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars, Context=${sanitizedContext.length} chars`);
@@ -375,6 +398,51 @@ function extractPRInfo(title, body, diff) {
     featureType,
     featureName,
     affectedArea
+  };
+}
+
+/**
+ * Generate error response when unable to access real PR data
+ */
+function generateDataAccessError(title, repo, prNumber) {
+  console.log('⚠️ Generating data access error response');
+  
+  return {
+    summary: {
+      description: `🚨 **Unable to analyze PR #${prNumber}** - Cannot access real code changes due to authentication or permission issues`,
+      riskLevel: "UNKNOWN",
+      shipScore: "N/A",
+      reasoning: "Analysis cannot be performed without access to actual code changes"
+    },
+    questions: [
+      "🔐 **Authentication Issue**: Is the QAKarma GitHub App properly installed on this repository?",
+      "🔑 **Permissions**: Does the GitHub App have 'Pull requests' read permissions?",
+      "📊 **Repository Access**: Can the app access private repositories if needed?",
+      "⚙️ **Configuration**: Are the GITHUB_APP_ID and GITHUB_PRIVATE_KEY properly configured?",
+      "🔄 **Manual Review**: Please manually review the actual code changes in this PR"
+    ],
+    testRecipe: {
+      criticalPath: [
+        "❌ **Cannot generate test plan** - No access to actual code changes",
+        "🔍 **Manual Review Required** - Please examine the PR diff manually",
+        "⚠️ **Contact Support** - Report this authentication issue to GetYourTester support"
+      ],
+      edgeCases: [
+        "Unable to identify edge cases without code access",
+        "Recommend manual testing of all changed functionality"
+      ],
+      automation: {
+        unit: ["Cannot suggest unit tests without seeing code changes"],
+        integration: ["Manual review needed for integration testing"],
+        e2e: ["End-to-end testing requires manual analysis of changes"]
+      }
+    },
+    risks: [
+      "🚨 **Critical**: Cannot assess risks without access to actual code changes",
+      "🔐 **Authentication Failure**: QAKarma app may not be properly configured for this repository",
+      "⚠️ **Manual Review Essential**: All changes must be manually reviewed and tested",
+      "📞 **Support Needed**: Contact GetYourTester support to resolve access issues"
+    ]
   };
 }
 
