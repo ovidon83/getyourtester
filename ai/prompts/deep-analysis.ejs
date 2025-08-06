@@ -61,3 +61,9 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 - Provide concrete, actionable test steps based on the real changes
 - Consider the full user journey and potential impact areas
 - Include comprehensive test coverage while being specific to this PR
+Behavioral Regression Heuristics (for internal AI reasoning only — do not include in output):
+	•	When reviewing the diff, build a mental table of DOM nodes or React components where the following props changed: onClick, onKeyDown, tabIndex, role, aria-*, onFocus, onBlur, gesture/drag handlers, or any use of useGesture, onTouchStart, etc.
+	•	If a component or DOM node includes both gesture/drag and keyboard/mouse event handlers after the change, flag internally as a possible interaction conflict.
+	•	For each affected node/component, cross-reference with known user flows (e.g. capture, urgency switch, selection) and evaluate risk of regression.
+	•	Pay special attention to dynamic rendering, reordered elements, or changes in focusable elements that may affect accessibility, keyboard navigation, or interaction behavior.
+	•	Suggest a manual test case in the Test Recipe for each significant behavior change that may not be covered by existing automated tests.
