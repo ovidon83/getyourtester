@@ -1,6 +1,6 @@
 /**
  * GitHub Service for webhook processing
- * Implements actual functionality for handling /test commands
+ * Implements actual functionality for handling /qa-review commands
  */
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
@@ -347,11 +347,11 @@ function loadAllTestRequests() {
 }
 
 /**
- * Parse a /test comment to extract test request details
+ * Parse a /qa-review comment to extract test request details
  */
 function parseTestRequestComment(comment) {
-  // Skip the "/test" part
-  const content = comment.replace(/^\/test\s+/, '').trim();
+  // Skip the "/qa-review" part
+  const content = comment.replace(/^\/qa-review\s+/, '').trim();
   
   const parsedDetails = {
     // Include the full content as the first field
@@ -444,7 +444,7 @@ async function sendEmailNotification(testRequest) {
         
         <h3>Test Request Content:</h3>
         <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/test\s+/, '').trim() : 'No content available'}</pre>
+          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/qa-review\s+/, '').trim() : 'No content available'}</pre>
         </div>
         
         <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to manage this request.</p>
@@ -468,7 +468,7 @@ PR Description:
 ${testRequest.prDescription || 'No description provided'}
 
 Test Request Content:
-${testRequest.comment ? testRequest.comment.replace(/^\/test\s+/, '').trim() : 'No content available'}
+${testRequest.comment ? testRequest.comment.replace(/^\/qa-review\s+/, '').trim() : 'No content available'}
 
 Please login to the dashboard to manage this request: http://localhost:3000/dashboard
 
@@ -894,11 +894,11 @@ _Early-access mode: Your first test requests (up to 4 hours) are **FREE**!_
 
 If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
 
-Request a test by commenting: /test followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
+Request a QA review by commenting: /qa-review followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
 
 **Example test request:**
 \`\`\`
-/test
+/qa-review
 
 Please run a full manual QA on this PR. Here's what I'd like you to focus on:
 - Main goal: Verify the new user onboarding flow (sign up, email verification, and first login).
@@ -1098,7 +1098,7 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 }
 
 /**
- * Format hybrid analysis for GitHub comment (shared by /test and automatic PR analysis)
+ * Format hybrid analysis for GitHub comment (shared by /qa-review and automatic PR analysis)
  */
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
@@ -1369,9 +1369,9 @@ async function processWebhookEvent(event) {
 
       console.log(`Comment body: ${comment.body}`);
       
-      // Check for /test command (manual testing requests)
-      if (comment.body.trim().startsWith('/test')) {
-        console.log('🧪 /test command detected!');
+      // Check for /qa-review command (manual QA review requests)
+      if (comment.body.trim().startsWith('/qa-review')) {
+        console.log('🧪 /qa-review command detected!');
         return await handleTestRequest(repository, issue, comment, sender);
       }
     }
