@@ -126,6 +126,68 @@ app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req
   }
 });
 
+// Special route for generate-short-analysis with larger payload support
+app.post('/generate-short-analysis', bodyParser.json({ limit: '10mb' }), async (req, res) => {
+  try {
+    const { generateShortAnalysis } = require('./ai/openaiClient');
+    
+    // Extract required fields from request body
+    const { repo, pr_number, title, body, diff } = req.body;
+    
+    // Validate required fields
+    if (!repo || !pr_number || !title) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        details: 'repo, pr_number, and title are required'
+      });
+    }
+    
+    console.log(`🤖 Ovi QA Agent generating short analysis for PR #${pr_number} in ${repo}`);
+    console.log('🔍 Input Debug:');
+    console.log(`   Repo: ${repo}`);
+    console.log(`   PR #: ${pr_number}`);
+    console.log(`   Title: ${title}`);
+    console.log(`   Body length: ${body?.length || 0}`);
+    console.log(`   Diff length: ${diff?.length || 0}`);
+    
+    // Generate short AI insights
+    const aiInsights = await generateShortAnalysis({
+      repo,
+      pr_number,
+      title,
+      body,
+      diff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ Ovi QA Agent short analysis completed successfully via webhook server');
+      res.json({
+        success: true,
+        data: aiInsights.data,
+        metadata: aiInsights.metadata
+      });
+    } else {
+      console.error('❌ Ovi QA Agent short analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
+      res.status(500).json({
+        success: false,
+        error: aiInsights?.error || 'Failed to generate short insights',
+        details: aiInsights?.details || 'Unknown error occurred'
+      });
+    }
+    
+  } catch (error) {
+    console.error('❌ Exception in Ovi QA Agent short analysis:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Ovi QA Agent short analysis failed',
+      details: error.message
+    });
+  }
+});
+
 // Add dashboard page to view test requests
 app.get('/dashboard', (req, res) => {
   const testRequests = githubService.loadAllTestRequests();

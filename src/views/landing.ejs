@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: title || 'GetYourTester - Your First QA for Solo Founders & Startups' }) %>
+<%- include('partials/header', { title: title || 'GetYourTester – QA Without the Hiring Headache (AI Ovi + Human Ovi)' }) %>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9R81PDLX9Q"></script>
@@ -12,39 +12,25 @@
 <!-- Custom GA4 event tracking -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Install GitHub App
-    var installBtns = document.querySelectorAll('a[href*="github.com/settings/apps/get-your-tester"]');
-    installBtns.forEach(function(btn) {
+    // Start Free Trial
+    var trialBtns = document.querySelectorAll('a[href*="trial"], .trial-btn');
+    trialBtns.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Install GitHub App' });
+        gtag('event', 'click', { event_category: 'CTA', event_label: 'Start Free Trial' });
       });
     });
-    // Join the Lounge on Google Chat
-    var loungeBtn = document.querySelector('a[href*="chat.google.com"][class*="btn"]');
-    if (loungeBtn) {
-      loungeBtn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Join the Lounge on Google Chat' });
+    // Book a Demo
+    var demoBtns = document.querySelectorAll('a[href*="calendly.com"], .demo-btn');
+    demoBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        gtag('event', 'click', { event_category: 'CTA', event_label: 'Book a Demo' });
       });
-    }
-    // BuyMeABook (BuyMeACoffee)
-    var bmcBtn = document.querySelector('a[href*="buymeacoffee.com"][class*="btn"]');
-    if (bmcBtn) {
-      bmcBtn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'BuyMeABook' });
-      });
-    }
+    });
     // Contact us
     var contactBtns = document.querySelectorAll('a[href="/contact"]');
     contactBtns.forEach(function(btn) {
       btn.addEventListener('click', function() {
         gtag('event', 'click', { event_category: 'CTA', event_label: 'Contact us' });
-      });
-    });
-    // Book a Call
-    var bookBtns = document.querySelectorAll('a[href*="calendly.com"][class*="btn"]');
-    bookBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Book a Call' });
       });
     });
     // Docs
@@ -62,17 +48,13 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h3 class="mb-0"><i class="bi bi-card-checklist"></i> GetYourTester</h3>
-        <span class="nav-by-badge"><a href="#" class="nav-by-link">by QA Karma</a></span>
+        <h3 class="mb-0"><i class="bi bi-robot text-primary"></i> GetYourTester</h3>
+        <span class="nav-by-badge">QA Without the Hiring Headache</span>
       </div>
       <div class="d-flex gap-3 align-items-center">
-        <a href="https://chat.google.com/room/AAQA-W7gcrU?cls=7" target="_blank" class="nav-btn chat-btn">
-          <div class="google-icon me-1"><i class="bi bi-chat-dots"></i></div>
-          <span>Join GYT Lounge</span>
-        </a>
-        <a href="#about" class="nav-btn about-nav-btn"><i class="bi bi-person-circle me-1"></i><span>Meet Your Tester</span></a>
-        <a href="/request" class="nav-btn request-btn"><i class="bi bi-send me-1"></i><span>Request Testing</span></a>
-        <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="nav-btn calendar-btn"><i class="bi bi-calendar-check me-1"></i><span>Book a Call</span></a>
+        <a href="#pricing" class="nav-btn pricing-nav-btn"><i class="bi bi-tag me-1"></i><span>Pricing</span></a>
+        <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="nav-btn demo-btn calendar-btn"><i class="bi bi-calendar-check me-1"></i><span>Book a Demo</span></a>
+        <a href="/request" class="nav-btn trial-btn request-btn"><i class="bi bi-play-circle me-1"></i><span>Start Free Trial</span></a>
       </div>
     </div>
   </div>
@@ -83,96 +65,89 @@
   <div class="container">
     <div class="row justify-content-center align-items-center">
       <div class="col-lg-7 text-center text-lg-start">
-        <h1 class="fw-bold mb-3">On-demand QA in Github and Beyond</h1>
-        <p class="lead mb-4">Ship confidently without hiring a QA team - From PR testing to full QA function</p>
+        <div class="mb-3">
+          <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">💡 Complete QA: AI + Human</span>
+        </div>
+        <h1 class="fw-bold mb-3 display-4">QA Without the Hiring Headache</h1>
+        <p class="lead mb-4 fs-5">Complete QA for startups: AI QA across your product lifecycle + human QA for critical releases. Start now with GitHub PR reviews.</p>
         
         <div class="key-benefits-grid mb-4">
           <div class="key-benefit-card">
-            <div class="benefit-icon">
-              <i class="bi bi-lightning-charge"></i>
-            </div>
+            <div class="benefit-icon"><i class="bi bi-robot"></i></div>
             <div class="benefit-content">
-              <h3>Fast</h3>
-              <p>Up to 4h response time</p>
+              <h3>AI PR Review</h3>
+              <p>Instant analysis on every PR</p>
             </div>
           </div>
           <div class="key-benefit-card">
-            <div class="benefit-icon">
-              <i class="bi bi-piggy-bank"></i>
-            </div>
+            <div class="benefit-icon"><i class="bi bi-exclamation-triangle"></i></div>
             <div class="benefit-content">
-              <h3>Affordable</h3>
-              <p>What you need, when you need it</p>
+              <h3>Risk Flags</h3>
+              <p>Catch issues before release</p>
             </div>
           </div>
           <div class="key-benefit-card">
-            <div class="benefit-icon">
-              <i class="bi bi-graph-up"></i>
-            </div>
+            <div class="benefit-icon"><i class="bi bi-clipboard-check"></i></div>
             <div class="benefit-content">
-              <h3>Scalable</h3>
-              <p>From PR tests to full QA services</p>
+              <h3>Test Plans</h3>
+              <p>Clear, actionable test recipes</p>
             </div>
           </div>
           <div class="key-benefit-card">
-            <div class="benefit-icon">
-              <i class="bi bi-rocket"></i>
-            </div>
+            <div class="benefit-icon"><i class="bi bi-person-check"></i></div>
             <div class="benefit-content">
-              <h3>AI-ready</h3>
-              <p>Testing that's ready for the AI revolution</p>
+              <h3>Add Human QA</h3>
+              <p>Hands-on testing when needed</p>
             </div>
           </div>
         </div>
         
         <div class="cta-buttons d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-4">
-          <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank" class="cta-btn github-btn">
-            <i class="bi bi-lightning-charge me-2"></i>Install GitHub App
+          <a href="/request" class="cta-btn trial-btn primary-cta">
+            <i class="bi bi-play-circle me-2"></i>Start Free Trial
           </a>
-          <a href="/request" class="cta-btn test-btn">
-            <i class="bi bi-globe me-2"></i>Request Test Form
-          </a>
-          <a href="/#" class="cta-btn waitlist-btn position-relative">
-            <i class="bi bi-bell me-2"></i>Chrome Extension
-            <span class="coming-soon-badge">Coming Soon</span>
+          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="cta-btn demo-btn secondary-cta">
+            <i class="bi bi-calendar-check me-2"></i>Book a Demo
           </a>
         </div>
+        <p class="small text-white-75 mb-1">🎯 5-day free trial • No credit card required • Setup in minutes</p>
+        <div class="small text-white-75">Now: GitHub PR AI reviews • Next: Jira/Linear assistant (Chrome extension)</div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">
         <div class="card shadow-lg border-0 border-radius-lg how-it-works-card">
           <div class="card-header bg-primary text-white py-3">
-            <h3 class="fs-4 mb-0"><i class="bi bi-github me-2"></i>How It Works In GitHub</h3>
+            <h3 class="fs-4 mb-0"><i class="bi bi-robot me-2"></i>How It Works</h3>
           </div>
           <div class="card-body p-4">
             <div class="timeline">
               <div class="timeline-item">
-                <div class="timeline-marker">1</div>
+                <div class="timeline-marker ai-marker">1</div>
                 <div class="timeline-content">
-                  <h4>Submit</h4>
-                  <p>Comment <code>/test</code> in your PR</p>
+                  <h4>Open a PR</h4>
+                  <p>Ovi analyzes the diff instantly</p>
                 </div>
               </div>
               <div class="timeline-item">
-                <div class="timeline-marker">2</div>
+                <div class="timeline-marker human-marker">2</div>
                 <div class="timeline-content">
-                  <h4>We Test</h4>
-                  <p>Status, Progress, and Results in PR</p>
+                  <h4>Get QA Insights</h4>
+                  <p>Risk flags, questions, and a clear test plan</p>
                 </div>
               </div>
               <div class="timeline-item">
-                <div class="timeline-marker">3</div>
+                <div class="timeline-marker ship-marker">3</div>
                 <div class="timeline-content">
-                  <h4>Get Report</h4>
-                  <p>Bugs, UX insights, actionable fixes</p>
+                  <h4>Add the Human Ovi</h4>
+                  <p>Hands-on QA testing, staging validation, and production monitoring</p>
                 </div>
               </div>
             </div>
-            
+
             <div class="mt-4 text-center">
-              <a href="/docs" class="guide-link"><i class="bi bi-book me-2"></i>View Guide and Examples <i class="bi bi-arrow-right ms-1"></i></a>
+              <a href="/docs" class="guide-link"><i class="bi bi-book me-2"></i>View Integration Guide <i class="bi bi-arrow-right ms-1"></i></a>
             </div>
-            <div class="mt-4 text-center alt-options">
-              <i class="bi bi-stars me-2"></i>No Github? <a href="/request">Web Form</a> or <a href="#" class="position-relative">Chrome Extension <span class="mini-badge">soon</span></a>
+            <div class="mt-3 text-center alt-options text-secondary">
+              <i class="bi bi-stars me-2"></i>Works with GitHub, GitLab, and any CI/CD pipeline
             </div>
           </div>
         </div>
@@ -182,302 +157,249 @@
 </section>
 
 <!-- Pricing Packages -->
-<section class="py-5 bg-light">
+<section id="pricing" class="py-5 bg-light">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="fw-bold">Pricing</h2>
+      <h2 class="fw-bold">Simple, Powerful Pricing</h2>
+      <p class="lead">Start free. Pick AI only or AI + Human.</p>
     </div>
     
     <div class="row justify-content-center g-4">
-      <!-- Free Trial Package -->
-      <div class="col-lg-4">
+      <!-- Ovi AI Package -->
+      <div class="col-lg-6">
         <div class="card h-100 border-0 shadow-sm hover-lift position-relative overflow-hidden">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3 class="fs-4 fw-bold mb-0">Free Trial</h3>
-              <span class="badge bg-success">No Credit Card</span>
+              <h3 class="fs-4 fw-bold mb-0">Ovi (AI QA Agent)</h3>
+              <span class="badge bg-primary">AI Only</span>
             </div>
             
             <div class="mb-4">
-              <span class="h2 fw-bold">$0</span>
-            </div>
-            
-            <ul class="text-secondary mb-4 ps-3">
-              <li class="mb-2">1x PR test(up to 2h)</li>
-              <li class="mb-2">Basic Bug Report</li>
-              <li class="mb-2">Basic UI/UX Feedback</li>
-              <li class="mb-2">24h response time</li>
-            </ul>
-            
-            <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank" class="btn btn-success w-100 py-2">Start Free</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Individual Package -->
-      <div class="col-lg-4">
-        <div class="card h-100 border-0 shadow-sm hover-lift position-relative overflow-hidden">
-          <div class="card-body p-4 p-lg-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3 class="fs-4 fw-bold mb-0">On-Demand</h3>
-            </div>
-            
-            <div class="mb-4">
-              <span class="h2 fw-bold">$300</span>
-            </div>
-            
-            <ul class="text-secondary mb-4 ps-3">
-              <li class="mb-2">Up to 4h of testing</li>
-              <li class="mb-2">FREE Onboarding</li>
-              <li class="mb-2">Bug Report</li>
-              <li class="mb-2">UI/UX Feedback</li>
-            </ul>
-            
-            <a href="/request" target="_blank" class="btn btn-outline-primary w-100 py-2">Start Testing</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Bundle Package -->
-      <div class="col-lg-4">
-        <div class="card h-100 border-0 shadow hover-lift position-relative overflow-hidden">
-          <div class="card-body p-4 p-lg-5">
-            <div class="ribbon ribbon-top-right"><span>Best Value</span></div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3 class="fs-4 fw-bold mb-0">Essential</h3>
-            </div>
-            
-            <div class="mb-4">
-              <span class="h2 fw-bold">$1000</span>
+              <span class="h2 fw-bold">$199</span>
               <span class="text-muted"> / month</span>
             </div>
             
-            <ul class="text-secondary mb-4 ps-3">
-              <li class="mb-2">20h of testing</li>
-              <li class="mb-2">Monthly Smoke Test</li>
-              <li class="mb-2">Bug & UI/UX Report</li>
-              <li class="mb-2">Daily Status Updates</li>
-            </ul>
+              <ul class="text-secondary mb-4">
+                <li class="mb-2">PR analysis & risk flags</li>
+                <li class="mb-2">QA questions</li>
+                <li class="mb-2">Test recipe generation</li>
+              </ul>
             
-            <a href="/request" target="_blank" class="btn btn-primary w-100 py-2">Start Today</a>
+            <a href="/request" class="btn btn-primary w-100 py-3 trial-btn">Start Free Trial</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ovi + QA Partner Package -->
+      <div class="col-lg-6">
+        <div class="card h-100 border-0 shadow hover-lift position-relative overflow-hidden border-primary">
+          <div class="ribbon ribbon-top-right"><span>Most Popular</span></div>
+          <div class="card-body p-4 p-lg-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="fs-4 fw-bold mb-0">Ovi + QA Partner</h3>
+              <span class="badge bg-success">AI + Human</span>
+            </div>
+            
+            <div class="mb-4">
+              <span class="h2 fw-bold">$1,499</span>
+              <span class="text-muted"> / month</span>
+            </div>
+            
+              <ul class="text-secondary mb-4">
+                <li class="mb-2">Everything in Ovi (AI)</li>
+                <li class="mb-2">Weekly exploratory testing</li>
+                <li class="mb-2">Regression coverage & staging validation</li>
+              </ul>
+            
+            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-success w-100 py-3 demo-btn">Book a Demo</a>
           </div>
         </div>
       </div>
     </div>
     
-    <div class="text-center mt-4">
-      <p class="mb-0">Need a different mix of services: QA strategy, Automation, Full-time QA,or Build a Team? <a href="/contact" class="fw-medium">Contact me</a></p>
+    <div class="text-center mt-5">
+      <p class="mb-2">💡 <strong>Start with the 5-day free trial</strong> — no credit card required, upgrade anytime.</p>
+      <p class="mb-0 small text-muted">Need custom enterprise solutions? <a href="/contact" class="fw-medium">Contact us</a></p>
     </div>
   </div>
 </section>
 
-<!-- Testimonials in Card Format -->
+<!-- Meet Ovi Section (minimal) -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="mb-4">
+          <h2 class="fw-bold mb-3">Meet Ovi — Your QA AI Agent</h2>
+          <p class="lead mb-0">Modeled after Ovi (human). Reviews PRs, flags risks, asks QA questions, and generates test plans.</p>
+        </div>
+        
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <div class="bg-primary rounded-circle p-2 me-3 mt-1">
+                <i class="bi bi-search text-white"></i>
+              </div>
+              <div>
+                <h5 class="fs-6 fw-bold mb-1">PR Analysis</h5>
+                <p class="small text-muted mb-0">Reviews code changes like a senior QA engineer</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <div class="bg-warning rounded-circle p-2 me-3 mt-1">
+                <i class="bi bi-exclamation-triangle text-white"></i>
+              </div>
+              <div>
+                <h5 class="fs-6 fw-bold mb-1">Risk Flags</h5>
+                <p class="small text-muted mb-0">Spots potential issues before they reach production</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <div class="bg-info rounded-circle p-2 me-3 mt-1">
+                <i class="bi bi-question-circle text-white"></i>
+              </div>
+              <div>
+                <h5 class="fs-6 fw-bold mb-1">Smart Questions</h5>
+                <p class="small text-muted mb-0">Asks the right QA questions developers often miss</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <div class="bg-success rounded-circle p-2 me-3 mt-1">
+                <i class="bi bi-clipboard-check text-white"></i>
+              </div>
+              <div>
+                <h5 class="fs-6 fw-bold mb-1">Test Recipes</h5>
+                <p class="small text-muted mb-0">Generates comprehensive test plans automatically</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;">O</div>
+              <div class="ms-2">
+                <strong>Ovi AI</strong>
+                <span class="text-muted ms-2">PR Comment</span>
+              </div>
+            </div>
+            <p class="mb-2"><span class="badge bg-warning text-dark me-2">Risk</span> Auth flow changes may break existing sessions</p>
+            <p class="mb-2"><span class="badge bg-info text-white me-2">Questions</span> Have you tested mobile logout? What happens to sessions on deploy?</p>
+            <p class="mb-0"><span class="badge bg-success text-white me-2">Test Plan</span> Login/logout mobile/desktop, session persistence, API auth checks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ovi AI Agent Features Section (minimal) -->
+<section id="features" class="py-5 bg-white">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-3">Meet Ovi — Your QA AI Agent</h2>
+    <p class="lead mb-3">Supports your product lifecycle:</p>
+    <div class="d-flex gap-2 flex-wrap justify-content-center mb-4 text-secondary">
+      <span>Pre-dev (Jira/Linear): req analysis, design review, QA questions, test recipe</span>
+      <span>During-dev (GitHub): PR confidence & ship score, risk analysis, test recipe</span>
+    </div>
+    <div class="small text-muted mb-4">Today: GitHub PRs • Next: Jira/Linear Chrome extension</div>
+    <div class="d-flex gap-2 flex-wrap justify-content-center mb-4">
+      <span class="badge bg-light text-dark">PR Analysis</span>
+      <span class="badge bg-light text-dark">Risk Flags</span>
+      <span class="badge bg-light text-dark">QA Questions</span>
+      <span class="badge bg-light text-dark">Test Plans</span>
+    </div>
+    <a href="/request" class="btn btn-primary trial-btn">Start Free Trial</a>
+  </div>
+</section>
+
+<!-- Work With the Real Ovi Section (minimal) -->
 <section class="py-5 bg-light">
   <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">What Founders Say</h2>
-      <p class="lead">Join the startups already shipping with confidence</p>
-    </div>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="card-body p-4">
-            <div class="d-flex mb-3">
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-            </div>
-            <p>"Ovi has been our testing partner for 4 years, delivering a perfect mix of on-demand testing, process implementation, and engineering team coaching that shifted our entire approach to quality."</p>
-            <div class="d-flex align-items-center mt-3">
-              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                <span class="fw-bold">DK</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="card-body p-4">
-            <div class="d-flex mb-3">
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-            </div>
-            <p>"Ovi is always testing from the user's perspective which is something we value a lot. Within hours we got thorough feedback directly in our workflow. He also covered most of the critical paths with automation."</p>
-            <div class="d-flex align-items-center mt-3">
-              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                <span class="fw-bold">JH</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="card-body p-4">
-            <div class="d-flex mb-3">
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning me-1"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-            </div>
-            <p>"Ovi built our testing foundation from zero to one while balancing hands-on testing with mentorship. His work transformed our engineering culture and quality practices. His work directly increased customer satisfaction while accelerating our releases."</p>
-            <div class="d-flex align-items-center mt-3">
-              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                <span class="fw-bold">JB</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Services Section -->
-<section id="services" class="py-5">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Scale Beyond Basic PR Testing</h2>
-      <p class="lead">Scale smart and start with a solid test strategy that saves you resources, but delivers quality</p>
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Work With the Real Ovi</h2>
+      <p class="lead">Dedicated human QA for the critical things: release testing, full regressions, test planning & strategy.</p>
     </div>
     
-    <div class="row g-4">
-      <!-- Service 1: PR Testing -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
           <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                <i class="bi bi-github text-primary" style="font-size: 1.5rem;"></i>
+          <h3 class="fw-bold mb-3">What You Get</h3>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <i class="bi bi-search text-success me-3 mt-1"></i>
+                  <div>
+                    <h5 class="fs-6 fw-bold mb-1">Weekly Exploratory Testing</h5>
+                    <p class="small text-muted mb-0">Deep dive into user workflows and edge cases</p>
+                  </div>
+                </div>
               </div>
-              <h3 class="fs-5 mb-0">PR Testing</h3>
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <i class="bi bi-check-circle text-success me-3 mt-1"></i>
+                  <div>
+                    <h5 class="fs-6 fw-bold mb-1">Staging Validation</h5>
+                    <p class="small text-muted mb-0">Pre-production confidence and release readiness</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <i class="bi bi-phone text-success me-3 mt-1"></i>
+                  <div>
+                    <h5 class="fs-6 fw-bold mb-1">Cross-Device Testing</h5>
+                    <p class="small text-muted mb-0">Mobile, tablet, desktop coverage</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <i class="bi bi-eye text-success me-3 mt-1"></i>
+                  <div>
+                    <h5 class="fs-6 fw-bold mb-1">Production Monitoring</h5>
+                    <p class="small text-muted mb-0">Real user impact tracking and issue detection</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p>Catch issues early – right in your GitHub pull requests. Best for solo founders and early-stage.</p>
-            <ul class="small mb-3">
-              <li>Deep testing & report</li>
-              <li>Pay only for what you need</li>
-              <li>Results in hours, not days</li>
-            </ul>
-          </div>
-          <div class="card-footer bg-white border-0 pb-3">
-            <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank" class="btn btn-sm btn-primary">Get Started</a>
           </div>
         </div>
       </div>
       
-      <!-- Service 2: QA Strategy -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
-                <i class="bi bi-diagram-3 text-success" style="font-size: 1.5rem;"></i>
-              </div>
-              <h3 class="fs-5 mb-0">Test Culture & Strategy</h3>
+      <div class="col-lg-6">
+        <div class="bg-gradient-light rounded-4 p-4">
+          <h4 class="fw-bold mb-3">AI + Human Partnership</h4>
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-primary rounded-circle p-2 me-3">
+              <i class="bi bi-robot text-white"></i>
             </div>
-            <p>Integrate quality into requirements, development, and delivery. Skip the chaos, ship with clarity. </p>
-            <ul class="small mb-3">
-              <li>Real shift-left testing</li>
-              <li>Quality-driven development</li>
-              <li>Test automation & CI/CD</li>
-            </ul>
-          </div>
-          <div class="card-footer bg-white border-0 pb-3">
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-sm btn-success">Book Strategy Call</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Service 3: Test Automation -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-warning bg-opacity-10 p-2 me-3">
-                <i class="bi bi-gear-wide-connected text-warning" style="font-size: 1.5rem;"></i>
-              </div>
-              <h3 class="fs-5 mb-0">Test Automation</h3>
-            </div>
-            <p>Build automation that accelerates your growth, not your burn rate. Designed for speed and impact.</p>
-            <ul class="small mb-3">
-              <li>Architecture, Framework, and Approach</li>
-              <li>Test Implementation & Coverage</li> 
-              <li>CI/CD integration</li>
-            </ul>
-          </div>
-          <div class="card-footer bg-white border-0 pb-3">
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-sm btn-warning text-dark">Discuss Automation</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Service 4: Hands-on QA -->
-      <div class="col-md-6 col-lg-6">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-danger bg-opacity-10 p-2 me-3">
-                <i class="bi bi-laptop text-danger" style="font-size: 1.5rem;"></i>
-              </div>
-              <h3 class="fs-5 mb-0">Hands-on QA</h3>
-            </div>
-            <p>Manual testing that really matters. Exploratory, user-focused, and effective.</p>
-            <div class="row">
-              <div class="col-md-6">
-                <ul class="small mb-3">
-                  <li>Full-scope testing - UI/UX, API, Performance, Security</li>
-                  <li>Pre-launch validation - Release with confidence</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <ul class="small mb-3">
-                  <li>Real-world scenarios - Testing beyond happy paths</li>
-                  <li>Test case development</li>
-                </ul>
-              </div>
+            <div>
+              <h5 class="mb-1">AI Ovi — Speed & Consistency</h5>
+              <p class="small text-muted mb-0">Never miss obvious issues, always get quick feedback</p>
             </div>
           </div>
-          <div class="card-footer bg-white border-0 pb-3">
-            <a href="/contact" class="btn btn-sm btn-danger">Request Testing</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Service 5: QA Team Building -->
-      <div class="col-md-6 col-lg-6">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-info bg-opacity-10 p-2 me-3">
-                <i class="bi bi-people-fill text-info" style="font-size: 1.5rem;"></i>
-              </div>
-              <h3 class="fs-5 mb-0">QA Team</h3>
+          <div class="d-flex align-items-center mb-4">
+            <div class="bg-success rounded-circle p-2 me-3">
+              <i class="bi bi-person-check text-white"></i>
             </div>
-            <p>Quality beyond headcount. Build your QA team at the right time, in the right way, for best results. No throwing people at problems.</p>
-            <div class="row">
-              <div class="col-md-6">
-                <ul class="small mb-3">
-                  <li>Hiring strategy & roles</li>
-                  <li>Interview process</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <ul class="small mb-3">
-                  <li>Onboarding & training</li>
-                  <li>Team structure</li>
-                </ul>
-              </div>
+            <div>
+              <h5 class="mb-1">Human Ovi — Insight & Context</h5>
+              <p class="small text-muted mb-0">Catch nuanced UX issues and business logic flaws</p>
             </div>
           </div>
-          <div class="card-footer bg-white border-0 pb-3">
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-sm btn-info text-white">Discuss Team Building</a>
+          <div class="text-center">
+            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-success demo-btn">Work With the Real Ovi</a>
           </div>
         </div>
       </div>
@@ -485,43 +407,11 @@
   </div>
 </section>
 
-<!-- About Me Section - Card Style -->
-<section class="py-5" id="about">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4 p-md-5">
-            <div class="row align-items-center">
-              <div class="col-md-4 text-center mb-4 mb-md-0">
-                <img src="https://media.licdn.com/dms/image/v2/D5603AQFxdS7D7Wjoow/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1667611347443?e=1752710400&v=beta&t=ZqI5RIhNCorqeI5-CiHFLmYbiPwHuFF2NfchuGJi9Ak" alt="Ovidiu Donciu, QA Expert" class="rounded-circle img-fluid shadow-sm mb-3" style="max-width: 150px; border: 3px solid #fff;">
-                <h2 class="fs-4 fw-bold">Meet Your QA Partner</h2>
-                <div class="mt-3 about-buttons">
-                  <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="about-btn linkedin-btn"><i class="bi bi-linkedin me-2"></i>Connect</a>
-                  <a href="/contact" class="about-btn contact-btn"><i class="bi bi-envelope me-2"></i>Contact</a>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <h3 class="fw-bold mb-3">
-                  👋 Meet Ovi — Your Founding QA During Growth
-                </h3>
-                <p>
-                  <strong>Authentic, Dedicated, and Effective: True A-player Early On</strong><br><br>
-                  For 15+ years I've helped solo founders, startups, and scale-ups ship high-quality products that delight users(10M+), and make a difference in the world. My passion is to equip founders with the most efficient and scalable hands-on testing, quality culture, strategy, and best practices without over-hiring and overspending.</p>
-                <p class="mb-3">
-                  💥 I think like a customer, care like a founder, and test like speed depends on stability.<br>
-                </p>
-                <p class="mb-3">
-                  👥 I brought in the best QA people I've worked with—friends I trust—to help when it matters. Together, we deliver the kind of thoughtful testing that actually moves the needle.<br>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Testimonials removed for minimal design -->
+
+<!-- Integration removed for minimal design -->
+
+<!-- About removed for minimal design -->
 
 <!-- Call to Action -->
 <section class="py-5 bg-gradient-primary text-white text-center">
@@ -529,22 +419,22 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <h2 class="fw-bold mb-3">Ready to ship with confidence?</h2>
-        <p class="lead mb-4">Get started today - <span class="free-badge">First tests FREE!</span></p>
+        <p class="lead mb-4">Start with AI Ovi, add human Ovi when you need deep testing expertise</p>
         <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
-          <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank" class="hero-btn primary-btn">
+          <a href="/request" class="hero-btn primary-btn trial-btn">
             <div class="btn-icon-wrapper">
-              <i class="bi bi-github"></i>
+              <i class="bi bi-play-circle"></i>
             </div>
-            <span>Install GitHub App</span>
+            <span>Start Free Trial</span>
           </a>
-          <a href="/request" class="hero-btn secondary-btn">
+          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="hero-btn secondary-btn demo-btn">
             <div class="btn-icon-wrapper">
-              <i class="bi bi-send"></i>
+              <i class="bi bi-calendar-check"></i>
             </div>
-            <span>Request Services</span>
+            <span>Book a Demo</span>
           </a>
         </div>
-        <p class="mt-3 small text-white-50">Your first few test requests(4 hours of work) are completely free during early access.</p>
+        <p class="mt-3 small text-white-50">🎯 5-day free trial • No credit card required • Setup in minutes</p>
       </div>
     </div>
   </div>
@@ -555,20 +445,20 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-        <h4 class="fs-5 mb-2">GetYourTester</h4>
-        <p class="mb-1 small">Your first QA hire for solo founders and startups.</p>
+        <h4 class="fs-5 mb-2"><i class="bi bi-robot me-2"></i>GetYourTester</h4>
+        <p class="mb-1 small">QA Without the Hiring Headache — AI Ovi + Human Ovi</p>
         <p class="mb-0 small">© <%= new Date().getFullYear() %> GetYourTester. All rights reserved.</p>
-        <p class="mb-0 small mt-2"><span class="qa-karma-badge"><i class="bi bi-stars me-1"></i>Created by <a href="https://www.qakarma.com/" target="_blank" class="qa-karma-link">QA Karma</a></span></p>
+        <p class="mb-0 small mt-2"><span class="qa-karma-badge"><i class="bi bi-stars me-1"></i>Built by <a href="https://www.qakarma.com/" target="_blank" class="qa-karma-link">QA Karma</a></span></p>
       </div>
       <div class="col-md-6 text-center text-md-end">
         <div class="mb-2">
-          <a href="/docs" class="nav-btn guide-btn btn-sm"><i class="bi bi-book me-1"></i><span>View Guide</span></a>
-          <a href="/request" class="nav-btn request-btn btn-sm"><i class="bi bi-send me-1"></i><span>Request Services</span></a>
+          <a href="/docs" class="nav-btn guide-btn btn-sm"><i class="bi bi-book me-1"></i><span>Documentation</span></a>
+          <a href="/request" class="nav-btn trial-btn btn-sm"><i class="bi bi-play-circle me-1"></i><span>Start Free Trial</span></a>
           <a href="/contact" class="nav-btn contact-btn btn-sm"><i class="bi bi-envelope me-1"></i><span>Contact</span></a>
         </div>
         <div>
           <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="text-white-50 me-3"><i class="bi bi-linkedin"></i></a>
-          <a href="https://www.buymeacoffee.com/getyourtester" target="_blank" class="bmc-subtle"><i class="bi bi-journal-bookmark me-1"></i>Buy me a book</a>
+          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="bmc-subtle demo-btn"><i class="bi bi-calendar-check me-1"></i>Book a Demo</a>
         </div>
       </div>
     </div>
@@ -1273,6 +1163,28 @@ footer .nav-btn:last-child {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
 }
 
+.primary-cta {
+  background: #007bff;
+  color: white;
+  border: none;
+}
+
+.primary-cta:hover {
+  background: #0056b3;
+  color: white;
+}
+
+.secondary-cta {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.secondary-cta:hover {
+  background: white;
+  color: #000;
+}
+
 .github-btn {
   background: #292d3e;
   color: white;
@@ -1492,6 +1404,7 @@ footer .nav-btn:last-child {
   margin-top: -3px;
   text-align: right;
   margin-right: 2px;
+  color: #666;
 }
 
 .nav-by-link {
@@ -1505,9 +1418,321 @@ footer .nav-btn:last-child {
   color: #224abe;
   text-decoration: underline;
 }
+
+/* GetYourTester Specific Styles */
+
+/* Navigation styles */
+.features-nav-btn {
+  color: #6f42c1;
+  background-color: rgba(111, 66, 193, 0.1);
+  border: 1px solid rgba(111, 66, 193, 0.2);
+}
+
+.features-nav-btn:hover {
+  background-color: rgba(111, 66, 193, 0.15);
+  box-shadow: 0 4px 8px rgba(111, 66, 193, 0.15);
+}
+
+.pricing-nav-btn {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.pricing-nav-btn:hover {
+  background-color: rgba(220, 53, 69, 0.15);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.15);
+}
+
+/* Timeline markers for new design */
+.ai-marker {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.human-marker {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  font-size: 1rem;
+}
+
+.ship-marker {
+  background: linear-gradient(135deg, #ffc107, #fd7e14);
+  font-size: 1rem;
+}
+
+/* Integration cards */
+.integration-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #495057;
+}
+
+.integration-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #e9ecef;
+}
+
+.integration-card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #6c757d;
+}
+
+.integration-card span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Setup steps */
+.integration-steps {
+  position: relative;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.step-item:last-child {
+  margin-bottom: 0;
+}
+
+.step-item::after {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  top: 2.5rem;
+  width: 2px;
+  height: 2rem;
+  background: #dee2e6;
+}
+
+.step-item:last-child::after {
+  display: none;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  font-weight: bold;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #212529;
+}
+
+.step-content p {
+  margin-bottom: 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+/* Gradient background utility */
+.bg-gradient-light {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Responsive pricing grid for 5 columns */
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
+
+/* Text utilities */
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Mobile Optimizations for GetYourTester */
+@media (max-width: 768px) {
+  /* Pricing cards on mobile */
+  .col-xl-2-4 {
+    width: 100% !important;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  /* Hero section mobile */
+  .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .key-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .key-benefit-card {
+    padding: 1rem;
+  }
+  
+  .benefit-icon {
+    min-width: 45px;
+    height: 45px;
+  }
+  
+  .benefit-icon i {
+    font-size: 1.5rem;
+  }
+  
+  .benefit-content h3 {
+    font-size: 1rem;
+  }
+  
+  .benefit-content p {
+    font-size: 0.8rem;
+  }
+  
+  /* Integration steps mobile */
+  .step-item {
+    margin-bottom: 1.5rem;
+  }
+  
+  .step-number {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.9rem;
+  }
+  
+  .step-item::after {
+    left: 1rem;
+    height: 1.5rem;
+  }
+  
+  /* Integration cards mobile */
+  .integration-card {
+    padding: 0.75rem;
+  }
+  
+  .integration-card i {
+    font-size: 1.25rem;
+  }
+  
+  .integration-card span {
+    font-size: 0.8rem;
+  }
+  
+  /* Features section mobile */
+  .card-body {
+    padding: 1rem !important;
+  }
+  
+  /* Timeline mobile adjustments */
+  .timeline-item {
+    padding-left: 2.5rem;
+  }
+  
+  .timeline-marker {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  
+  .timeline::before {
+    left: 1rem;
+  }
+  
+  /* Badge adjustments */
+  .badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  
+  /* About section mobile */
+  .about-btn {
+    max-width: 140px;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Extra small devices */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .display-4 {
+    font-size: 2rem;
+  }
+  
+  .fs-5 {
+    font-size: 1rem !important;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+  
+  .hero-btn {
+    min-width: 160px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  /* Card padding adjustments */
+  .card-body {
+    padding: 0.75rem !important;
+  }
+  
+  /* Timeline content */
+  .timeline-content {
+    padding: 0.75rem;
+  }
+  
+  .timeline-content h4 {
+    font-size: 0.9rem;
+  }
+  
+  .timeline-content p {
+    font-size: 0.8rem;
+  }
+  
+  /* Small text adjustments */
+  .small, small {
+    font-size: 0.8rem;
+  }
+  
+  /* Navigation mobile */
+  .nav-btn span {
+    font-size: 0.8rem;
+  }
+}
 </style>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html> 
+</html> 
 </html> 

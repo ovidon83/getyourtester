@@ -235,6 +235,106 @@ async function callTestRecipeEndpoint(data) {
 }
 
 /**
+ * Call the /generate-short-analysis endpoint for AI insights
+ * @param {Object} data - PR data
+ * @returns {Promise<Object>} AI insights or fallback
+ */
+async function callShortAnalysisEndpoint(data) {
+  try {
+    // Determine the base URL
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    
+    console.log(`📡 Calling short analysis endpoint: ${baseUrl}/generate-short-analysis`);
+    
+    // Make the API call
+    const response = await axios.post(`${baseUrl}/generate-short-analysis`, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 60000 // 60 second timeout
+    });
+    
+    if (response.data && response.data.success) {
+      console.log('✅ Short analysis successful');
+      return response.data;
+    } else {
+      console.error('❌ Short analysis failed:', response.data?.error);
+      throw new Error(response.data?.error || 'Short analysis failed');
+    }
+    
+  } catch (error) {
+    console.error('❌ Error calling short analysis endpoint:', error.message);
+    
+    // Use the intelligent fallback system for short analysis
+    console.log('🔄 Using intelligent fallback for short analysis');
+    const { generateShortAnalysis } = require('../../ai/openaiClient');
+    
+    try {
+      // This will use the new short analysis system with intelligent fallbacks
+      const fallbackResult = await generateShortAnalysis(data);
+      console.log('✅ Intelligent fallback short analysis completed');
+      return fallbackResult;
+    } catch (fallbackError) {
+      console.error('❌ Even short analysis fallback failed:', fallbackError.message);
+      
+      // Ultimate fallback - generate basic short analysis
+      return {
+        success: true,
+        data: `# 🎯 Ovi QA Analysis - Short Version
+
+## 📊 Release Confidence Score
+
+| Metric | Value | Notes |
+|---------|---------|-------|
+| 🔴 Risk | High | System error occurred during analysis |
+| ⚖️ Confidence | Low | Unable to perform automated code review |
+| ⭐ Score | 3/10 | Manual review required before proceeding |
+
+## ⚠️ Risks
+
+**Based on actual code changes and diff analysis:**
+
+- System error occurred during AI analysis
+- Unable to perform detailed risk analysis
+- Manual review required to assess risks
+
+*Focus on concrete risks from the code, not general best practices*
+
+## 🧪 Test Recipe
+
+### 🟢 Happy Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Core functionality test | Test the main feature that was changed | Main feature works as expected | Critical |
+| Basic user workflow | Complete the primary user journey | End-to-end success | Critical |
+
+### 🔴 Critical Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Main functionality | Test the core changes | Core feature works | Critical |
+| Integration points | Test affected systems | No breaking changes | Critical |
+| Error handling | Trigger failure conditions | Graceful error handling | High |
+
+---
+
+*Note: This is a fallback analysis due to system error. Please review the actual code changes manually.*`,
+        metadata: {
+          repo: data.repo,
+          pr_number: data.pr_number,
+          model: 'short-ultimate-fallback',
+          attempt: 'short-ultimate-fallback',
+          timestamp: new Date().toISOString(),
+          error: error.message,
+          note: 'Ultimate fallback short analysis due to system error'
+        }
+      };
+    }
+  }
+}
+
+/**
  * Load test requests from storage
  */
 function loadTestRequests() {
@@ -1098,6 +1198,181 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 }
 
 /**
+ * Handle short request - generate a short analysis
+ */
+async function handleShortRequest(repository, issue, comment, sender) {
+  console.log(`Processing short request from ${sender.login} on PR #${issue.number}`);
+  console.log(`Repository: ${repository.full_name}`);
+  console.log(`Comment: ${comment.body}`);
+
+  // Create a unique ID for this test request
+  const requestId = `${repository.full_name.replace('/', '-')}-${issue.number}-${Date.now()}`;
+  
+  // Get PR description and diff
+  console.log(`📄 Fetching PR description for ${repository.full_name}#${issue.number}`);
+  const prDescription = await fetchPRDescription(repository.full_name, issue.number);
+  console.log(`📄 PR description: ${prDescription ? 'Success' : 'Failed'}`);
+  
+  console.log(`📝 Fetching PR diff for ${repository.full_name}#${issue.number}`);
+  const prDiff = await fetchPRDiff(repository.full_name, issue.number);
+  console.log(`📝 PR diff: ${prDiff ? `Success (${prDiff.length} chars)` : 'Failed'}`);
+  
+  // Debug what we're sending to AI
+  console.log('🔍 AI Input Debug:');
+  console.log(`   Repo: ${repository.full_name}`);
+  console.log(`   PR #: ${issue.number}`);
+  console.log(`   Title: ${issue.title}`);
+  console.log(`   Body length: ${prDescription?.length || 0}`);
+  console.log(`   Diff length: ${prDiff?.length || 0}`);
+  
+  // Generate AI insights for the PR via API endpoint - SHORT ANALYSIS VERSION
+  console.log('🤖 Ovi QA Agent analyzing PR...');
+  let aiInsights;
+  try {
+    aiInsights = await callShortAnalysisEndpoint({
+      repo: repository.full_name,
+      pr_number: issue.number,
+      title: issue.title,
+      body: prDescription,
+      diff: prDiff
+    });
+    
+    if (aiInsights && aiInsights.success) {
+      console.log('✅ Ovi QA Agent short analysis completed successfully');
+    } else {
+      console.error('❌ Ovi QA Agent short analysis failed:', aiInsights?.error, aiInsights?.details);
+    }
+  } catch (error) {
+    console.error('❌ Ovi QA Agent short analysis threw exception:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    // Create error result
+    aiInsights = {
+      success: false,
+      error: 'Ovi QA Agent short analysis failed',
+      details: error.message
+    };
+  }
+  
+  // If AI insights failed, create a basic fallback analysis
+  if (!aiInsights || !aiInsights.success) {
+    console.log('🔄 Creating fallback analysis due to AI failure');
+    aiInsights = {
+      success: true,
+      data: {
+        summary: {
+          riskLevel: "MEDIUM",
+          shipScore: 5,
+          reasoning: "AI analysis failed - manual review required to assess production readiness"
+        },
+        questions: [
+          "What is the main purpose of these changes?",
+          "Are there any breaking changes that could affect existing functionality?",
+          "Have you tested the core functionality manually?",
+          "Are there any dependencies or integrations that might be affected?"
+        ],
+        featureTestRecipe: [
+          {
+            scenario: "Test core feature functionality",
+            priority: "Critical", 
+            automation: "Manual",
+            description: "Verify main user workflows work as expected"
+          }
+        ],
+        technicalTestRecipe: [
+          {
+            scenario: "Test main functionality changes",
+            priority: "Critical", 
+            automation: "Manual",
+            description: "Verify core changes work as expected"
+          },
+          {
+            scenario: "Test error handling and edge cases",
+            priority: "Medium",
+            automation: "Manual",
+            description: "Validate error scenarios and boundary conditions"
+          }
+        ],
+        bugs: [],
+        criticalRisks: [
+          "AI analysis could not be completed - manual review needed",
+          "Unable to perform detailed risk analysis due to AI processing error"
+        ]
+      }
+    };
+  }
+  
+  // Generate test request object
+  const testRequest = {
+    id: requestId,
+    repository: repository.full_name,
+    prNumber: issue.number,
+    requestedBy: sender.login,
+    requestedAt: new Date().toISOString(),
+    comment: comment.body,
+    prDescription: prDescription,
+    aiInsights: aiInsights, // Include AI insights in test request
+    status: 'pending',
+    prUrl: issue.html_url || `https://github.com/${repository.full_name}/pull/${issue.number}`,
+    labels: []
+  };
+
+  // Parse request details from comment
+  testRequest.parsedDetails = parseTestRequestComment(comment.body);
+  
+  console.log(`✅ Created test request object:`, testRequest);
+  
+  // Store in database
+  const testRequests = loadTestRequests();
+  console.log(`Loaded ${testRequests.length} existing test requests`);
+  testRequests.push(testRequest);
+  const saveResult = saveTestRequests(testRequests);
+  console.log(`✅ Test request saved to database: ${saveResult ? 'success' : 'failed'}`);
+  
+  // Post acknowledgment comment with AI insights if available
+  let acknowledgmentComment = `
+## 🧪 Test Request Received
+
+Thank you for the testing request! Your request has been received and is being processed.
+* **Status:** Pending
+A tester will be assigned to this PR soon and you'll receive status updates notifications.
+  `;
+  
+  // Add AI insights to the comment if they were generated successfully
+  if (aiInsights && aiInsights.success) {
+    // Use the same hybrid formatting as the automatic PR analysis
+    acknowledgmentComment += formatShortAnalysisForComment(aiInsights);
+  } else if (aiInsights && !aiInsights.success) {
+    acknowledgmentComment += `
+
+*Note: Ovi QA Agent insights could not be generated for this PR (${aiInsights.error}), but manual testing will proceed as normal.*
+    `;
+  }
+  
+  const commentResult = await postComment(repository.full_name, issue.number, acknowledgmentComment);
+  console.log(`✅ Acknowledgment comment ${commentResult.simulated ? 'would be' : 'was'} posted`);
+  
+  // Add status label
+  const statusLabel = STATUS_LABELS['pending'];
+  const labelResult = await addLabel(repository.full_name, issue.number, [statusLabel]);
+  console.log(`✅ Label ${labelResult.simulated ? 'would be' : 'was'} added`);
+  
+  // Send email notification
+  const emailResult = await sendEmailNotification(testRequest);
+  if (emailResult.success) {
+    console.log(`✅ Email notification sent about PR #${issue.number}`);
+  } else {
+    console.log(`❌ Email notification failed: ${emailResult.error || 'Unknown error'}`);
+  }
+  
+  return {
+    success: true,
+    requestId,
+    simulated: simulatedMode
+  };
+}
+
+/**
  * Format hybrid analysis for GitHub comment (shared by /qa-review and automatic PR analysis)
  */
 function formatHybridAnalysisForComment(aiInsights) {
@@ -1207,6 +1482,151 @@ The analysis was generated but could not be properly formatted. Please check the
 ---
 
 *🚀 Professional QA analysis generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
+}
+
+/**
+ * Format short analysis for GitHub comment (only Release Confidence Score, Risks, Test Recipe)
+ */
+function formatShortAnalysisForComment(aiInsights) {
+  const aiData = aiInsights.data;
+
+  // Check if we have the new short analysis format
+  if (typeof aiData === 'string' && (
+    aiData.includes('🎯 Ovi QA Analysis - Short Version') ||
+    aiData.includes('📊 Release Confidence Score') ||
+    aiData.includes('⚠️ Risks') ||
+    aiData.includes('🧪 Test Recipe')
+  )) {
+    // This is already in the correct short format, just add branding
+    return `### 🤖 Ovi QA Assistant by GetYourTester
+
+---
+
+${aiData}
+
+---
+
+*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+  }
+
+  // Check if we have the legacy simplified format (4 questions approach)
+  if (typeof aiData === 'string' && (
+    aiData.includes('Ship Score') || 
+    aiData.includes('Risk Level') || 
+    aiData.includes('Confidence Level') ||
+    aiData.includes('biggest risk') ||
+    aiData.includes('test manually') ||
+    aiData.includes('automated tests') ||
+    aiData.includes('🎯 Ovi QA Analysis') || 
+    aiData.includes('📊 **Ship Assessment**') || 
+    aiData.includes('📋 Summary')
+  )) {
+    // Extract the key sections from the existing format
+    let shortOutput = '### 🤖 Ovi QA Assistant - Short Analysis\n\n---\n\n';
+    
+    // Extract Release Confidence Score (Ship Score)
+    const shipScoreMatch = aiData.match(/Ship Score.*?(\d+)\/10/);
+    const confidenceMatch = aiData.match(/Confidence.*?(LOW|MEDIUM|HIGH)/i);
+    if (shipScoreMatch && confidenceMatch) {
+      shortOutput += `## 📊 Release Confidence Score\n`;
+      shortOutput += `**Ship Score:** ${shipScoreMatch[1]}/10 • **Confidence:** ${confidenceMatch[1].toUpperCase()}\n\n`;
+    }
+    
+    // Extract Risks section
+    const risksMatch = aiData.match(/Risks.*?Issues.*?(\n.*?)(?=\n##|\n---|$)/s);
+    if (risksMatch) {
+      shortOutput += `## ⚠️ Risks\n`;
+      shortOutput += `${risksMatch[1].trim()}\n\n`;
+    }
+    
+    // Extract Test Recipe section
+    const testRecipeMatch = aiData.match(/Test Plan.*?(\n.*?)(?=\n---|$)/s);
+    if (testRecipeMatch) {
+      shortOutput += `## 🧪 Test Recipe\n`;
+      shortOutput += `${testRecipeMatch[1].trim()}\n\n`;
+    }
+    
+    // If we couldn't extract properly, fall back to the full format
+    if (!shipScoreMatch || !risksMatch || !testRecipeMatch) {
+      shortOutput = `### 🤖 Ovi QA Assistant - Short Analysis\n\n---\n\n`;
+      shortOutput += `*Unable to generate short format. Please use /qa-review for full analysis.*\n\n`;
+      shortOutput += aiData;
+    }
+    
+    shortOutput += `---\n\n*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+    return shortOutput;
+  }
+
+  // Fallback for legacy JSON format (backward compatibility)
+  if (typeof aiData === 'object' && aiData.summary) {
+    // Get ship status with color indicators
+    const getShipStatus = (score) => {
+      if (score >= 8) return '✅ SHIP IT';
+      if (score >= 6) return '⚠️ SHIP WITH MONITORING';
+      return '❌ BLOCK';
+    };
+
+    // Get risk level with color emoji
+    const getRiskLevel = (level) => {
+      const riskLevel = (level || 'MEDIUM').toUpperCase();
+      switch(riskLevel) {
+        case 'LOW': return '🟢 LOW';
+        case 'HIGH': return '🔴 HIGH';
+        default: return '🟡 MEDIUM';
+      }
+    };
+
+    // Combine feature and technical test recipes
+    const allTests = [
+      ...(aiData.featureTestRecipe || []),
+      ...(aiData.technicalTestRecipe || [])
+    ];
+
+    const testRecipeTable = allTests.length > 0 ? 
+      `| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n${allTests.map(test => 
+        `| ${test.scenario || 'Test scenario'} | ${test.priority || 'Medium'} | ${test.automation || 'Manual'} | ✅ |`
+      ).join('\n')}` : 
+      '| Scenario | Priority | Type | Automation |\n|----------|----------|------|------------|\n| Core functionality testing | High | E2E | ✅ |';
+
+    // Combine bugs and critical risks
+    const bugsAndRisks = [
+      ...(aiData.bugs || []),
+      ...(aiData.criticalRisks || [])
+    ];
+
+    return `### 🤖 Ovi QA Assistant - Short Analysis
+
+---
+
+## 📊 Release Confidence Score
+**Ship Score:** ${aiData.summary?.shipScore || 5}/10 — ${getShipStatus(aiData.summary?.shipScore || 5)}
+**Risk Level:** ${getRiskLevel(aiData.summary?.riskLevel)}
+
+---
+
+## ⚠️ Risks
+${bugsAndRisks.length > 0 ? bugsAndRisks.map(item => `- 🚨 ${item}`).join('\n') : '- ✅ No critical bugs or risks identified'}
+
+---
+
+## 🧪 Test Recipe
+${testRecipeTable}
+
+---
+
+*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+  }
+
+  // Final fallback for unexpected format
+  return `### 🤖 Ovi QA Assistant - Short Analysis
+
+---
+
+*Unable to generate short format. Please use /qa-review for full analysis.*
+
+---
+
+${aiData}`;
 }
 
 /**
@@ -1373,6 +1793,12 @@ async function processWebhookEvent(event) {
       if (comment.body.trim().startsWith('/qa-review')) {
         console.log('🧪 /qa-review command detected!');
         return await handleTestRequest(repository, issue, comment, sender);
+      }
+      
+      // Check for /short command (short QA analysis)
+      if (comment.body.trim().startsWith('/short')) {
+        console.log('📝 /short command detected!');
+        return await handleShortRequest(repository, issue, comment, sender);
       }
     }
     
@@ -1681,5 +2107,6 @@ module.exports = {
   postWelcomeComment,
   backupTestRequests,
   restoreFromBackup,
-  formatHybridAnalysisForComment
+  formatHybridAnalysisForComment,
+  formatShortAnalysisForComment
 };

@@ -814,9 +814,227 @@ function generateDeepFallbackAnalysis(title, body, diff, codeContext) {
   };
 }
 
+/**
+ * Generate short QA insights for a pull request (only Release Confidence Score, Risks, Test Recipe)
+ * @param {Object} options - PR details
+ * @param {string} options.repo - Repository name (e.g., "owner/repo")
+ * @param {number} options.pr_number - Pull request number
+ * @param {string} options.title - PR title
+ * @param {string} options.body - PR description/body
+ * @param {string} options.diff - Code diff
+ * @returns {Promise<Object>} Short QA insights or error object
+ */
+async function generateShortAnalysis({ repo, pr_number, title, body, diff }) {
+  try {
+    // Validate OpenAI client
+    if (!openai) {
+      throw new Error('OpenAI client not initialized. Check OPENAI_API_KEY.');
+    }
 
+    console.log(`🔍 Starting SHORT ANALYSIS for PR #${pr_number} in ${repo}`);
+
+    // Validate that we have real PR data, not simulated/fake data
+    const isSimulatedData = diff && (
+      diff.includes('This is a simulated PR description') ||
+      diff.includes('diff --git a/src/auth.js b/src/auth.js') ||
+      diff.includes('const jwt = require(\'jsonwebtoken\')') ||
+      diff.includes('Error fetching PR diff') ||
+      diff === 'No code changes detected'
+    );
+
+    if (isSimulatedData || !diff || diff.length < 50) {
+      console.log('⚠️ Detected simulated/fake data or missing PR diff - cannot perform real analysis');
+      const errorInsights = generateShortDataAccessError(title, repo, pr_number);
+      return {
+        success: true,
+        data: errorInsights,
+        metadata: {
+          repo, pr_number, model: 'short-data-access-error', timestamp: new Date().toISOString(),
+          note: 'Unable to access real PR data due to authentication or permission issues',
+          analysisType: 'short-data-access-error'
+        }
+      };
+    }
+
+    // Sanitize inputs for short analysis
+    const sanitizedTitle = (title || 'No title provided').substring(0, 200);
+    const sanitizedBody = (body || 'No description provided').substring(0, 1000);
+    const sanitizedDiff = diff.substring(0, 4000); // Lower limit for short analysis
+
+    console.log(`🔍 Short analysis input: Title=${sanitizedTitle.length} chars, Body=${sanitizedBody.length} chars, Diff=${sanitizedDiff.length} chars`);
+
+    // Load and render the short analysis prompt template
+    const promptTemplatePath = path.join(__dirname, 'prompts', 'short-analysis.ejs');
+    let prompt;
+    
+    if (!fs.existsSync(promptTemplatePath)) {
+      throw new Error('Short analysis template not found');
+    }
+    
+    const promptTemplate = fs.readFileSync(promptTemplatePath, 'utf8');
+    prompt = ejs.render(promptTemplate, {
+      title: sanitizedTitle,
+      body: sanitizedBody,
+      diff: sanitizedDiff
+    });
+
+    console.log(`📝 Generated prompt length: ${prompt.length} characters`);
+
+    // Call OpenAI API with short analysis prompt
+    const response = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || 'gpt-4o',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are Ovi, a senior QA engineer. Generate ONLY the requested short analysis format with the exact sections specified. Do not include any additional content or explanations outside the format.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      max_tokens: 2000, // Lower token limit for short analysis
+      temperature: 0.3, // Lower temperature for more focused output
+      top_p: 0.9
+    });
+
+    if (!response.choices || !response.choices[0] || !response.choices[0].message) {
+      throw new Error('Invalid response from OpenAI API');
+    }
+
+    const aiResponse = response.choices[0].message.content.trim();
+    console.log(`✅ Short analysis generated successfully (${aiResponse.length} characters)`);
+
+    return {
+      success: true,
+      data: aiResponse, // Return the raw AI response as it's already formatted
+      metadata: {
+        repo,
+        pr_number,
+        model: process.env.OPENAI_MODEL || 'gpt-4o',
+        timestamp: new Date().toISOString(),
+        analysisType: 'short-analysis',
+        promptLength: prompt.length,
+        responseLength: aiResponse.length
+      }
+    };
+
+  } catch (error) {
+    console.error('❌ Error generating short analysis:', error.message);
+    
+    // Generate fallback short analysis
+    const fallbackInsights = generateShortFallbackAnalysis(title, body, diff);
+    
+    return {
+      success: true,
+      data: fallbackInsights,
+      metadata: {
+        repo,
+        pr_number,
+        model: 'short-fallback',
+        timestamp: new Date().toISOString(),
+        error: error.message,
+        note: 'Fallback short analysis due to AI processing error',
+        analysisType: 'short-fallback'
+      }
+    };
+  }
+}
+
+/**
+ * Generate short fallback analysis when AI fails
+ */
+function generateShortFallbackAnalysis(title, body, diff) {
+  return `# 🎯 Ovi QA Analysis - Short Version
+
+## 📊 Release Confidence Score
+
+| Metric | Value | Notes |
+|---------|---------|-------|
+| 🔴 Risk | Medium | AI analysis failed - manual review required |
+| ⚖️ Confidence | Low | Unable to perform automated code review |
+| ⭐ Score | 5/10 | Manual review needed before proceeding |
+
+## ⚠️ Risks
+
+**Based on actual code changes and diff analysis:**
+
+- AI analysis could not be completed - manual review needed
+- Unable to perform detailed risk analysis due to system error
+- Please review the changes manually for potential issues
+
+*Focus on concrete risks from the code, not general best practices*
+
+## 🧪 Test Recipe
+
+### 🟢 Happy Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Core functionality test | Test the main feature that was changed | Main feature works as expected | Critical |
+| Basic user workflow | Complete the primary user journey | End-to-end success | Critical |
+
+### 🔴 Critical Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Main functionality | Test the core changes | Core feature works | Critical |
+| Integration points | Test affected systems | No breaking changes | Critical |
+| Error handling | Trigger failure conditions | Graceful error handling | High |
+
+---
+
+*Note: This is a fallback analysis due to AI processing error. Please review the actual code changes manually.*`;
+}
+
+/**
+ * Generate short data access error insights
+ */
+function generateShortDataAccessError(title, repo, prNumber) {
+  return `# 🎯 Ovi QA Analysis - Short Version
+
+## 📊 Release Confidence Score
+
+| Metric | Value | Notes |
+|---------|---------|-------|
+| 🔴 Risk | High | Unable to access PR data for analysis |
+| ⚖️ Confidence | Low | Cannot review actual code changes |
+| ⭐ Score | 3/10 | Manual review required - data access issues |
+
+## ⚠️ Risks
+
+**Based on actual code changes and diff analysis:**
+
+- Unable to access PR data for automated analysis
+- Cannot perform code review due to permission issues
+- Manual review required to assess risks
+
+*Focus on concrete risks from the code, not general best practices*
+
+## 🧪 Test Recipe
+
+### 🟢 Happy Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Manual code review | Review the actual code changes | Identify potential issues | Critical |
+| Basic functionality | Test the main feature manually | Core feature works | Critical |
+
+### 🔴 Critical Path Scenarios
+
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+| Code review | Examine the diff manually | Understand the changes | Critical |
+| Testing | Test affected functionality | Verify no regressions | Critical |
+| Integration | Test with related systems | No breaking changes | High |
+
+---
+
+*Note: Unable to access PR data. Please review the actual code changes manually.*`;
+}
 
 module.exports = {
   generateQAInsights,
+  generateShortAnalysis,
   testConnection
 }; 
