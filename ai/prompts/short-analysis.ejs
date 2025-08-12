@@ -11,13 +11,15 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 # 🎯 Ovi QA Analysis - Short Version
 
-## 📊 Release Confidence Score
+## 📊 Deployment Score
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| 🔴 Risk | [Low/Medium/High] | [One-line justification based on actual code changes] |
-| ⚖️ Confidence | [Low/Medium/High] | [Brief note on code quality and test coverage] |
-| ⭐ Score | [X/10] | [One-line bottom line assessment] |
+| **Score** | [X.X/10] | (Pass threshold: 7.5) |
+| **Risk** | [Low/Medium/High] | ([X] blocker, [X] majors) |
+| **Confidence** | [Low/Medium/High] | (clear AC, unit + API tests present) |
+| **Scope** | [X] files, [X] LOC touched, [X] feature flags |
+| **Decision** | ✅ Merge OK / ❌ Block | (run [X]-step smoke before deploy) |
 
 ## ⚠️ Risks
 
@@ -31,20 +33,13 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 ## 🧪 Test Recipe
 
-### 🟢 Happy Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| [Main user workflow] | [Complete user journey steps] | [End-to-end success] | Critical |
-| [Secondary workflow] | [Alternative user path] | [Alternative success] | High |
-
-### 🔴 Critical Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| [Core functionality] | [Test the main change] | [Core feature works] | Critical |
-| [Integration points] | [Test affected systems] | [No breaking changes] | Critical |
-| [Error handling] | [Trigger failure conditions] | [Graceful error handling] | High |
+| Scenario | Steps | Expected Result | Priority | Type |
+|----------|-------|-----------------|----------|------|
+| [Main user workflow] | [Complete user journey steps] | [End-to-end success] | Critical | ✅ Auto (e2e) |
+| [Secondary workflow] | [Alternative user path] | [Alternative success] | High | ❌ Manual |
+| [Core functionality] | [Test the main change] | [Core feature works] | Critical | ✅ Auto (e2e) |
+| [Integration points] | [Test affected systems] | [No breaking changes] | High | ❌ Manual |
+| [Error handling] | [Trigger failure conditions] | [Graceful error handling] | High | ❌ Manual |
 
 ---
 
@@ -55,3 +50,5 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 - Keep it concise and focused on the 3 required sections
 - Use realistic test data and user actions
 - Prioritize tests by business impact: Critical = main feature, High = important functionality
+- For Type column: Use ✅ Auto (e2e) for automated tests, ❌ Manual for manual tests
+- Base the Deployment Score on actual code quality, test coverage, and risk assessment

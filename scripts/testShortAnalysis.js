@@ -118,26 +118,34 @@ async function testShortAnalysis() {
       console.log(response.data.data);
       console.log('---');
       
-      // Check if it contains the expected sections
-      const content = response.data.data;
-      const hasReleaseConfidence = content.includes('📊 Release Confidence Score');
-      const hasRisks = content.includes('⚠️ Risks');
-      const hasTestRecipe = content.includes('🧪 Test Recipe');
-      const hasHappyPath = content.includes('🟢 Happy Path Scenarios');
-      const hasCriticalPath = content.includes('🔴 Critical Path Scenarios');
-      
-      console.log('\n✅ Format Validation:');
-      console.log(`   Release Confidence Score: ${hasReleaseConfidence ? '✅' : '❌'}`);
-      console.log(`   Risks: ${hasRisks ? '✅' : '❌'}`);
-      console.log(`   Test Recipe: ${hasTestRecipe ? '✅' : '❌'}`);
-      console.log(`   Happy Path Scenarios: ${hasHappyPath ? '✅' : '❌'}`);
-      console.log(`   Critical Path Scenarios: ${hasCriticalPath ? '✅' : '❌'}`);
-      
-      if (hasReleaseConfidence && hasRisks && hasTestRecipe && hasHappyPath && hasCriticalPath) {
-        console.log('\n🎉 All validation checks passed! The short analysis endpoint is working correctly.');
-      } else {
-        console.log('\n⚠️ Some validation checks failed. Check the response format.');
-      }
+             // Check if it contains the expected sections
+       const content = response.data.data;
+       const hasDeploymentScore = content.includes('📊 Deployment Score');
+       const hasRisks = content.includes('⚠️ Risks');
+       const hasTestRecipe = content.includes('🧪 Test Recipe');
+       const hasScore = content.includes('**Score**');
+       const hasRisk = content.includes('**Risk**');
+       const hasConfidence = content.includes('**Confidence**');
+       const hasScope = content.includes('**Scope**');
+       const hasDecision = content.includes('**Decision**');
+       const hasTypeColumn = content.includes('Type');
+
+       console.log('\n✅ Format Validation:');
+       console.log(`   Deployment Score: ${hasDeploymentScore ? '✅' : '❌'}`);
+       console.log(`   Score field: ${hasScore ? '✅' : '❌'}`);
+       console.log(`   Risk field: ${hasRisk ? '✅' : '❌'}`);
+       console.log(`   Confidence field: ${hasConfidence ? '✅' : '❌'}`);
+       console.log(`   Scope field: ${hasScope ? '✅' : '❌'}`);
+       console.log(`   Decision field: ${hasDecision ? '✅' : '❌'}`);
+       console.log(`   Risks: ${hasRisks ? '✅' : '❌'}`);
+       console.log(`   Test Recipe: ${hasTestRecipe ? '✅' : '❌'}`);
+       console.log(`   Type column: ${hasTypeColumn ? '✅' : '❌'}`);
+
+       if (hasDeploymentScore && hasScore && hasRisk && hasConfidence && hasScope && hasDecision && hasRisks && hasTestRecipe && hasTypeColumn) {
+         console.log('\n🎉 All validation checks passed! The short analysis endpoint is working correctly.');
+       } else {
+         console.log('\n⚠️ Some validation checks failed. Check the response format.');
+       }
     } else {
       console.log('❌ Response indicates failure:', response.data?.error);
     }

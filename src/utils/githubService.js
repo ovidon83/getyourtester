@@ -1487,18 +1487,18 @@ The analysis was generated but could not be properly formatted. Please check the
 /**
  * Format short analysis for GitHub comment (only Release Confidence Score, Risks, Test Recipe)
  */
-function formatShortAnalysisForComment(aiInsights) {
-  const aiData = aiInsights.data;
+            function formatShortAnalysisForComment(aiInsights) {
+              const aiData = aiInsights.data;
 
-  // Check if we have the new short analysis format
-  if (typeof aiData === 'string' && (
-    aiData.includes('🎯 Ovi QA Analysis - Short Version') ||
-    aiData.includes('📊 Release Confidence Score') ||
-    aiData.includes('⚠️ Risks') ||
-    aiData.includes('🧪 Test Recipe')
-  )) {
-    // This is already in the correct short format, just add branding
-    return `### 🤖 Ovi QA Assistant by GetYourTester
+              // Check if we have the new short analysis format
+              if (typeof aiData === 'string' && (
+                aiData.includes('🎯 Ovi QA Analysis - Short Version') ||
+                aiData.includes('📊 Deployment Score') ||
+                aiData.includes('⚠️ Risks') ||
+                aiData.includes('🧪 Test Recipe')
+              )) {
+                // This is already in the correct short format, just add branding
+                return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
 
@@ -1507,7 +1507,7 @@ ${aiData}
 ---
 
 *🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
-  }
+              }
 
   // Check if we have the legacy simplified format (4 questions approach)
   if (typeof aiData === 'string' && (

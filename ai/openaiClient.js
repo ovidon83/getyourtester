@@ -947,13 +947,15 @@ async function generateShortAnalysis({ repo, pr_number, title, body, diff }) {
 function generateShortFallbackAnalysis(title, body, diff) {
   return `# 🎯 Ovi QA Analysis - Short Version
 
-## 📊 Release Confidence Score
+## 📊 Deployment Score
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| 🔴 Risk | Medium | AI analysis failed - manual review required |
-| ⚖️ Confidence | Low | Unable to perform automated code review |
-| ⭐ Score | 5/10 | Manual review needed before proceeding |
+| **Score** | 5.0/10 | (Pass threshold: 7.5) |
+| **Risk** | Medium | (0 blocker, 2 majors) |
+| **Confidence** | Low | (AI analysis failed - manual review required) |
+| **Scope** | Unknown files, unknown LOC touched, unknown feature flags |
+| **Decision** | ❌ Block | (run manual review before proceeding) |
 
 ## ⚠️ Risks
 
@@ -967,20 +969,13 @@ function generateShortFallbackAnalysis(title, body, diff) {
 
 ## 🧪 Test Recipe
 
-### 🟢 Happy Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| Core functionality test | Test the main feature that was changed | Main feature works as expected | Critical |
-| Basic user workflow | Complete the primary user journey | End-to-end success | Critical |
-
-### 🔴 Critical Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| Main functionality | Test the core changes | Core feature works | Critical |
-| Integration points | Test affected systems | No breaking changes | Critical |
-| Error handling | Trigger failure conditions | Graceful error handling | High |
+| Scenario | Steps | Expected Result | Priority | Type |
+|----------|-------|-----------------|----------|------|
+| Core functionality test | Test the main feature that was changed | Main feature works as expected | Critical | ❌ Manual |
+| Basic user workflow | Complete the primary user journey | End-to-end success | Critical | ❌ Manual |
+| Main functionality | Test the core changes | Core feature works | Critical | ❌ Manual |
+| Integration points | Test affected systems | No breaking changes | Critical | ❌ Manual |
+| Error handling | Trigger failure conditions | Graceful error handling | High | ❌ Manual |
 
 ---
 
@@ -993,13 +988,15 @@ function generateShortFallbackAnalysis(title, body, diff) {
 function generateShortDataAccessError(title, repo, prNumber) {
   return `# 🎯 Ovi QA Analysis - Short Version
 
-## 📊 Release Confidence Score
+## 📊 Deployment Score
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| 🔴 Risk | High | Unable to access PR data for analysis |
-| ⚖️ Confidence | Low | Cannot review actual code changes |
-| ⭐ Score | 3/10 | Manual review required - data access issues |
+| **Score** | 3.0/10 | (Pass threshold: 7.5) |
+| **Risk** | High | (1 blocker, 2 majors) |
+| **Confidence** | Low | (Cannot review actual code changes) |
+| **Scope** | Unknown files, unknown LOC touched, unknown feature flags |
+| **Decision** | ❌ Block | (run manual review before proceeding) |
 
 ## ⚠️ Risks
 
@@ -1013,20 +1010,13 @@ function generateShortDataAccessError(title, repo, prNumber) {
 
 ## 🧪 Test Recipe
 
-### 🟢 Happy Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| Manual code review | Review the actual code changes | Identify potential issues | Critical |
-| Basic functionality | Test the main feature manually | Core feature works | Critical |
-
-### 🔴 Critical Path Scenarios
-
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-| Code review | Examine the diff manually | Understand the changes | Critical |
-| Testing | Test affected functionality | Verify no regressions | Critical |
-| Integration | Test with related systems | No breaking changes | High |
+| Scenario | Steps | Expected Result | Priority | Type |
+|----------|-------|-----------------|----------|------|
+| Manual code review | Review the actual code changes | Identify potential issues | Critical | ❌ Manual |
+| Basic functionality | Test the main feature manually | Core feature works | Critical | ❌ Manual |
+| Code review | Examine the diff manually | Understand the changes | Critical | ❌ Manual |
+| Testing | Test affected functionality | Verify no regressions | Critical | ❌ Manual |
+| Integration | Test with related systems | No breaking changes | High | ❌ Manual |
 
 ---
 
