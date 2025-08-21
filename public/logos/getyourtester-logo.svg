@@ -1,0 +1,33 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3182ce;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#805ad5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Symbol -->
+  <circle cx="30" cy="30" r="25" fill="url(#logoGradient)"/>
+  <circle cx="30" cy="30" r="15" fill="white"/>
+  
+  <!-- Network Pattern -->
+  <circle cx="30" cy="15" r="3" fill="#3182ce"/>
+  <circle cx="45" cy="25" r="3" fill="#3182ce"/>
+  <circle cx="45" cy="35" r="3" fill="#3182ce"/>
+  <circle cx="30" cy="45" r="3" fill="#3182ce"/>
+  <circle cx="15" cy="35" r="3" fill="#3182ce"/>
+  <circle cx="15" cy="25" r="3" fill="#3182ce"/>
+  
+  <!-- Connection Lines -->
+  <line x1="30" y1="15" x2="30" y2="25" stroke="#3182ce" stroke-width="1.5"/>
+  <line x1="30" y1="25" x2="40" y2="25" stroke="#3182ce" stroke-width="1.5"/>
+  <line x1="30" y1="25" x2="20" y2="25" stroke="#3182ce" stroke-width="1.5"/>
+  <line x1="30" y1="35" x2="40" y2="35" stroke="#3182ce" stroke-width="1.5"/>
+  <line x1="30" y1="35" x2="20" y2="35" stroke="#3182ce" stroke-width="1.5"/>
+  <line x1="30" y1="35" x2="30" y2="45" stroke="#3182ce" stroke-width="1.5"/>
+  
+  <!-- Logo Text -->
+  <text x="70" y="25" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="600" fill="#1a202c">Get</text>
+  <text x="70" y="42" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#3182ce">Your</text>
+  <text x="70" y="55" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#3182ce">Tester</text>
+</svg>
