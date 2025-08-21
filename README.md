@@ -50,7 +50,7 @@ GetYourTester is a comprehensive QA platform that combines AI-powered analysis w
 - Advanced integrations
 - **Perfect for**: Early-stage startups
 
-### **🏢 Professional ($299/month)**
+### **🏢 Growth ($299/month)**
 - Up to 200 PR reviews/month
 - Dedicated support
 - Custom integrations
