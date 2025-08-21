@@ -18,6 +18,7 @@ const privacyRoutes = require('./src/routes/privacy');
 const termsRoutes = require('./src/routes/terms');
 const supportRoutes = require('./src/routes/support');
 const emailRoutes = require('./src/routes/email');
+const contactRoutes = require('./src/routes/contact');
 
 // Create Express app
 const app = express();
@@ -63,80 +64,7 @@ app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
 app.use('/support', supportRoutes);
 app.use('/email', emailRoutes);
-
-// Contact form handler
-app.post('/contact', async (req, res) => {
-  const { name, email, subject, message, service } = req.body;
-  
-  if (!name || !email || !subject || !message) {
-    return res.redirect('/contact?error=All required fields must be filled');
-  }
-  
-  try {
-    // Create a simple email transporter for contact form
-    const nodemailer = require('nodemailer');
-    const contactTransporter = nodemailer.createTransporter({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_USER || process.env.EMAIL_FROM || 'ovidon83@gmail.com',
-        pass: process.env.SMTP_PASSWORD || process.env.EMAIL_APP_PASSWORD
-      }
-    });
-    
-    // Send contact form email to ovi@qakarma.com
-    const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@getyourtester.com',
-      to: 'ovi@qakarma.com',
-      subject: `[GetYourTester Contact] ${subject}`,
-      replyTo: email,
-      html: `
-        <h1>New Contact Form Submission</h1>
-        <p>Someone has submitted a contact form on GetYourTester.</p>
-        
-        <h2>Contact Details:</h2>
-        <ul>
-          <li><strong>Name:</strong> ${name}</li>
-          <li><strong>Email:</strong> ${email}</li>
-          <li><strong>Subject:</strong> ${subject}</li>
-          <li><strong>Service Interest:</strong> ${service || 'Not specified'}</li>
-        </ul>
-        
-        <h2>Message:</h2>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-        
-        <p><strong>Reply to:</strong> <a href="mailto:${email}">${email}</a></p>
-        
-        <p>Thank you for using GetYourTester!</p>
-      `,
-      text: `
-New Contact Form Submission
-
-Someone has submitted a contact form on GetYourTester.
-
-Contact Details:
-- Name: ${name}
-- Email: ${email}
-- Subject: ${subject}
-- Service Interest: ${service || 'Not specified'}
-
-Message:
-${message}
-
-Reply to: ${email}
-
-Thank you for using GetYourTester!
-      `
-    };
-    
-    const info = await contactTransporter.sendMail(mailOptions);
-    console.log(`✅ Contact form email sent with message ID: ${info.messageId}`);
-    
-    res.redirect('/contact?success=Your message has been sent successfully! We\'ll get back to you soon.');
-  } catch (error) {
-    console.error('Failed to send contact form email:', error);
-    res.redirect(`/contact?error=${encodeURIComponent('Failed to send message. Please try again.')}`);
-  }
-});
+app.use('/contact', contactRoutes);
 
 // Special route for generate-test-recipe with larger payload support
 app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req, res) => {
