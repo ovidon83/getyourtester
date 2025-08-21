@@ -1,1738 +1,1623 @@
-<%- include('partials/header', { title: title || 'GetYourTester – QA Without the Hiring Headache (AI Ovi + Human Ovi)' }) %>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9R81PDLX9Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-9R81PDLX9Q');
-</script>
-
-<!-- Custom GA4 event tracking -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Start Free Trial
-    var trialBtns = document.querySelectorAll('a[href*="trial"], .trial-btn');
-    trialBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Start Free Trial' });
-      });
-    });
-    // Book a Demo
-    var demoBtns = document.querySelectorAll('a[href*="calendly.com"], .demo-btn');
-    demoBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Book a Demo' });
-      });
-    });
-    // Contact us
-    var contactBtns = document.querySelectorAll('a[href="/contact"]');
-    contactBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'CTA', event_label: 'Contact us' });
-      });
-    });
-    // Docs
-    var docsBtns = document.querySelectorAll('a[href="/docs"]');
-    docsBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        gtag('event', 'click', { event_category: 'Navigation', event_label: 'View Documentation' });
-      });
-    });
-  });
-</script>
-
-<!-- Navigation -->
-<nav class="container-fluid py-3 shadow-sm bg-white">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <h3 class="mb-0"><i class="bi bi-robot text-primary"></i> GetYourTester</h3>
-        <span class="nav-by-badge">QA Without the Hiring Headache</span>
-      </div>
-      <div class="d-flex gap-3 align-items-center">
-        <a href="#pricing" class="nav-btn pricing-nav-btn"><i class="bi bi-tag me-1"></i><span>Pricing</span></a>
-        <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="nav-btn demo-btn calendar-btn"><i class="bi bi-calendar-check me-1"></i><span>Book a Demo</span></a>
-        <a href="/request" class="nav-btn trial-btn request-btn"><i class="bi bi-play-circle me-1"></i><span>Start Free Trial</span></a>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero Section -->
-<section class="py-5 bg-gradient-primary text-white">
-  <div class="container">
-    <div class="row justify-content-center align-items-center">
-      <div class="col-lg-7 text-center text-lg-start">
-        <div class="mb-3">
-          <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">💡 Complete QA: AI + Human</span>
-        </div>
-        <h1 class="fw-bold mb-3 display-4">QA Without the Hiring Headache</h1>
-        <p class="lead mb-4 fs-5">Complete QA for startups: AI QA across your product lifecycle + human QA for critical releases. Start now with GitHub PR reviews.</p>
-        
-        <div class="key-benefits-grid mb-4">
-          <div class="key-benefit-card">
-            <div class="benefit-icon"><i class="bi bi-robot"></i></div>
-            <div class="benefit-content">
-              <h3>AI PR Review</h3>
-              <p>Instant analysis on every PR</p>
-            </div>
-          </div>
-          <div class="key-benefit-card">
-            <div class="benefit-icon"><i class="bi bi-exclamation-triangle"></i></div>
-            <div class="benefit-content">
-              <h3>Risk Flags</h3>
-              <p>Catch issues before release</p>
-            </div>
-          </div>
-          <div class="key-benefit-card">
-            <div class="benefit-icon"><i class="bi bi-clipboard-check"></i></div>
-            <div class="benefit-content">
-              <h3>Test Plans</h3>
-              <p>Clear, actionable test recipes</p>
-            </div>
-          </div>
-          <div class="key-benefit-card">
-            <div class="benefit-icon"><i class="bi bi-person-check"></i></div>
-            <div class="benefit-content">
-              <h3>Add Human QA</h3>
-              <p>Hands-on testing when needed</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="cta-buttons d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-4">
-          <a href="/request" class="cta-btn trial-btn primary-cta">
-            <i class="bi bi-play-circle me-2"></i>Start Free Trial
-          </a>
-          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="cta-btn demo-btn secondary-cta">
-            <i class="bi bi-calendar-check me-2"></i>Book a Demo
-          </a>
-        </div>
-        <p class="small text-white-75 mb-1">🎯 5-day free trial • No credit card required • Setup in minutes</p>
-        <div class="small text-white-75">Now: GitHub PR AI reviews • Next: Jira/Linear assistant (Chrome extension)</div>
-      </div>
-      <div class="col-lg-5 d-none d-lg-block">
-        <div class="card shadow-lg border-0 border-radius-lg how-it-works-card">
-          <div class="card-header bg-primary text-white py-3">
-            <h3 class="fs-4 mb-0"><i class="bi bi-robot me-2"></i>How It Works</h3>
-          </div>
-          <div class="card-body p-4">
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-marker ai-marker">1</div>
-                <div class="timeline-content">
-                  <h4>Open a PR</h4>
-                  <p>Ovi analyzes the diff instantly</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetYourTester - Ovi AI + Human QA Experts | The First and Only QA Platform Your Startup</title>
+    <meta name="description" content="GetYourTester offers Ovi AI for instant PR feedback and on-demand human QA experts for complex testing scenarios. The complete QA solution for startups.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="d-flex align-items-center">
+                    <div class="brand-icon">
+                        <div class="logo-symbol">✓</div>
+                    </div>
+                    <div class="ms-3">
+                        <div class="brand-name">GetYourTester</div>
+                        <div class="brand-tagline">AI QA Agent + Human QA Experts</div>
+                    </div>
                 </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-marker human-marker">2</div>
-                <div class="timeline-content">
-                  <h4>Get QA Insights</h4>
-                  <p>Risk flags, questions, and a clear test plan</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-marker ship-marker">3</div>
-                <div class="timeline-content">
-                  <h4>Add the Human Ovi</h4>
-                  <p>Hands-on QA testing, staging validation, and production monitoring</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-4 text-center">
-              <a href="/docs" class="guide-link"><i class="bi bi-book me-2"></i>View Integration Guide <i class="bi bi-arrow-right ms-1"></i></a>
-            </div>
-            <div class="mt-3 text-center alt-options text-secondary">
-              <i class="bi bi-stars me-2"></i>Works with GitHub, GitLab, and any CI/CD pipeline
-            </div>
-          </div>
+            </a>
+            
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#pricing">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary btn-sm" href="#cta">Get Started</a>
+                </li>
+            </ul>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </nav>
 
-<!-- Pricing Packages -->
-<section id="pricing" class="py-5 bg-light">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Simple, Powerful Pricing</h2>
-      <p class="lead">Start free. Pick AI only or AI + Human.</p>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <i class="fas fa-rocket me-2"></i>Built for Startups
+                        </div>
+                        <h1 class="hero-title">
+                            The Only <span class="text-gradient">QA Stack</span> Your Startup Needs
+                        </h1>
+                        <p class="hero-subtitle">
+                          Ovi(the AI) analyzes tickets and PRs like a senior QA — questions, risks, test plans, and Human QA for complex needs.
+                        </p>
+                        
+                        <div class="hero-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <span>AC Analysis and Test Recipe</span>
+                            </div>
+                            <div class="feature-item">
+                              <div class="feature-icon">
+                                  <i class="fas fa-code-branch"></i>
+                              </div>
+                              <span>Code-diff & Risk Analysis</span>
+                          </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <span>AI-Powered QA Review</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span>Human QA Experts</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-cta d-flex">
+                            <a href="#cta" class="btn btn-primary btn-lg me-3">Start Free Trial</a>
+                            <a href="#features" class="btn btn-outline-primary btn-lg">Why It Works</a>
+                        </div>
+                        
+                        <div class="hero-trial-info">
+                            <i class="fas fa-clock me-2"></i>5-day free trial • No credit card required
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="hero-visual">
+                        <div class="workflow-card">
+                            <div class="workflow-header">
+                                <h3>How Ovi Works</h3>
+                            </div>
+                            <div class="workflow-steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>Connect Your Tools</h4>
+                                        <p>Integrate with GitHub, Linear, and Jira</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>AI Analysis</h4>
+                                        <p>Instant expert review of tickets and PRs</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>Get Feedback</h4>
+                                        <p>Instant QA insights, and test recipes</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                  <div class="step-number">4</div>
+                                  <div class="step-content">
+                                      <h4>Human QA</h4>
+                                      <p>On-demand senior QA when it really matters</p>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="workflow-footer">
+                                <a href="/docs" class="docs-link">
+                                    <i class="fas fa-arrow-right me-2"></i>View Documentation →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Pricing & Plans</h2>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Free Trial</h3>
+                            <span class="pricing-badge">Free</span>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">$0</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>Up to 10 PR reviews/5 days</li>
+                            <li>Customer support</li>
+                            <li>Standard response time</li>
+                        </ul>
+                        <div class="pricing-footer">
+                            <p>Give it a try for 5 days</p>
+                            <a href="#cta">Get Started Free</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="pricing-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Growth</h3>
+                            <span class="pricing-badge">$99</span>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">$99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>Unlimited PR reviews</li>
+                            <li>Full Linear & Jira integration</li>
+                            <li>Priority support</li>
+                            <li>Human QA expert access</li>
+                            <li>Custom QA workflows</li>
+                        </ul>
+                        <div class="pricing-footer">
+                            <p>Perfect for early-stage startups</p>
+                            <a href="#cta">Start Free Trial</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Enterprise</h3>
+                            <span class="pricing-badge">Custom</span>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">Custom</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>Everything in Growth</li>
+                            <li>Dedicated QA team</li>
+                            <li>SLA guarantees</li>
+                            <li>Custom integrations</li>
+                            <li>Onboarding & training</li>
+                        </ul>
+                        <div class="pricing-footer">
+                            <p>Ideal for scaling teams</p>
+                            <a href="#cta">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="features-content">
+                        <h2>Why Startups Choose GetYourTester</h2>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <h4>Lightning Fast</h4>
+                                    <p>Get full QA support in seconds, no hiring!</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div>
+                                    <h4>AI-Powered</h4>
+                                    <p>Ovi learns your codebase and improves over time</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-plug"></i>
+                                </div>
+                                <div>
+                                    <h4>Seamless Integration</h4>
+                                    <p>Works directly in your existing workflow</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <h4>Human + AI</h4>
+                                    <p>Best of both worlds - speed and confidence</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="demo-card">
+                        <div class="demo-header">
+                            <div class="demo-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <strong>Ovi AI</strong>
+                                <span>QA Assistant</span>
+                            </div>
+                        </div>
+                        <div class="demo-content">
+                            <div class="demo-item">
+                                <span class="badge risk">Risk</span>
+                                <p>Timezone could cause entries to appear on the wrong day</p>
+                            </div>
+                            <div class="demo-item">
+                                <span class="badge question">Question</span>
+                                <p>How will the Calendar View look like on mobile?</p>
+                            </div>
+                            <div class="demo-item">
+                                <span class="badge plan">Test Recipe</span>
+                                <p>Navigate through months using the arrows</p>
+                            </div>
+                            <div class="demo-item">
+                                <span class="badge example">Expected Result</span>
+                                <p>Calendar updates to show the correct month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Human QA Section -->
+    <section class="human-qa-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="human-qa-content">
+                        <h2>Human QA For The Win</h2>
+                        <div class="benefits-grid">
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div>
+                                    <h4>Exploratory Testing</h4>
+                                    <p>Deep-dive testing for critical user journeys</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div>
+                                    <h4>Cross-Platform Testing</h4>
+                                    <p>Real device testing across all platforms</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h4>Performance Testing</h4>
+                                    <p>Load testing and optimization insights</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h4>Regression Testing</h4>
+                                    <p>Full/Partial regression testing for major releases</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="partnership-card">
+                        <h3>The Perfect Partnership</h3>
+                        <div class="partnership-item">
+                            <div class="partnership-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <h4>Ovi AI</h4>
+                                <p>Handles routine QA tasks, ticket analysis, and PR reviews 24/7</p>
+                            </div>
+                        </div>
+                        <div class="partnership-item">
+                            <div class="partnership-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4>Expert QA Engineers</h4>
+                                <p>Step in for complex testing scenarios and strategic QA tasks</p>
+                            </div>
+                        </div>
+                        <div class="partnership-item">
+                            <div class="partnership-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div>
+                                <h4>Your Team</h4>
+                                <p>Focus on building and delivering fast with high confidence</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a href="#cta" class="btn btn-primary btn-lg">Work With Expert QA Engineers</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="container text-center">
+            <h2>Ready to Deliver Better Products?</h2>
+            <p class="lead">Join other startups using Ovi to the confidence that makes your customers happy</p>
+            <div class="cta-buttons d-flex justify-content-center gap-3">
+                <a href="#" class="btn btn-success btn-lg">Start Free Trial</a>
+                <a href="https://calendly.com/getyourtester/demo" class="btn btn-outline-primary btn-lg" target="_blank">Schedule Demo</a>
+            </div>
+            <div class="cta-trial-info">
+                <i class="fas fa-clock me-2"></i>5-day free trial • No credit card required • Cancel anytime
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col-lg-6 mb-4">
+                    <div class="footer-brand">
+                        <div class="brand-icon">
+                            <div class="logo-symbol">✓</div>
+                        </div>
+                        <div>
+                            <h4>GetYourTester</h4>
+                            <p>Ovi AI + Human QA Experts</p>
+                        </div>
+                    </div>
+                    <div class="footer-copyright">
+                        © 2025 GetYourTester. All rights reserved.
+                    </div>
+                    <div class="footer-built-by">
+                        Built with ❤️ for fast-moving startups
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <h5 class="footer-section-title">Company</h5>
+                            <div class="footer-links">
+                                <a href="/about" class="footer-link">About</a>
+                                <a href="/contact" class="footer-link">Contact</a>
+                                <a href="/pricing" class="footer-link">Pricing</a>
+                                <a href="/docs" class="footer-link">Documentation</a>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h5 class="footer-section-title">Connect</h5>
+                            <div class="footer-links">
+                                <a href="/support" class="footer-link">Support</a>
+                                <a href="https://calendly.com/getyourtester/demo" class="footer-link" target="_blank">Schedule Demo</a>
+                                <a href="mailto:sales@getyourtester.com" class="footer-link">Sales</a>
+                                <a href="https://github.com/ovidon83/getyourtester" class="footer-link" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <div class="row justify-content-center g-4">
-      <!-- Ovi AI Package -->
-      <div class="col-lg-6">
-        <div class="card h-100 border-0 shadow-sm hover-lift position-relative overflow-hidden">
-          <div class="card-body p-4 p-lg-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3 class="fs-4 fw-bold mb-0">Ovi (AI QA Agent)</h3>
-              <span class="badge bg-primary">AI Only</span>
-            </div>
-            
-            <div class="mb-4">
-              <span class="h2 fw-bold">$199</span>
-              <span class="text-muted"> / month</span>
-            </div>
-            
-              <ul class="text-secondary mb-4">
-                <li class="mb-2">PR analysis & risk flags</li>
-                <li class="mb-2">QA questions</li>
-                <li class="mb-2">Test recipe generation</li>
-              </ul>
-            
-            <a href="/request" class="btn btn-primary w-100 py-3 trial-btn">Start Free Trial</a>
-          </div>
-        </div>
-      </div>
+    <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #1a202c;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: #1a202c;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #4a5568;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #3182ce 0%, #805ad5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #1a202c;
+      color: white;
+      box-shadow: 0 4px 12px rgba(26, 32, 44, 0.15);
+    }
+
+    .btn-primary:hover {
+      background: #2d3748;
+      box-shadow: 0 6px 20px rgba(26, 32, 44, 0.2);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+      background: transparent;
+      color: #3182ce;
+      border: 2px solid #3182ce;
+      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15);
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline-primary:hover {
+      background: #3182ce;
+      border-color: #3182ce;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(49, 130, 206, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-lg {
+      padding: 16px 32px;
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      padding: 0.5rem 0;
+      background: rgba(255, 255, 255, 0.98);
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-brand {
+      text-decoration: none;
+      color: #1a202c;
+    }
+
+    .brand-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .brand-icon:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .logo-symbol {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a202c;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .brand-tagline {
+      font-size: 0.7rem;
+      color: #718096;
+      margin: 0;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0.2px;
+    }
+
+    .navbar-nav {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 0;
+    }
+
+    .nav-link {
+      color: #4a5568;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #3182ce;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #3182ce;
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 3rem 0;
+      background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+      min-height: 65vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233182ce' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .min-vh-75 {
+      min-height: 65vh;
+    }
+
+    .hero-content {
+      max-width: 550px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: #1a202c;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #4a5568;
+      max-width: 480px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .hero-features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 500;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+      font-size: 0.8rem;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #cbd5e0;
+      transform: translateY(-1px);
+    }
+
+    .feature-icon {
+      font-size: 1.125rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 6px;
+      color: #3182ce;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+    }
+
+    .hero-cta {
+      margin-bottom: 1rem;
+      gap: 0.75rem;
+    }
+
+    .hero-trial-info {
+      font-size: 0.75rem;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .workflow-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      max-width: 450px;
+      width: 100%;
+      border: 1px solid #e2e8f0;
+    }
+
+    .workflow-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .workflow-header h3 {
+      color: #1a202c;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .workflow-steps {
+      margin-bottom: 2rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .step:hover {
+      background: #edf2f7;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: #3182ce;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: #1a202c;
+      font-weight: 600;
+    }
+
+    .step-content p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .workflow-footer {
+      text-align: center;
+    }
+
+    .docs-link {
+      color: #3182ce;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: 8px 16px;
+      background: #f7fafc;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      display: inline-block;
+      border: 1px solid #e2e8f0;
+    }
+
+    .docs-link:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: #4a5568;
+      font-weight: 400;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+      position: relative;
+      height: 100%;
+      border: 1px solid #e2e8f0;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e0;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid #3182ce;
+      box-shadow: 0 8px 32px rgba(49, 130, 206, 0.15);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3182ce;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-header h3 {
+      font-size: 1.5rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .pricing-badge {
+      display: inline-block;
+      background: #f7fafc;
+      color: #4a5568;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid #e2e8f0;
+    }
+
+    .pricing-price {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a202c;
+      line-height: 1;
+    }
+
+    .period {
+      font-size: 1rem;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      color: #4a5568;
+      position: relative;
+      padding-left: 1.5rem;
+      font-weight: 400;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #38a169;
+      font-weight: 600;
+    }
+
+    .pricing-footer {
+      margin-top: 2rem;
+    }
+
+    .pricing-footer p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .pricing-footer a {
+      color: #3182ce;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .pricing-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Features Section */
+    .features-section {
+      padding: 6rem 0;
+      background: #f7fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .features-content h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e0;
+    }
+
+    .feature-card .feature-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .feature-card h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Demo Card */
+    .demo-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .demo-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .demo-avatar {
+      width: 40px;
+      height: 40px;
+      background: #3182ce;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .demo-header strong {
+      color: #1a202c;
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .demo-header span {
+      font-size: 0.875rem;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    .demo-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .demo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .demo-item:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge.risk {
+      background: #fef5e7;
+      color: #c05621;
+      border: 1px solid #fed7aa;
+    }
+
+    .badge.question {
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+    }
+
+    .badge.plan {
+      background: #f0fff4;
+      color: #22543d;
+      border: 1px solid #c6f6d5;
+    }
+
+    .badge.example {
+      background: #faf5ff;
+      color: #553c9a;
+      border: 1px solid #e9d8fd;
+    }
+
+    .demo-item p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #1a202c;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    /* Human QA Section */
+    .human-qa-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .human-qa-content h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      border: 1px solid #e2e8f0;
+    }
+
+    .benefit-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e0;
+    }
+
+    .benefit-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .benefit-item h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .benefit-item p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Partnership Card */
+    .partnership-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .partnership-card h3 {
+      font-size: 1.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .partnership-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .partnership-item:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    .partnership-item:last-child {
+      margin-bottom: 2rem;
+    }
+
+    .partnership-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .partnership-item h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .partnership-item p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-section .lead {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 1;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+      color: #e2e8f0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-buttons {
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-trial-info {
+      font-size: 0.875rem;
+      opacity: 1;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+      color: #cbd5e0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: white;
+      padding: 3.5rem 0 2.5rem;
+      border-top: 1px solid #4a5568;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-brand .brand-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1.25rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .footer-brand h4 {
+      color: white;
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .footer-brand p {
+      color: #a0aec0;
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 400;
+    }
+
+    .footer-copyright {
+      color: #a0aec0;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-built-by {
+      color: #a0aec0;
+      font-size: 0.875rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-built-by a {
+      color: #63b3ed;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .footer-built-by a:hover {
+      color: #90cdf4;
+    }
+
+    .footer-section-title {
+      color: #e2e8f0;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-link {
+      color: #a0aec0;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      padding: 0.25rem 0;
+    }
+
+    .footer-link:hover {
+      color: white;
+      transform: translateX(4px);
+    }
+
+    .footer-social {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .social-link {
+      color: #a0aec0;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      padding: 0.25rem 0;
+    }
+
+    .social-link:hover {
+      color: white;
+      transform: translateX(4px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
       
-      <!-- Ovi + QA Partner Package -->
-      <div class="col-lg-6">
-        <div class="card h-100 border-0 shadow hover-lift position-relative overflow-hidden border-primary">
-          <div class="ribbon ribbon-top-right"><span>Most Popular</span></div>
-          <div class="card-body p-4 p-lg-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3 class="fs-4 fw-bold mb-0">Ovi + QA Partner</h3>
-              <span class="badge bg-success">AI + Human</span>
-            </div>
-            
-            <div class="mb-4">
-              <span class="h2 fw-bold">$1,499</span>
-              <span class="text-muted"> / month</span>
-            </div>
-            
-              <ul class="text-secondary mb-4">
-                <li class="mb-2">Everything in Ovi (AI)</li>
-                <li class="mb-2">Weekly exploratory testing</li>
-                <li class="mb-2">Regression coverage & staging validation</li>
-              </ul>
-            
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-success w-100 py-3 demo-btn">Book a Demo</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="text-center mt-5">
-      <p class="mb-2">💡 <strong>Start with the 5-day free trial</strong> — no credit card required, upgrade anytime.</p>
-      <p class="mb-0 small text-muted">Need custom enterprise solutions? <a href="/contact" class="fw-medium">Contact us</a></p>
-    </div>
-  </div>
-</section>
-
-<!-- Meet Ovi Section (minimal) -->
-<section class="py-5 bg-white">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6">
-        <div class="mb-4">
-          <h2 class="fw-bold mb-3">Meet Ovi — Your QA AI Agent</h2>
-          <p class="lead mb-0">Modeled after Ovi (human). Reviews PRs, flags risks, asks QA questions, and generates test plans.</p>
-        </div>
-        
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="d-flex align-items-start">
-              <div class="bg-primary rounded-circle p-2 me-3 mt-1">
-                <i class="bi bi-search text-white"></i>
-              </div>
-              <div>
-                <h5 class="fs-6 fw-bold mb-1">PR Analysis</h5>
-                <p class="small text-muted mb-0">Reviews code changes like a senior QA engineer</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-start">
-              <div class="bg-warning rounded-circle p-2 me-3 mt-1">
-                <i class="bi bi-exclamation-triangle text-white"></i>
-              </div>
-              <div>
-                <h5 class="fs-6 fw-bold mb-1">Risk Flags</h5>
-                <p class="small text-muted mb-0">Spots potential issues before they reach production</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-start">
-              <div class="bg-info rounded-circle p-2 me-3 mt-1">
-                <i class="bi bi-question-circle text-white"></i>
-              </div>
-              <div>
-                <h5 class="fs-6 fw-bold mb-1">Smart Questions</h5>
-                <p class="small text-muted mb-0">Asks the right QA questions developers often miss</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-start">
-              <div class="bg-success rounded-circle p-2 me-3 mt-1">
-                <i class="bi bi-clipboard-check text-white"></i>
-              </div>
-              <div>
-                <h5 class="fs-6 fw-bold mb-1">Test Recipes</h5>
-                <p class="small text-muted mb-0">Generates comprehensive test plans automatically</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      .hero-title {
+        font-size: 2.75rem;
+      }
       
-      <div class="col-lg-6">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;">O</div>
-              <div class="ms-2">
-                <strong>Ovi AI</strong>
-                <span class="text-muted ms-2">PR Comment</span>
-              </div>
-            </div>
-            <p class="mb-2"><span class="badge bg-warning text-dark me-2">Risk</span> Auth flow changes may break existing sessions</p>
-            <p class="mb-2"><span class="badge bg-info text-white me-2">Questions</span> Have you tested mobile logout? What happens to sessions on deploy?</p>
-            <p class="mb-0"><span class="badge bg-success text-white me-2">Test Plan</span> Login/logout mobile/desktop, session persistence, API auth checks</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Ovi AI Agent Features Section (minimal) -->
-<section id="features" class="py-5 bg-white">
-  <div class="container text-center">
-    <h2 class="fw-bold mb-3">Meet Ovi — Your QA AI Agent</h2>
-    <p class="lead mb-3">Supports your product lifecycle:</p>
-    <div class="d-flex gap-2 flex-wrap justify-content-center mb-4 text-secondary">
-      <span>Pre-dev (Jira/Linear): req analysis, design review, QA questions, test recipe</span>
-      <span>During-dev (GitHub): PR confidence & ship score, risk analysis, test recipe</span>
-    </div>
-    <div class="small text-muted mb-4">Today: GitHub PRs • Next: Jira/Linear Chrome extension</div>
-    <div class="d-flex gap-2 flex-wrap justify-content-center mb-4">
-      <span class="badge bg-light text-dark">PR Analysis</span>
-      <span class="badge bg-light text-dark">Risk Flags</span>
-      <span class="badge bg-light text-dark">QA Questions</span>
-      <span class="badge bg-light text-dark">Test Plans</span>
-    </div>
-    <a href="/request" class="btn btn-primary trial-btn">Start Free Trial</a>
-  </div>
-</section>
-
-<!-- Work With the Real Ovi Section (minimal) -->
-<section class="py-5 bg-light">
-  <div class="container">
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">Work With the Real Ovi</h2>
-      <p class="lead">Dedicated human QA for the critical things: release testing, full regressions, test planning & strategy.</p>
-    </div>
-    
-    <div class="row g-4 align-items-center">
-      <div class="col-lg-6">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-          <h3 class="fw-bold mb-3">What You Get</h3>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="d-flex align-items-start">
-                  <i class="bi bi-search text-success me-3 mt-1"></i>
-                  <div>
-                    <h5 class="fs-6 fw-bold mb-1">Weekly Exploratory Testing</h5>
-                    <p class="small text-muted mb-0">Deep dive into user workflows and edge cases</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex align-items-start">
-                  <i class="bi bi-check-circle text-success me-3 mt-1"></i>
-                  <div>
-                    <h5 class="fs-6 fw-bold mb-1">Staging Validation</h5>
-                    <p class="small text-muted mb-0">Pre-production confidence and release readiness</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex align-items-start">
-                  <i class="bi bi-phone text-success me-3 mt-1"></i>
-                  <div>
-                    <h5 class="fs-6 fw-bold mb-1">Cross-Device Testing</h5>
-                    <p class="small text-muted mb-0">Mobile, tablet, desktop coverage</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="d-flex align-items-start">
-                  <i class="bi bi-eye text-success me-3 mt-1"></i>
-                  <div>
-                    <h5 class="fs-6 fw-bold mb-1">Production Monitoring</h5>
-                    <p class="small text-muted mb-0">Real user impact tracking and issue detection</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      .section-header h2 {
+        font-size: 2.25rem;
+      }
       
-      <div class="col-lg-6">
-        <div class="bg-gradient-light rounded-4 p-4">
-          <h4 class="fw-bold mb-3">AI + Human Partnership</h4>
-          <div class="d-flex align-items-center mb-3">
-            <div class="bg-primary rounded-circle p-2 me-3">
-              <i class="bi bi-robot text-white"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">AI Ovi — Speed & Consistency</h5>
-              <p class="small text-muted mb-0">Never miss obvious issues, always get quick feedback</p>
-            </div>
-          </div>
-          <div class="d-flex align-items-center mb-4">
-            <div class="bg-success rounded-circle p-2 me-3">
-              <i class="bi bi-person-check text-white"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Human Ovi — Insight & Context</h5>
-              <p class="small text-muted mb-0">Catch nuanced UX issues and business logic flaws</p>
-            </div>
-          </div>
-          <div class="text-center">
-            <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="btn btn-success demo-btn">Work With the Real Ovi</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonials removed for minimal design -->
-
-<!-- Integration removed for minimal design -->
-
-<!-- About removed for minimal design -->
-
-<!-- Call to Action -->
-<section class="py-5 bg-gradient-primary text-white text-center">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <h2 class="fw-bold mb-3">Ready to ship with confidence?</h2>
-        <p class="lead mb-4">Start with AI Ovi, add human Ovi when you need deep testing expertise</p>
-        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
-          <a href="/request" class="hero-btn primary-btn trial-btn">
-            <div class="btn-icon-wrapper">
-              <i class="bi bi-play-circle"></i>
-            </div>
-            <span>Start Free Trial</span>
-          </a>
-          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="hero-btn secondary-btn demo-btn">
-            <div class="btn-icon-wrapper">
-              <i class="bi bi-calendar-check"></i>
-            </div>
-            <span>Book a Demo</span>
-          </a>
-        </div>
-        <p class="mt-3 small text-white-50">🎯 5-day free trial • No credit card required • Setup in minutes</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="bg-dark text-white py-4">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-        <h4 class="fs-5 mb-2"><i class="bi bi-robot me-2"></i>GetYourTester</h4>
-        <p class="mb-1 small">QA Without the Hiring Headache — AI Ovi + Human Ovi</p>
-        <p class="mb-0 small">© <%= new Date().getFullYear() %> GetYourTester. All rights reserved.</p>
-        <p class="mb-0 small mt-2"><span class="qa-karma-badge"><i class="bi bi-stars me-1"></i>Built by <a href="https://www.qakarma.com/" target="_blank" class="qa-karma-link">QA Karma</a></span></p>
-      </div>
-      <div class="col-md-6 text-center text-md-end">
-        <div class="mb-2">
-          <a href="/docs" class="nav-btn guide-btn btn-sm"><i class="bi bi-book me-1"></i><span>Documentation</span></a>
-          <a href="/request" class="nav-btn trial-btn btn-sm"><i class="bi bi-play-circle me-1"></i><span>Start Free Trial</span></a>
-          <a href="/contact" class="nav-btn contact-btn btn-sm"><i class="bi bi-envelope me-1"></i><span>Contact</span></a>
-        </div>
-        <div>
-          <a href="https://www.linkedin.com/in/ovidiudonciu" target="_blank" class="text-white-50 me-3"><i class="bi bi-linkedin"></i></a>
-          <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank" class="bmc-subtle demo-btn"><i class="bi bi-calendar-check me-1"></i>Book a Demo</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<style>
-html {
-  scroll-behavior: smooth;
-}
-
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
-}
-
-/* Free badge */
-.free-badge {
-  display: inline-block;
-  background: rgba(255, 216, 0, 0.9);
-  color: #000;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  animation: pulse 2s infinite;
-  position: relative;
-  transform: rotate(2deg);
-}
-
-/* Free onboarding callout */
-.free-onboarding-callout {
-  border-top: 2px solid #5c49ff;
-  border-radius: 4px;
-  padding: 0.8rem 1rem;
-  font-weight: 500;
-  color: #4e73df;
-  font-size: 0.95rem;
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
-.free-onboarding-callout i {
-  color: #f7b924;
-  margin-right: 0.5rem;
-}
-
-@keyframes pulse {
-  0% {
-    transform: rotate(2deg) scale(1);
-  }
-  50% {
-    transform: rotate(2deg) scale(1.05);
-  }
-  100% {
-    transform: rotate(2deg) scale(1);
-  }
-}
-
-/* Key benefits grid */
-.key-benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.key-benefit-card {
-  display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 1.25rem;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  align-items: center;
-}
-
-.key-benefit-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.benefit-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 54px;
-  height: 54px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  margin-right: 1rem;
-}
-
-.benefit-icon i {
-  font-size: 1.75rem;
-  color: #fff;
-}
-
-.benefit-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.benefit-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 0.2rem 0;
-}
-
-.benefit-content p {
-  font-size: 0.85rem;
-  margin: 0;
-  opacity: 0.9;
-}
-
-/* Key benefits */
-.key-benefits {
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-}
-
-.key-benefit {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.4rem 0.9rem;
-  border-radius: 6px;
-  font-weight: 400;
-  font-size: 0.9rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.key-benefit:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-1px);
-}
-
-.key-benefit i {
-  font-size: 0.95rem;
-  opacity: 0.85;
-}
-
-/* Guide link */
-.guide-link {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.8rem 1.5rem;
-  background: #ffc107;
-  color: #212529;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.guide-link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.6s ease;
-  z-index: -1;
-}
-
-.guide-link:hover {
-  background: #e5ac00;
-  color: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
-}
-
-.guide-link:hover::before {
-  left: 100%;
-}
-
-.guide-link:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
-}
-
-.card {
-  transition: transform 0.2s, box-shadow 0.2s;
-  border-radius: 8px;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-.rounded-circle {
-  border-radius: 50%;
-}
-
-.btn {
-  border-radius: 6px;
-}
-
-/* Navigation buttons */
-.nav-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.nav-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  background-color: rgba(0, 0, 0, 0.05);
-  transition: height 0.3s ease;
-  z-index: -1;
-}
-
-.nav-btn:hover::after {
-  height: 100%;
-}
-
-.nav-btn:active {
-  transform: scale(0.95);
-}
-
-/* Hero buttons */
-.hero-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.btn-icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  margin: 4px;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.hero-btn span {
-  flex: 1;
-  text-align: center;
-  padding: 0 12px;
-}
-
-.hero-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.6s ease;
-  z-index: -1;
-}
-
-.hero-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
-.hero-btn:hover::before {
-  left: 100%;
-}
-
-.hero-btn:hover .btn-icon-wrapper {
-  transform: scale(1.1);
-}
-
-.hero-btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.primary-btn {
-  background: #333;
-  color: white;
-  border: none;
-}
-
-.primary-btn .btn-icon-wrapper {
-  background: #ff6b6b;
-  color: white;
-}
-
-.primary-btn:hover {
-  background: #222;
-  color: white;
-}
-
-.secondary-btn {
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  border: none;
-}
-
-.secondary-btn .btn-icon-wrapper {
-  background: #4e73df;
-  color: white;
-}
-
-.secondary-btn:hover {
-  background: white;
-  color: #000;
-}
-
-/* Chat button */
-.chat-btn {
-  background: linear-gradient(135deg, rgba(66, 133, 244, 0.08), rgba(219, 68, 55, 0.08), rgba(244, 180, 0, 0.08), rgba(15, 157, 88, 0.08));
-  color: #333;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.chat-btn:hover {
-  background: linear-gradient(135deg, rgba(66, 133, 244, 0.12), rgba(219, 68, 55, 0.12), rgba(244, 180, 0, 0.12), rgba(15, 157, 88, 0.12));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Google icon */
-.google-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.google-icon i {
-  background: conic-gradient(from 45deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-/* Contact button */
-.contact-btn {
-  color: #ff6b6b;
-  background-color: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.2);
-}
-
-.contact-btn:hover {
-  background-color: rgba(255, 107, 107, 0.15);
-  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.15);
-}
-
-/* Request button */
-.request-btn {
-  color: #20bf6b;
-  background-color: rgba(32, 191, 107, 0.1);
-  border: 1px solid rgba(32, 191, 107, 0.2);
-}
-
-.request-btn:hover {
-  background-color: rgba(32, 191, 107, 0.15);
-  box-shadow: 0 4px 8px rgba(32, 191, 107, 0.15);
-}
-
-/* Calendar button */
-.calendar-btn {
-  color: #3f51b5;
-  background-color: rgba(63, 81, 181, 0.1);
-  border: 1px solid rgba(63, 81, 181, 0.2);
-}
-
-.calendar-btn:hover {
-  background-color: rgba(63, 81, 181, 0.15);
-  box-shadow: 0 4px 8px rgba(63, 81, 181, 0.15);
-}
-
-/* Guide button */
-.guide-btn {
-  color: #ffc107;
-  background-color: rgba(255, 193, 7, 0.1);
-  border: 1px solid rgba(255, 193, 7, 0.2);
-}
-
-.guide-btn:hover {
-  background-color: rgba(255, 193, 7, 0.15);
-  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.15);
-}
-
-/* Footer buttons */
-footer .nav-btn {
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-right: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
-}
-
-footer .nav-btn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-footer .nav-btn:last-child {
-  margin-right: 0;
-}
-
-/* Buy me a book button */
-.bmc-subtle {
-  display: inline-flex;
-  align-items: center;
-  color: rgba(255, 216, 0, 0.8);
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-}
-
-.bmc-subtle:hover {
-  color: rgba(255, 216, 0, 1);
-  background-color: rgba(255, 216, 0, 0.1);
-}
-
-/* About section buttons */
-.about-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.about-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-  width: 100%;
-  max-width: 180px;
-  border: 1px solid transparent;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.about-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.linkedin-btn {
-  background-color: #0077b5;
-  color: white;
-}
-
-.linkedin-btn:hover {
-  background-color: #005e93;
-  color: white;
-}
-
-.book-btn {
-  background-color: #ffc107;
-  color: #212529;
-}
-
-.book-btn:hover {
-  background-color: #e5ac00;
-  color: #212529;
-}
-
-/* Mobile optimization */
-@media (max-width: 576px) {
-  h1 {
-    font-size: 2rem;
-  }
-  .lead {
-    font-size: 1rem;
-  }
-  
-  /* Responsive navigation */
-  .nav-btn {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.85rem;
-  }
-  
-  /* Responsive key benefits */
-  .key-benefits {
-    justify-content: center;
-  }
-  
-  .key-benefit {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-  }
-  
-  /* Responsive hero buttons */
-  .hero-btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-    min-width: 140px;
-  }
-  
-  /* Responsive free badge */
-  .free-badge {
-    padding: 3px 10px;
-    font-size: 0.8rem;
-    display: inline-block;
-    margin-top: 0.5rem;
-  }
-  
-  /* Responsive guide link */
-  .guide-link {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-  }
-  
-  /* Responsive free onboarding callout */
-  .free-onboarding-callout {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.85rem;
-  }
-  
-  /* Responsive key benefits grid */
-  .key-benefits-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-btn i {
-    margin-right: 0 !important;
-  }
-  
-  .nav-btn span {
-    display: none;
-  }
-  
-  .google-icon {
-    margin-right: 0 !important;
-  }
-  
-  /* Center benefits on tablet */
-  .key-benefits {
-    justify-content: center;
-  }
-  
-  /* About buttons on mobile/tablet */
-  .about-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  
-  .about-btn {
-    max-width: 120px;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  
-  .about-btn i {
-    margin-right: 0.3rem !important;
-  }
-}
-
-/* Google icon */
-.google-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.google-icon i {
-  background: conic-gradient(from 45deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-/* Pricing cards */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Ribbon */
-.ribbon {
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  position: absolute;
-}
-
-.ribbon span {
-  position: absolute;
-  display: block;
-  width: 225px;
-  padding: 8px 0;
-  background-color: #28a745;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.ribbon-top-right {
-  top: -10px;
-  right: -10px;
-}
-
-.ribbon-top-right span {
-  left: -25px;
-  top: 30px;
-  transform: rotate(45deg);
-}
-
-/* About navigation button */
-.about-nav-btn {
-  color: #6c5ce7;
-  background-color: rgba(108, 92, 231, 0.1);
-  border: 1px solid rgba(108, 92, 231, 0.2);
-}
-
-.about-nav-btn:hover {
-  background-color: rgba(108, 92, 231, 0.15);
-  box-shadow: 0 4px 8px rgba(108, 92, 231, 0.15);
-}
-
-/* CTA Buttons */
-.cta-buttons {
-  margin-bottom: 1.5rem;
-}
-
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
-}
-
-.cta-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
-}
-
-.primary-cta {
-  background: #007bff;
-  color: white;
-  border: none;
-}
-
-.primary-cta:hover {
-  background: #0056b3;
-  color: white;
-}
-
-.secondary-cta {
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.secondary-cta:hover {
-  background: white;
-  color: #000;
-}
-
-.github-btn {
-  background: #292d3e;
-  color: white;
-  border: none;
-}
-
-.github-btn:hover {
-  background: #1a1e2e;
-  color: white;
-}
-
-.test-btn {
-  background: #4285f4;
-  color: white;
-  border: none;
-}
-
-.test-btn:hover {
-  background: #3367d6;
-  color: white;
-}
-
-.waitlist-btn {
-  background: #ff6b6b;
-  color: white;
-  border: none;
-}
-
-.waitlist-btn:hover {
-  background: #e05555;
-  color: white;
-}
-
-/* Coming Soon Badge */
-.coming-soon-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #ffb300;
-  color: #000;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transform: rotate(3deg);
-  z-index: 2;
-  white-space: nowrap;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 576px) {
-  .coming-soon-badge {
-    font-size: 0.6rem;
-    padding: 3px 8px;
-    top: -6px;
-    right: -6px;
-  }
-}
-
-/* How It Works Card */
-.how-it-works-card {
-  overflow: hidden;
-}
-
-.how-it-works-card .card-header {
-  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
-}
-
-.timeline {
-  position: relative;
-  padding: 1rem 0;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 1.25rem;
-  height: 100%;
-  width: 2px;
-  background: rgba(78, 115, 223, 0.2);
-}
-
-.timeline-item {
-  position: relative;
-  padding-left: 3rem;
-  margin-bottom: 1.5rem;
-}
-
-.timeline-item:last-child {
-  margin-bottom: 0;
-}
-
-.timeline-marker {
-  position: absolute;
-  left: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: #4e73df;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.timeline-content {
-  background: #f8f9fa;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.timeline-content h4 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1rem;
-  color: #4e73df;
-}
-
-.timeline-content p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.mini-badge {
-  position: absolute;
-  top: -8px;
-  right: -25px;
-  background: #ffb300;
-  color: #000;
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 10px;
-  transform: rotate(5deg);
-}
-
-.alt-options a {
-  color: #4e73df;
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-}
-
-.alt-options a:hover {
-  text-decoration: underline;
-}
-
-/* Team highlight styling */
-.team-highlight {
-  display: block;
-  margin: 1rem 0 0.5rem;
-  font-weight: 600;
-}
-
-.highlight-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
-  color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-  margin-bottom: 0.5rem;
-}
-
-.highlight-badge i {
-  color: #ffb300;
-  margin-right: 0.4rem;
-}
-
-.team-highlight + em {
-  font-style: italic;
-  font-weight: 500;
-  color: #4e73df;
-  text-decoration: underline;
-  text-decoration-color: rgba(78, 115, 223, 0.3);
-  text-underline-offset: 2px;
-}
-
-/* QA Karma badge */
-.qa-karma-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, rgba(78, 115, 223, 0.1) 0%, rgba(34, 74, 190, 0.1) 100%);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #4e73df;
-  border: 1px solid rgba(78, 115, 223, 0.2);
-}
-
-.qa-karma-badge i {
-  color: #ffc107;
-}
-
-.qa-karma-link {
-  color: #4e73df;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.qa-karma-link:hover {
-  color: #224abe;
-  text-decoration: underline;
-}
-
-/* Navigation by badge */
-.nav-by-badge {
-  display: block;
-  font-size: 0.7rem;
-  opacity: 0.8;
-  margin-top: -3px;
-  text-align: right;
-  margin-right: 2px;
-  color: #666;
-}
-
-.nav-by-link {
-  color: #4e73df;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.nav-by-link:hover {
-  color: #224abe;
-  text-decoration: underline;
-}
-
-/* GetYourTester Specific Styles */
-
-/* Navigation styles */
-.features-nav-btn {
-  color: #6f42c1;
-  background-color: rgba(111, 66, 193, 0.1);
-  border: 1px solid rgba(111, 66, 193, 0.2);
-}
-
-.features-nav-btn:hover {
-  background-color: rgba(111, 66, 193, 0.15);
-  box-shadow: 0 4px 8px rgba(111, 66, 193, 0.15);
-}
-
-.pricing-nav-btn {
-  color: #dc3545;
-  background-color: rgba(220, 53, 69, 0.1);
-  border: 1px solid rgba(220, 53, 69, 0.2);
-}
-
-.pricing-nav-btn:hover {
-  background-color: rgba(220, 53, 69, 0.15);
-  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.15);
-}
-
-/* Timeline markers for new design */
-.ai-marker {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.human-marker {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  font-size: 1rem;
-}
-
-.ship-marker {
-  background: linear-gradient(135deg, #ffc107, #fd7e14);
-  font-size: 1rem;
-}
-
-/* Integration cards */
-.integration-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: #495057;
-}
-
-.integration-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: #e9ecef;
-}
-
-.integration-card i {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #6c757d;
-}
-
-.integration-card span {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-/* Setup steps */
-.integration-steps {
-  position: relative;
-}
-
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.step-item:last-child {
-  margin-bottom: 0;
-}
-
-.step-item::after {
-  content: '';
-  position: absolute;
-  left: 1.25rem;
-  top: 2.5rem;
-  width: 2px;
-  height: 2rem;
-  background: #dee2e6;
-}
-
-.step-item:last-child::after {
-  display: none;
-}
-
-.step-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  font-weight: bold;
-  margin-right: 1rem;
-  flex-shrink: 0;
-}
-
-.step-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #212529;
-}
-
-.step-content p {
-  margin-bottom: 0;
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-/* Gradient background utility */
-.bg-gradient-light {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-/* Responsive pricing grid for 5 columns */
-@media (min-width: 1200px) {
-  .col-xl-2-4 {
-    flex: 0 0 auto;
-    width: 20%;
-  }
-}
-
-/* Text utilities */
-.text-white-75 {
-  color: rgba(255, 255, 255, 0.75) !important;
-}
-
-/* Mobile Optimizations for GetYourTester */
-@media (max-width: 768px) {
-  /* Pricing cards on mobile */
-  .col-xl-2-4 {
-    width: 100% !important;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  /* Hero section mobile */
-  .display-4 {
-    font-size: 2.5rem;
-  }
-  
-  .key-benefits-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  
-  .key-benefit-card {
-    padding: 1rem;
-  }
-  
-  .benefit-icon {
-    min-width: 45px;
-    height: 45px;
-  }
-  
-  .benefit-icon i {
-    font-size: 1.5rem;
-  }
-  
-  .benefit-content h3 {
-    font-size: 1rem;
-  }
-  
-  .benefit-content p {
-    font-size: 0.8rem;
-  }
-  
-  /* Integration steps mobile */
-  .step-item {
-    margin-bottom: 1.5rem;
-  }
-  
-  .step-number {
-    width: 2rem;
-    height: 2rem;
-    font-size: 0.9rem;
-  }
-  
-  .step-item::after {
-    left: 1rem;
-    height: 1.5rem;
-  }
-  
-  /* Integration cards mobile */
-  .integration-card {
-    padding: 0.75rem;
-  }
-  
-  .integration-card i {
-    font-size: 1.25rem;
-  }
-  
-  .integration-card span {
-    font-size: 0.8rem;
-  }
-  
-  /* Features section mobile */
-  .card-body {
-    padding: 1rem !important;
-  }
-  
-  /* Timeline mobile adjustments */
-  .timeline-item {
-    padding-left: 2.5rem;
-  }
-  
-  .timeline-marker {
-    width: 2rem;
-    height: 2rem;
-    font-size: 0.8rem;
-  }
-  
-  .timeline::before {
-    left: 1rem;
-  }
-  
-  /* Badge adjustments */
-  .badge {
-    font-size: 0.7rem;
-    padding: 4px 8px;
-  }
-  
-  /* About section mobile */
-  .about-btn {
-    max-width: 140px;
-    font-size: 0.8rem;
-    padding: 0.4rem 0.7rem;
-  }
-}
-
-@media (max-width: 576px) {
-  /* Extra small devices */
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .display-4 {
-    font-size: 2rem;
-  }
-  
-  .fs-5 {
-    font-size: 1rem !important;
-  }
-  
-  .lead {
-    font-size: 1rem;
-  }
-  
-  .hero-btn {
-    min-width: 160px;
-    font-size: 0.9rem;
-  }
-  
-  .btn-icon-wrapper {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
-  
-  /* Card padding adjustments */
-  .card-body {
-    padding: 0.75rem !important;
-  }
-  
-  /* Timeline content */
-  .timeline-content {
-    padding: 0.75rem;
-  }
-  
-  .timeline-content h4 {
-    font-size: 0.9rem;
-  }
-  
-  .timeline-content p {
-    font-size: 0.8rem;
-  }
-  
-  /* Small text adjustments */
-  .small, small {
-    font-size: 0.8rem;
-  }
-  
-  /* Navigation mobile */
-  .nav-btn span {
-    font-size: 0.8rem;
-  }
-}
-</style>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+      .hero-features {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid,
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .navbar-nav {
+        gap: 1rem;
+      }
+      
+      .pricing-card.featured {
+        transform: none;
+      }
+      
+      .footer-links,
+      .footer-social {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-section {
+        padding: 4rem 0;
+      }
+      
+      .pricing-section,
+      .features-section,
+      .human-qa-section,
+      .cta-section {
+        padding: 4rem 0;
+      }
+      
+      .hero-title {
+        font-size: 2.25rem;
+      }
+      
+      .section-header h2 {
+        font-size: 2rem;
+      }
+      
+      .cta-section h2 {
+        font-size: 2rem;
+      }
+      
+      .workflow-card,
+      .pricing-card,
+      .demo-card,
+      .partnership-card {
+        padding: 1.5rem;
+      }
+      
+      .btn-lg {
+        padding: 14px 24px;
+        font-size: 1rem;
+      }
+      
+      .brand-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
+      
+      .brand-name {
+        font-size: 1.25rem;
+      }
+    }
+    </style>
 </body>
-</html> 
-</html> 
 </html> 

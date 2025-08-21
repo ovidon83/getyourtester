@@ -1,21 +1,70 @@
-<%- include('partials/header', { title: 'GetYourTester – User Guide & Documentation' }) %>
+<%- include('partials/header', { title: 'GetYourTester – Documentation & User Guide' }) %>
 
 <div class="container my-5" style="max-width: 900px;">
-  <h1 class="fw-bold mb-4 text-center">GetYourTester User Guide</h1>
-  <p class="lead text-center mb-5">Everything you need to know to get the most out of on-demand manual QA for your GitHub pull requests.</p>
+  <h1 class="fw-bold mb-4 text-center">GetYourTester Documentation</h1>
+  <p class="lead text-center mb-5">Complete guide to using the only QA stack your startup needs - Ovi AI + Human QA Experts.</p>
 
   <h2 class="mt-5 mb-3">1. What is GetYourTester?</h2>
-  <p>GetYourTester is an on-demand manual QA/testing service that integrates directly with your GitHub pull requests. Request a test with a simple comment, and receive expert bug reports and usability feedback before you merge.</p>
+  <p>GetYourTester is a comprehensive QA platform that combines AI-powered analysis with on-demand human QA expertise. Our platform offers instant PR feedback through Ovi AI and connects you with expert QA engineers for complex testing scenarios.</p>
 
-  <h2 class="mt-5 mb-3">2. How to Get Started</h2>
+  <h2 class="mt-5 mb-3">2. How It Works</h2>
+  <ol>
+    <li><b>🔗 Connect Your Tools:</b> Integrate with GitHub, Linear, and Jira</li>
+    <li><b>🤖 AI Analysis:</b> Instant expert review of tickets and PRs</li>
+    <li><b>📊 Get Feedback:</b> Instant QA insights and test recipes</li>
+    <li><b>👥 Human QA:</b> On-demand senior QA when it really matters</li>
+  </ol>
+
+  <h2 class="mt-5 mb-3">3. Getting Started</h2>
   <ol>
     <li><b>Install the GitHub App:</b> <a href="https://github.com/apps/get-your-tester/installations/new" target="_blank">Install GetYourTester</a> on your repository. You can choose which repos to enable it for.</li>
     <li><b>Open a Pull Request:</b> Create or update a PR in your enabled repository.</li>
-    <li><b>Look for the Welcome Message:</b> The GetYourTester bot will comment on your PR with instructions.</li>
+    <li><b>Automatic Analysis:</b> Ovi AI automatically analyzes your PR and provides instant feedback.</li>
+    <li><b>Request Human QA:</b> Add a comment with <code>/test</code> for comprehensive manual testing.</li>
   </ol>
 
-  <h2 class="mt-5 mb-3">3. How to Request a Test</h2>
-  <p>To request a manual QA round, simply add a comment to your PR that starts with <code>/test</code>. You can include details about what you want tested, browsers/devices, and any special requirements.</p>
+  <h2 class="mt-5 mb-3">4. Ovi AI - Your AI QA Agent</h2>
+  <p>Ovi AI provides instant, comprehensive QA analysis for every PR:</p>
+  
+  <h3 class="mt-4 mb-3">What Ovi Analyzes</h3>
+  <ul>
+    <li><b>🔍 Change Review:</b> Analyzes PR metadata, identifies ambiguity, generates smart questions</li>
+    <li><b>🧪 Test Recipe:</b> Creates comprehensive test scenarios and automation plans</li>
+    <li><b>📊 Code Quality:</b> Identifies affected modules, test coverage gaps, and improvements</li>
+    <li><b>⚠️ Risk Assessment:</b> Provides production readiness score (1-10) with business focus</li>
+  </ul>
+
+  <h3 class="mt-4 mb-3">Production Readiness Scoring</h3>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card h-100 border-success">
+        <div class="card-header bg-success text-white">🚀 9-10: Ship It!</div>
+        <div class="card-body">No critical issues, ready for production</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100 border-warning">
+        <div class="card-header bg-warning text-dark">✅ 7-8: Ship with Monitoring</div>
+        <div class="card-body">Minor issues, can be monitored and fixed quickly</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100 border-warning">
+        <div class="card-header bg-warning text-dark">⚠️ 5-6: Needs More Testing</div>
+        <div class="card-body">Potential issues affecting some users</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100 border-danger">
+        <div class="card-header bg-danger text-white">❌ 3-4: Block Release</div>
+        <div class="card-body">Issues that could significantly impact customer experience</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-5 mb-3">5. Requesting Human QA Testing</h2>
+  <p>To request comprehensive manual QA testing, add a comment to your PR that starts with <code>/test</code>. You can include details about what you want tested, browsers/devices, and any special requirements.</p>
+  
   <div class="bg-light rounded p-3 mb-3">
     <b>Example test request comment:</b>
     <pre class="bg-white rounded p-3 mt-2"><code>/test
@@ -36,15 +85,16 @@ Please run a full manual QA on this PR. Here's what I'd like you to focus on:
 </code></pre>
   </div>
 
-  <h2 class="mt-5 mb-3">4. What Happens Next?</h2>
+  <h2 class="mt-5 mb-3">6. What Happens Next?</h2>
   <ol>
-    <li>Your test request is received by the GetYourTester team.</li>
+    <li>Your test request is received by our expert QA team.</li>
     <li>Testing usually begins within 4 hours (often much faster).</li>
-    <li>You'll receive comments in your PR with bug reports, usability feedback, and a final test report when everything is verified.</li>
+    <li>You'll receive comments in your PR with bug reports, usability feedback, and a final test report.</li>
   </ol>
 
-  <h2 class="mt-5 mb-3">5. Understanding Bug Reports & Test Reports</h2>
+  <h2 class="mt-5 mb-3">7. Understanding Reports</h2>
   <p>Bug reports and test reports are posted as comments in your PR. Here's what they look like:</p>
+  
   <div class="row g-4 mb-4">
     <div class="col-md-6">
       <div class="card h-100">
@@ -98,7 +148,50 @@ Ready to merge! 🚀
     </div>
   </div>
 
-  <h2 class="mt-5 mb-3">6. Frequently Asked Questions (FAQ)</h2>
+  <h2 class="mt-5 mb-3">8. Pricing & Plans</h2>
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white text-center">🆓 Free Trial</div>
+        <div class="card-body text-center">
+          <h4 class="card-title">5 Days</h4>
+          <ul class="list-unstyled">
+            <li>Up to 10 PR reviews</li>
+            <li>Customer support</li>
+            <li>Standard response time</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 border-primary">
+        <div class="card-header bg-primary text-white text-center">🚀 Starter</div>
+        <div class="card-body text-center">
+          <h4 class="card-title">$99/month</h4>
+          <ul class="list-unstyled">
+            <li>Up to 50 PR reviews/month</li>
+            <li>Priority support</li>
+            <li>Advanced integrations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white text-center">🏢 Professional</div>
+        <div class="card-body text-center">
+          <h4 class="card-title">$299/month</h4>
+          <ul class="list-unstyled">
+            <li>Up to 200 PR reviews/month</li>
+            <li>Dedicated support</li>
+            <li>Custom integrations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-5 mb-3">9. Frequently Asked Questions (FAQ)</h2>
   <div class="accordion" id="faqAccordion">
     <div class="accordion-item">
       <h2 class="accordion-header" id="faq1">
@@ -108,7 +201,7 @@ Ready to merge! 🚀
       </h2>
       <div id="faq1-collapse" class="accordion-collapse collapse" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-          During early access, your first few test requests are <b>free</b>. If you find value, you're welcome to support the project via BuyMeACoffee. Future pricing will be announced.
+          Start with our <b>5-day free trial</b> to experience the full platform. After that, choose from our transparent pricing plans starting at $99/month. No hidden fees, cancel anytime.
         </div>
       </div>
     </div>
@@ -120,7 +213,7 @@ Ready to merge! 🚀
       </h2>
       <div id="faq2-collapse" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-          All tests are performed by Ovi Donciu (15+ years QA experience) and a small group of trusted expert testers. You always get real, human feedback.
+          Our team consists of expert QA engineers with 10+ years of experience in testing web applications, mobile apps, and APIs. You always get real, human expertise combined with AI-powered insights.
         </div>
       </div>
     </div>
@@ -132,7 +225,7 @@ Ready to merge! 🚀
       </h2>
       <div id="faq3-collapse" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-          Acceptance, regression, exploratory, UI/UX, API, performance, and basic accessibility testing. If you have special requirements, just mention them in your <code>/test</code> comment.
+          We cover functional testing, regression testing, exploratory testing, UI/UX validation, cross-browser testing, mobile responsiveness, API testing, and basic accessibility testing. For special requirements, just mention them in your <code>/test</code> comment.
         </div>
       </div>
     </div>
@@ -144,7 +237,8 @@ Ready to merge! 🚀
       </h2>
       <div id="faq4-collapse" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-          Testing usually starts within 4 hours of your request, and first results are typically delivered within 4–24 hours.
+          <b>Ovi AI analysis:</b> Instant (within seconds)<br>
+          <b>Human QA testing:</b> Usually starts within 4 hours, with first results delivered within 4–24 hours.
         </div>
       </div>
     </div>
@@ -156,19 +250,27 @@ Ready to merge! 🚀
       </h2>
       <div id="faq5-collapse" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-          Yes! Just include your requirements in the <code>/test</code> comment. The more details you provide, the better the coverage.
+          Absolutely! Just include your specific requirements in the <code>/test</code> comment. The more details you provide, the better the testing coverage and results.
         </div>
       </div>
     </div>
   </div>
 
-  <h2 class="mt-5 mb-3">7. Need Help or Have Questions?</h2>
+  <h2 class="mt-5 mb-3">10. Need Help or Have Questions?</h2>
   <p>If you have questions, want to give feedback, or need support, you can:</p>
   <ul>
     <li>Contact us via the <a href="/contact">Contact form</a></li>
-    <li>Join the <a href="https://chat.google.com/room/AAQA-W7gcrU?cls=7" target="_blank">Google Chat Lounge</a> for live questions</li>
-    <li>Book a <a href="https://calendly.com/qakarma/discovery?month=2025-05" target="_blank">discovery call</a></li>
+    <li>Schedule a <a href="https://calendly.com/getyourtester/demo" target="_blank">demo call</a></li>
+    <li>Email us at <a href="mailto:support@getyourtester.com">support@getyourtester.com</a></li>
+    <li>Visit our <a href="/support">Support page</a></li>
   </ul>
+
+  <div class="text-center mt-5">
+    <h3>Ready to Get Started?</h3>
+    <p class="lead">Join other startups using GetYourTester to deliver better products with confidence.</p>
+    <a href="/" class="btn btn-primary btn-lg me-3">Start Free Trial</a>
+    <a href="https://calendly.com/getyourtester/demo" class="btn btn-outline-primary btn-lg" target="_blank">Schedule Demo</a>
+  </div>
 </div>
 
 <!-- Bootstrap JS (for accordion) -->

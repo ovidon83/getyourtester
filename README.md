@@ -1,57 +1,94 @@
 # GetYourTester
 
-> Expert manual testing directly in your GitHub PRs.
+> **The Only QA Stack Your Startup Needs** - Ovi AI + Human QA Experts
 
-GetYourTester is a GitHub app that allows developers to request manual testing on their pull requests. This implementation provides a webhook server that responds to GitHub events and processes test requests.
+GetYourTester is a comprehensive QA platform that combines AI-powered analysis with on-demand human QA expertise. Our platform offers instant PR feedback through Ovi AI and connects you with expert QA engineers for complex testing scenarios.
 
-## Features
+## 🚀 **What We Offer**
 
-- ⚡ **Automatic Hybrid Analysis**: Comprehensive analysis triggered when PRs are opened
-- 🤖 **Ovi QA Agent**: AI-powered hybrid analysis combining business requirements with technical implementation:
-  - **🎯 Feature Testing**: Extracts user scenarios from PR description for business validation
-  - **🔧 Technical Testing**: Code-level analysis for bugs, security, and implementation issues  
-  - **🐛 Bugs Detection**: Real functional bugs found during code review with file references
-- 🚀 **Manual Testing**: `/test` command provides the same comprehensive hybrid analysis format
-- 📊 **Dashboard**: View and manage test requests 
-- 🏷️ **Status Tracking**: Automatically label PRs with testing status
-- 💬 **Detailed Reports**: Provide comprehensive test feedback
+### **🤖 Ovi AI - Your 24/7 QA Agent**
+- **⚡ Instant Analysis**: Get comprehensive QA feedback in seconds, not days
+- **🎯 Smart Testing**: AI analyzes tickets and PRs like a senior QA engineer
+- **🔍 Risk Detection**: Identifies potential issues, bugs, and edge cases
+- **📋 Test Recipes**: Generates actionable test plans and scenarios
+- **💡 Expert Questions**: Asks the right questions a QA engineer would ask
 
-## Tech Stack
+### **👥 Human QA Experts - When You Need Real Expertise**
+- **🔬 Exploratory Testing**: Deep-dive testing for complex features
+- **🛡️ Security Testing**: Vulnerability assessment and penetration testing
+- **📱 Cross-Platform Validation**: Testing across devices, browsers, and platforms
+- **🔄 Regression Testing**: Full/partial regression testing for major releases
+- **🎭 User Experience Testing**: Real user scenario validation
 
-- Node.js/Express
-- EJS templates
-- Bootstrap 5
-- JSON file storage (no database required)
-- GitHub API via Octokit
-- GitHub App authentication
+## ✨ **Key Features**
 
-## Getting Started
+- **🎯 AC Analysis & Test Recipe**: Extract user scenarios and create comprehensive test plans
+- **🔧 Code-diff & Risk Analysis**: Deep technical analysis with risk assessment
+- **🤖 AI-Powered QA Review**: Instant expert review of tickets and PRs
+- **👥 Human QA Experts**: On-demand senior QA when it really matters
+- **⚡ Lightning Fast**: Get full QA support in seconds, no hiring required
+- **🔄 Human + AI**: Best of both worlds - speed and confidence
 
-### Prerequisites
+## 🏗️ **How It Works**
+
+1. **🔗 Connect Your Tools**: Integrate with GitHub, Linear, and Jira
+2. **🤖 AI Analysis**: Instant expert review of tickets and PRs
+3. **📊 Get Feedback**: Instant QA insights and test recipes
+4. **👥 Human QA**: On-demand senior QA when it really matters
+
+## 💰 **Pricing & Plans**
+
+### **🆓 Free Trial (5 Days)**
+- Up to 10 PR reviews/5 days
+- Customer support
+- Standard response time
+- **Perfect for**: Give it a try for 5 days
+
+### **🚀 Starter ($99/month)**
+- Up to 50 PR reviews/month
+- Priority support
+- Advanced integrations
+- **Perfect for**: Early-stage startups
+
+### **🏢 Professional ($299/month)**
+- Up to 200 PR reviews/month
+- Dedicated support
+- Custom integrations
+- **Perfect for**: Scaling teams
+
+## 🛠️ **Tech Stack**
+
+- **Frontend**: EJS templates, Bootstrap 5, Tailwind-inspired CSS
+- **Backend**: Node.js/Express
+- **AI**: OpenAI GPT-4 integration
+- **Storage**: JSON file storage (no database required)
+- **Integration**: GitHub API via Octokit, GitHub App authentication
+- **Deployment**: Ready for production deployment
+
+## 🚀 **Getting Started**
+
+### **Prerequisites**
 
 - Node.js (v14+)
 - npm
 - A GitHub repository with a webhook configured
 - A smee.io channel for webhook proxying (for local development)
 
-### Installation
+### **Installation**
 
-1. Clone the repository:
-
+1. **Clone the repository**:
 ```bash
-git clone https://github.com/yourusername/getyourtester.git
+git clone https://github.com/ovidon83/getyourtester.git
 cd getyourtester
 ```
 
-2. Install dependencies:
-
+2. **Install dependencies**:
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following variables:
-
-```
+3. **Create a `.env` file** with your configuration:
+```bash
 # Server configuration
 PORT=3000
 NODE_ENV=development
@@ -67,6 +104,10 @@ GITHUB_WEBHOOK_SECRET=your-webhook-secret
 # GitHub PAT (legacy, optional fallback)
 GITHUB_TOKEN=your-github-token
 
+# OpenAI Configuration
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_MODEL=gpt-4o
+
 # Webhook configuration
 WEBHOOK_PROXY_URL=https://smee.io/your-smee-url
 ENABLE_GITHUB=true
@@ -75,127 +116,28 @@ ENABLE_GITHUB=true
 NOTIFICATION_EMAIL=your-email@example.com
 ```
 
-4. Start the webhook server:
-
+4. **Start the webhook server**:
 ```bash
-npm run dev
+npm start
 ```
 
-5. In a separate terminal, start the smee client to forward GitHub webhooks:
+5. **Visit the application**:
+- Main site: http://localhost:3000
+- Dashboard: http://localhost:3000/dashboard
+- Documentation: http://localhost:3000/docs
 
-```bash
-npm run webhook
-```
+## 🤖 **Ovi AI - Your AI QA Agent**
 
-6. Visit http://localhost:3000 to see the application
-7. Visit http://localhost:3000/dashboard to view test requests
+GetYourTester features **Ovi**, an AI-powered QA Agent that provides comprehensive analysis for your pull requests.
 
-### GitHub App Authentication
-
-GetYourTester uses GitHub App authentication for secure, repository-specific access. This allows the app to:
-
-1. Access repositories where it's installed
-2. Use repository-specific permissions
-3. Work across multiple GitHub accounts
-
-#### Setting up GitHub App Authentication
-
-1. Create a GitHub App in your GitHub account:
-   - Go to Settings > Developer settings > GitHub Apps
-   - Click "New GitHub App"
-   - Set the app name, homepage URL, and webhook URL
-   - Configure permissions:
-     - Repository permissions: Contents (Read & write), Issues (Read & write), Pull requests (Read & write)
-   - Generate a private key and download it
-
-2. Add the GitHub App credentials to your `.env` file:
-   ```
-   GITHUB_APP_ID=your-app-id
-   GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
-   ```
-
-3. Install the app on repositories where you want to use GetYourTester
-
-#### Legacy PAT Authentication (Fallback)
-
-For backward compatibility, GetYourTester can also use a Personal Access Token (PAT):
-
-1. Create a PAT with repo, issues, and pull_request scopes
-2. Add it to your `.env` file as `GITHUB_TOKEN`
-3. The app will use the PAT as a fallback if GitHub App authentication fails
-
-### Usage
-
-1. Make sure your GitHub repository has a webhook configured to:
-   - Send events to your smee.io URL
-   - Send "Pull requests" and "Issue comments" events
-   - Content type should be "application/json"
-
-2. **Automatic Hybrid Analysis**: When you create a pull request, Ovi QA Agent automatically provides:
-   - 📋 Summary with risk level, ship score, and reasoning
-   - ❓ Critical questions about user workflows and technical implementation  
-   - 🐛 Real bugs detected in the code with file references
-   - 🎯 Feature testing scenarios extracted from PR description
-   - 🔧 Technical testing for code implementation validation
-   - ⚠️ Critical risks covering business, technical, and user experience
-
-3. **Manual Testing**: Comment `/test` on any PR to trigger the same comprehensive hybrid analysis
-
-5. View all requests in the dashboard at http://localhost:3000/dashboard
-
-## Webhook Implementation
-
-The webhook implementation consists of two main components:
-
-1. **webhook-server.js**: The main Express server that receives webhook events and processes them
-2. **fixed-webhook.js**: A client that connects to smee.io and forwards events to the local server
-
-When a PR is opened or "/test" comment is received:
-
-```
-GitHub PR/Comment → GitHub Webhook → smee.io → fixed-webhook.js → webhook-server.js → githubService
-```
-
-The githubService then:
-1. Creates a test request record
-2. **🤖 Ovi QA Agent analyzes the PR** (code changes, risks, test coverage)
-3. Posts an acknowledgment comment with comprehensive AI insights
-4. Adds a label to the PR
-5. Stores the test request for the dashboard
-
-## 🤖 Ovi QA Agent
-
-GetYourTester features **Ovi**, an AI-powered QA Agent that provides two levels of analysis for your pull requests.
-
-### Two Analysis Modes
-
-**1. ⚡ Quick Analysis (Automatic on PR opening)**
-- Focuses only on critical issues and deal-breakers
-- Provides ship/no-ship recommendation with reasoning
-- Fast analysis optimized for speed and business impact
-
-**2. 🔍 Detailed Analysis (On-demand via `/ovi-details`)**
-- Comprehensive code review and test planning
-- Complete risk assessment and recommendations
-- Full test recipe with automation suggestions
-
-### What Ovi Analyzes
-
-**Quick Analysis** automatically checks for:
-- Critical security vulnerabilities
-- Breaking changes that could crash production
-- Data integrity issues
-- Performance problems
-- Build and compilation errors
-
-**Detailed Analysis** provides:
+### **What Ovi Analyzes**
 
 1. **🔍 Change Review**
    - Analyzes PR metadata (title, description, comments)
    - Identifies potential ambiguity or missing requirements
    - Generates smart questions a QA engineer would ask
    - Assesses risks and edge cases
-   - Provides a **Production Readiness Score** (1-10) with business-focused assessment
+   - Provides a **Production Readiness Score** (1-10)
 
 2. **🧪 Test Recipe**
    - Creates comprehensive test scenarios (Critical Path, General, Edge Cases)
@@ -207,7 +149,7 @@ GetYourTester features **Ovi**, an AI-powered QA Agent that provides two levels 
    - Analyzes existing test coverage and gaps
    - Recommends best practices and improvements
 
-### Production Readiness Scoring
+### **Production Readiness Scoring**
 
 Ovi uses a business-focused scoring system (1-10) to assess release readiness:
 
@@ -217,61 +159,40 @@ Ovi uses a business-focused scoring system (1-10) to assess release readiness:
 - **❌ 3-4: Block Release** - Issues that could significantly impact customer experience
 - **🚨 1-2: Critical Block** - Critical bugs that will definitely affect customers
 
-The scoring considers business impact, customer happiness, and technical quality from a Founder/PM/QA perspective.
+## 🌐 **Production Deployment**
 
-### Example Output
+### **Environment Setup**
+- Set `NODE_ENV=production`
+- Configure production database/storage
+- Set up proper SSL certificates
+- Configure production webhook endpoints
 
-```
-### 🤖 Ovi QA Assistant by GetYourTester
+### **Deployment Options**
+- **Heroku**: Easy deployment with Git integration
+- **AWS**: EC2, ECS, or Lambda deployment
+- **DigitalOcean**: App Platform or Droplet deployment
+- **Vercel**: Serverless deployment option
 
-#### 🔍 Change Review
-**Key Questions:**
-- How does this authentication change affect existing user sessions?
-- Are there proper error handling mechanisms for invalid tokens?
+## 📚 **Documentation & Support**
 
-**Risks:**
-- Potential security vulnerability in token validation
-- Missing rate limiting on login endpoints
+- **📖 Documentation**: [View Documentation →](https://getyourtester.com/docs)
+- **💬 Support**: [Get Support](https://getyourtester.com/support)
+- **📧 Contact**: [Contact Us](https://getyourtester.com/contact)
+- **💰 Pricing**: [View Plans](https://getyourtester.com/pricing)
 
-**Production Readiness Score:** ✅ **8/10 - Ship with Monitoring**
+## 🔗 **Quick Links**
 
-*This change is ready for production with minor monitoring needed. Core functionality works well, but some edge cases should be watched.*
+- **🚀 Start Free Trial**: [Get Started](https://getyourtester.com)
+- **📅 Schedule Demo**: [Book Demo](https://calendly.com/getyourtester/demo)
+- **📧 Contact Sales**: [Contact Sales](mailto:sales@getyourtester.com)
+- **🐛 Report Issues**: [GitHub Issues](https://github.com/ovidon83/getyourtester/issues)
 
-#### 🧪 Test Recipe
-**Critical Path:**
-- [ ] User login with valid credentials
-- [ ] Token validation for protected routes
+## 📄 **License**
 
-**Automation Plan:**
-- Unit: Test JWT token generation and validation functions
-- Integration: Test login endpoint with database integration
-- E2E: Complete user authentication flow
-```
+This project is licensed under the ISC License.
 
-### Testing Ovi QA Agent
+---
 
-Run the test script to verify Ovi's functionality:
+**Built with ❤️ by the GetYourTester Team**
 
-```bash
-npm run test:ovi
-```
-
-## Troubleshooting
-
-### Website Routes Not Working (Contact, About, etc.)
-
-If you notice that routes like `/contact`, `/about`, `/how-it-works`, or `/pricing` are not working, make sure that the `webhook-server.js` file properly imports and uses the routes from `src/routes/index.js`:
-
-```javascript
-// In webhook-server.js
-const indexRoutes = require('./src/routes/index');
-
-// Add this after middleware setup
-app.use('/', indexRoutes);
-```
-
-This ensures that all the public website routes defined in `src/routes/index.js` are available when running the server.
-
-## License
-
-This project is licensed under the ISC License. 
+*The Only QA Stack Your Startup Needs* 
