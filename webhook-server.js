@@ -112,14 +112,22 @@ app.use('/stripe', stripeRoutes);
 
 // Success page route for post-payment onboarding
 app.get('/success', async (req, res) => {
+  console.log('🎯 SUCCESS ROUTE HIT!');
+  console.log('📧 Query parameters:', req.query);
+  
   // Extract customer email from Stripe success URL parameters
   const customerEmail = req.query.email || req.query.customer_email || '';
   const plan = req.query.plan || 'Starter';
   
+  console.log(`📝 Extracted: email=${customerEmail}, plan=${plan}`);
+  
   // Automatically add customer when they reach success page
   if (customerEmail) {
+    console.log(`🔍 Customer email found: ${customerEmail}`);
     try {
+      console.log('📦 Loading customer functions...');
       const { addCustomer } = require('./src/utils/customers');
+      console.log('✅ Customer functions loaded successfully');
       
       // Add new customer automatically
       const customerData = {
@@ -128,19 +136,25 @@ app.get('/success', async (req, res) => {
         source: 'success_page_redirect'
       };
       
+      console.log('📝 Calling addCustomer with:', customerData);
       addCustomer(customerData);
       console.log(`✅ Customer automatically added from success page: ${customerEmail} (${plan})`);
     } catch (error) {
       console.error('❌ Error auto-adding customer from success page:', error);
+      console.error('❌ Error stack:', error.stack);
       // Don't fail the page load if customer tracking fails
     }
+  } else {
+    console.log('⚠️ No customer email found in query parameters');
   }
   
+  console.log('🎨 Rendering success page...');
   res.render('success', { 
     title: 'Welcome to GetYourTester! 🎉',
     plan: plan,
     customerEmail: customerEmail
   });
+  console.log('✅ Success page rendered successfully');
 });
 
 // Special route for generate-test-recipe with larger payload support
