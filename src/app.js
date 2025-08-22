@@ -18,7 +18,8 @@ const docsRoutes = require('./routes/docs');
 const statusRoutes = require('./routes/status');
 const privacyRoutes = require('./routes/privacy');
 const termsRoutes = require('./routes/terms');
-const customerRoutes = require('./routes/customers');
+// Simple customer functions
+const { addCustomer, getAllCustomers, getCustomerStats } = require('./utils/customers');
 
 // Initialize services
 const emailService = require('./utils/emailService');
@@ -116,7 +117,33 @@ app.use('/docs', docsRoutes);
 app.use('/status', statusRoutes);
 app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
-app.use('/api/customers', customerRoutes);
+// Simple customer API routes
+app.get('/api/customers', (req, res) => {
+  try {
+    const customers = getAllCustomers();
+    res.json(customers);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get customers' });
+  }
+});
+
+app.get('/api/customers/stats', (req, res) => {
+  try {
+    const stats = getCustomerStats();
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get customer stats' });
+  }
+});
+
+app.post('/api/customers', (req, res) => {
+  try {
+    const customer = addCustomer(req.body);
+    res.json(customer);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add customer' });
+  }
+});
 
 // Success page route for post-payment onboarding
 app.get('/success', (req, res) => {

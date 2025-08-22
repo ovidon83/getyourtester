@@ -27,7 +27,7 @@ const stripeRoutes = require('./src/routes/stripe');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Fix working directory issue in production BEFORE initializing CustomerService
+// Fix working directory issue in production BEFORE initializing customer functions
 if (process.cwd().includes('/src')) {
   console.log(`⚠️  WARNING: Server running from src/ directory, fixing working directory...`);
   process.chdir(path.join(process.cwd(), '..'));

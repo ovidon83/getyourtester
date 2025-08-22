@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const customerService = require('../utils/customerService');
+const { addCustomer } = require('../utils/customers');
 
 // Only initialize Stripe if API key is available
 let stripe = null;
@@ -76,7 +76,7 @@ async function handleCheckoutCompleted(session) {
 
     // Add customer to tracking system
     if (customerData.email) {
-      const customer = await customerService.addCustomer(customerData);
+      const customer = addCustomer(customerData);
       console.log(`✅ Customer automatically added from Stripe: ${customer.email} (${customer.plan})`);
     } else {
       console.warn('⚠️ No email found in Stripe session, cannot add customer');
@@ -110,21 +110,9 @@ async function handlePaymentSucceeded(invoice) {
 
     // Add/update customer
     if (customerData.email) {
-      const existingCustomer = await customerService.getCustomer(customerData.email);
-      if (existingCustomer) {
-        // Update existing customer with payment info
-        await customerService.updateCustomer(customerData.email, {
-          status: 'paid',
-          stripeCustomerId: customer.id,
-          lastPayment: new Date().toISOString(),
-          paymentAmount: invoice.amount_paid
-        });
-        console.log(`✅ Customer payment updated: ${customer.email}`);
-      } else {
-        // Add new customer
-        await customerService.addCustomer(customerData);
-        console.log(`✅ New customer added from payment: ${customer.email}`);
-      }
+      // Add new customer (simple approach)
+      addCustomer(customerData);
+      console.log(`✅ Customer added from payment: ${customer.email}`);
     }
 
   } catch (error) {
@@ -154,14 +142,9 @@ async function handleSubscriptionCreated(subscription) {
 
     // Add/update customer
     if (customerData.email) {
-      const existingCustomer = await customerService.getCustomer(customerData.email);
-      if (existingCustomer) {
-        await customerService.updateCustomer(customerData.email, customerData);
-        console.log(`✅ Customer subscription updated: ${customer.email}`);
-      } else {
-        await customerService.addCustomer(customerData);
-        console.log(`✅ New customer added from subscription: ${customer.email}`);
-      }
+      // Add new customer (simple approach)
+      addCustomer(customerData);
+      console.log(`✅ New customer added from subscription: ${customer.email}`);
     }
 
   } catch (error) {
