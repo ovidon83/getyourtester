@@ -5,8 +5,19 @@ const nodemailer = require('nodemailer');
 class CustomerService {
   constructor() {
     // Use production-accessible path instead of local home directory
-    this.dataDir = path.join(process.cwd(), 'data');
+    // Handle case where server runs from src/ directory
+    const projectRoot = process.cwd().includes('/src') 
+      ? path.join(process.cwd(), '..') 
+      : process.cwd();
+    
+    this.dataDir = path.join(projectRoot, 'data');
     this.customersFile = path.join(this.dataDir, 'customers.json');
+    
+    console.log(`🔧 CustomerService initialized:`);
+    console.log(`   📁 Project root: ${projectRoot}`);
+    console.log(`   📁 Data directory: ${this.dataDir}`);
+    console.log(`   📄 Customers file: ${this.customersFile}`);
+    
     this.ensureDataDirectory();
     this.initializeCustomersFile();
   }
