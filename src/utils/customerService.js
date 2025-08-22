@@ -4,7 +4,8 @@ const nodemailer = require('nodemailer');
 
 class CustomerService {
   constructor() {
-    this.dataDir = path.join(process.env.HOME || process.env.USERPROFILE, '.getyourtester', 'data');
+    // Use production-accessible path instead of local home directory
+    this.dataDir = path.join(process.cwd(), 'data');
     this.customersFile = path.join(this.dataDir, 'customers.json');
     this.ensureDataDirectory();
     this.initializeCustomersFile();
@@ -31,6 +32,10 @@ class CustomerService {
 
   async addCustomer(customerData) {
     try {
+      console.log(`📝 Adding new customer: ${customerData.email} (${customerData.plan})`);
+      console.log(`📁 Data directory: ${this.dataDir}`);
+      console.log(`📄 Customers file: ${this.customersFile}`);
+      
       // Read existing customers
       const data = JSON.parse(fs.readFileSync(this.customersFile, 'utf8'));
       
@@ -57,6 +62,7 @@ class CustomerService {
 
       // Save to file
       fs.writeFileSync(this.customersFile, JSON.stringify(data, null, 2));
+      console.log(`✅ Customer data saved to: ${this.customersFile}`);
 
       // Send email notification
       await this.sendCustomerNotification(customer);
@@ -66,6 +72,12 @@ class CustomerService {
 
     } catch (error) {
       console.error('❌ Error adding customer:', error);
+      console.error('❌ Error details:', {
+        dataDir: this.dataDir,
+        customersFile: this.customersFile,
+        error: error.message,
+        stack: error.stack
+      });
       throw error;
     }
   }
@@ -76,6 +88,21 @@ class CustomerService {
 
   async sendCustomerNotification(customer) {
     try {
+      console.log(`📧 Attempting to send customer notification for: ${customer.email}`);
+      console.log(`📧 SMTP Config:`, {
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: process.env.SMTP_PORT || 587,
+        user: process.env.SMTP_USER ? '✅ Set' : '❌ Missing',
+        pass: process.env.SMTP_PASSWORD ? '✅ Set' : '❌ Missing'
+      });
+      
+      // Check if SMTP credentials are available
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
+        console.warn('⚠️ SMTP credentials missing, skipping email notification');
+        console.warn('⚠️ Set SMTP_USER and SMTP_PASSWORD environment variables');
+        return;
+      }
+
       // Create email transporter
       const transporter = nodemailer.createTransporter({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -131,6 +158,12 @@ class CustomerService {
 
     } catch (error) {
       console.error('❌ Error sending customer notification:', error);
+      console.error('❌ Email error details:', {
+        error: error.message,
+        code: error.code,
+        command: error.command,
+        response: error.response
+      });
       // Don't throw error - customer tracking should continue even if email fails
     }
   }
