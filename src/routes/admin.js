@@ -3,7 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const customerService = require('../utils/customerService');
+const { getAllCustomers, getCustomerStats } = require('../utils/customers');
 
 // Simple password protection middleware
 const requireAuth = (req, res, next) => {
@@ -29,12 +29,12 @@ const requireAuth = (req, res, next) => {
 // Admin dashboard - requires authentication
 router.get('/dashboard', requireAuth, async (req, res) => {
   try {
-    const customers = await customerService.getAllCustomers();
-    const stats = await customerService.getCustomerStats();
+    const customers = getAllCustomers();
+    const stats = getCustomerStats();
     
     res.render('admin/dashboard', {
       title: 'Admin Dashboard - GetYourTester',
-      customers: customers.customers || [],
+      customers: customers || [],
       stats: stats,
       moment: require('moment')
     });
@@ -51,8 +51,8 @@ router.get('/dashboard', requireAuth, async (req, res) => {
 // Customer details view - requires authentication
 router.get('/customers/:id', requireAuth, async (req, res) => {
   try {
-    const customers = await customerService.getAllCustomers();
-    const customer = customers.customers.find(c => c.id === req.params.id);
+    const customers = getAllCustomers();
+    const customer = customers.find(c => c.id === req.params.id);
     
     if (!customer) {
       return res.status(404).render('error', {
@@ -80,7 +80,7 @@ router.get('/customers/:id', requireAuth, async (req, res) => {
 // API endpoint for customer data (JSON) - requires authentication
 router.get('/api/customers', requireAuth, async (req, res) => {
   try {
-    const customers = await customerService.getAllCustomers();
+    const customers = getAllCustomers();
     res.json(customers);
   } catch (error) {
     console.error('Error fetching customers:', error);
@@ -91,7 +91,7 @@ router.get('/api/customers', requireAuth, async (req, res) => {
 // API endpoint for customer statistics - requires authentication
 router.get('/api/stats', requireAuth, async (req, res) => {
   try {
-    const stats = await customerService.getCustomerStats();
+    const stats = getCustomerStats();
     res.json(stats);
   } catch (error) {
     console.error('Error fetching stats:', error);

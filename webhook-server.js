@@ -76,9 +76,36 @@ app.use('/support', supportRoutes);
 app.use('/email', emailRoutes);
 app.use('/contact', contactRoutes);
 
-// Initialize customer routes AFTER directory fix
-const customerRoutes = require('./src/routes/customers');
-app.use('/api/customers', customerRoutes);
+// Simple customer functions (no complex service)
+const { addCustomer, getAllCustomers, getCustomerStats } = require('./src/utils/customers');
+
+// Simple customer API routes
+app.get('/api/customers', (req, res) => {
+  try {
+    const customers = getAllCustomers();
+    res.json(customers);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get customers' });
+  }
+});
+
+app.get('/api/customers/stats', (req, res) => {
+  try {
+    const stats = getCustomerStats();
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get customer stats' });
+  }
+});
+
+app.post('/api/customers', (req, res) => {
+  try {
+    const customer = addCustomer(req.body);
+    res.json(customer);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add customer' });
+  }
+});
 
 app.use('/admin', adminRoutes);
 app.use('/stripe', stripeRoutes);
@@ -92,34 +119,17 @@ app.get('/success', async (req, res) => {
   // Automatically add customer when they reach success page
   if (customerEmail) {
     try {
-      const customerService = require('./src/utils/customerService');
+      const { addCustomer } = require('./src/utils/customers');
       
-      // Check if customer already exists
-      const existingCustomer = await customerService.getCustomer(customerEmail);
+      // Add new customer automatically
+      const customerData = {
+        email: customerEmail,
+        plan: plan,
+        source: 'success_page_redirect'
+      };
       
-      if (!existingCustomer) {
-        // Add new customer automatically
-        const customerData = {
-          email: customerEmail,
-          plan: plan,
-          status: 'paid', // Assume paid since they reached success page
-          source: 'success_page_redirect',
-          signupDate: new Date().toISOString(),
-          paymentDetected: true
-        };
-        
-        await customerService.addCustomer(customerData);
-        console.log(`✅ Customer automatically added from success page: ${customerEmail} (${plan})`);
-      } else {
-        // Update existing customer with new plan/payment info
-        await customerService.updateCustomer(customerEmail, {
-          plan: plan,
-          status: 'paid',
-          lastPayment: new Date().toISOString(),
-          paymentDetected: true
-        });
-        console.log(`✅ Customer updated from success page: ${customerEmail} (${plan})`);
-      }
+      addCustomer(customerData);
+      console.log(`✅ Customer automatically added from success page: ${customerEmail} (${plan})`);
     } catch (error) {
       console.error('❌ Error auto-adding customer from success page:', error);
       // Don't fail the page load if customer tracking fails
