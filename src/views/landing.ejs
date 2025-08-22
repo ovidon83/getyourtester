@@ -174,7 +174,7 @@
                         </ul>
                         <div class="pricing-footer">
                             <p>Experience the full platform</p>
-                            <a href="#pricing" class="btn btn-primary">Start Free Trial</a>
+                            <a href="https://buy.stripe.com/bJecN59fo1C54X67KibAs00" class="btn btn-primary">Start Free Trial</a>
                         </div>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                             <li>Unlimited PR reviews</li>
                             <li>Advanced Ovi AI analysis</li>
                             <li>Priority support (1h response)</li>
-                            <li>Linear/Jira integration (coming soon)</li>
+                            <li>Linear/Jira integration <span class="coming-soon-badge">Coming Soon</span></li>
                             <li>Custom test scenarios</li>
                             <li>Advanced analytics & reporting</li>
                         </ul>
@@ -1654,6 +1654,31 @@
       color: #2d3748;
       line-height: 1.5;
     }
+     
+     /* Coming Soon Badge */
+     .coming-soon-badge {
+       display: inline-block;
+       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+       color: white;
+       font-size: 0.7rem;
+       font-weight: 600;
+       padding: 2px 8px;
+       border-radius: 12px;
+       margin-left: 8px;
+       text-transform: uppercase;
+       letter-spacing: 0.5px;
+       box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+       animation: pulse-glow 2s ease-in-out infinite alternate;
+     }
+     
+     @keyframes pulse-glow {
+       0% {
+         box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+       }
+       100% {
+         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+       }
+     }
 
     /* Footer */
     .footer {
