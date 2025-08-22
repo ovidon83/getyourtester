@@ -116,6 +116,15 @@ app.use('/status', statusRoutes);
 app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
 
+// Success page route for post-payment onboarding
+app.get('/success', (req, res) => {
+  res.render('success', { 
+    title: 'Welcome to GetYourTester! 🎉',
+    plan: req.query.plan || 'Starter',
+    customerEmail: req.query.email || ''
+  });
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).render('error', {
