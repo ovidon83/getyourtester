@@ -18,6 +18,7 @@ const docsRoutes = require('./routes/docs');
 const statusRoutes = require('./routes/status');
 const privacyRoutes = require('./routes/privacy');
 const termsRoutes = require('./routes/terms');
+const customerRoutes = require('./routes/customers');
 
 // Initialize services
 const emailService = require('./utils/emailService');
@@ -115,13 +116,18 @@ app.use('/docs', docsRoutes);
 app.use('/status', statusRoutes);
 app.use('/privacy', privacyRoutes);
 app.use('/terms', termsRoutes);
+app.use('/api/customers', customerRoutes);
 
 // Success page route for post-payment onboarding
 app.get('/success', (req, res) => {
+  // Extract customer email from Stripe success URL parameters
+  const customerEmail = req.query.email || req.query.customer_email || '';
+  const plan = req.query.plan || 'Starter';
+  
   res.render('success', { 
     title: 'Welcome to GetYourTester! 🎉',
-    plan: req.query.plan || 'Starter',
-    customerEmail: req.query.email || ''
+    plan: plan,
+    customerEmail: customerEmail
   });
 });
 
