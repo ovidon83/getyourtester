@@ -116,24 +116,10 @@ app.get('/success', async (req, res) => {
   console.log('📧 Query parameters:', req.query);
   
   // Extract customer email from Stripe success URL parameters
-  let customerEmail = req.query.email || req.query.customer_email || '';
+  const customerEmail = req.query.email || req.query.customer_email || '';
   const plan = req.query.plan || 'Starter';
-  const sessionId = req.query.session_id;
   
-  console.log(`📝 Extracted: email=${customerEmail}, plan=${plan}, session_id=${sessionId}`);
-  
-  // If no email in query params but we have session_id, try to get from Stripe
-  if (!customerEmail && sessionId) {
-    console.log('🔍 No email found, but session_id present. Attempting to get customer info...');
-    try {
-      // For now, we'll use a placeholder email since we don't have Stripe API key
-      // In production, you'd use Stripe API to get customer email from session_id
-      customerEmail = `customer_${Date.now()}@getyourtester.com`;
-      console.log(`📧 Generated placeholder email: ${customerEmail}`);
-    } catch (error) {
-      console.error('❌ Error getting customer info from Stripe:', error);
-    }
-  }
+  console.log(`📝 Extracted: email=${customerEmail}, plan=${plan}`);
   
   // Automatically add customer when they reach success page
   if (customerEmail) {
@@ -147,8 +133,7 @@ app.get('/success', async (req, res) => {
       const customerData = {
         email: customerEmail,
         plan: plan,
-        source: 'success_page_redirect',
-        sessionId: sessionId || null
+        source: 'success_page_redirect'
       };
       
       console.log('📝 Calling addCustomer with:', customerData);
