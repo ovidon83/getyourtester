@@ -19,15 +19,15 @@ const termsRoutes = require('./src/routes/terms');
 const supportRoutes = require('./src/routes/support');
 const emailRoutes = require('./src/routes/email');
 const contactRoutes = require('./src/routes/contact');
-const customerRoutes = require('./src/routes/customers');
 const adminRoutes = require('./src/routes/admin');
 const stripeRoutes = require('./src/routes/stripe');
+// customerRoutes will be imported AFTER directory fix
 
 // Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Fix working directory issue in production
+// Fix working directory issue in production BEFORE initializing CustomerService
 if (process.cwd().includes('/src')) {
   console.log(`⚠️  WARNING: Server running from src/ directory, fixing working directory...`);
   process.chdir(path.join(process.cwd(), '..'));
@@ -75,7 +75,11 @@ app.use('/terms', termsRoutes);
 app.use('/support', supportRoutes);
 app.use('/email', emailRoutes);
 app.use('/contact', contactRoutes);
+
+// Initialize customer routes AFTER directory fix
+const customerRoutes = require('./src/routes/customers');
 app.use('/api/customers', customerRoutes);
+
 app.use('/admin', adminRoutes);
 app.use('/stripe', stripeRoutes);
 
