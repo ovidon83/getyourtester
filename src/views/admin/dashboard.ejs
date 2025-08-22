@@ -165,6 +165,9 @@
                                         <% if (customer.paymentAmount) { %>
                                             <br><small class="text-muted">$<%= (customer.paymentAmount / 100).toFixed(2) %></small>
                                         <% } %>
+                                        <% if (customer.paymentDetected) { %>
+                                            <br><small class="text-success">✅ Payment Detected</small>
+                                        <% } %>
                                     <% } else if (customer.status === 'free_trial') { %>
                                         <span class="status-badge badge bg-warning">🆓 Free Trial</span>
                                         <% if (customer.trialEnd) { %>

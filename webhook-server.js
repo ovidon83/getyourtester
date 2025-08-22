@@ -73,10 +73,47 @@ app.use('/admin', adminRoutes);
 app.use('/stripe', stripeRoutes);
 
 // Success page route for post-payment onboarding
-app.get('/success', (req, res) => {
+app.get('/success', async (req, res) => {
   // Extract customer email from Stripe success URL parameters
   const customerEmail = req.query.email || req.query.customer_email || '';
   const plan = req.query.plan || 'Starter';
+  
+  // Automatically add customer when they reach success page
+  if (customerEmail) {
+    try {
+      const customerService = require('./src/utils/customerService');
+      
+      // Check if customer already exists
+      const existingCustomer = await customerService.getCustomer(customerEmail);
+      
+      if (!existingCustomer) {
+        // Add new customer automatically
+        const customerData = {
+          email: customerEmail,
+          plan: plan,
+          status: 'paid', // Assume paid since they reached success page
+          source: 'success_page_redirect',
+          signupDate: new Date().toISOString(),
+          paymentDetected: true
+        };
+        
+        await customerService.addCustomer(customerData);
+        console.log(`✅ Customer automatically added from success page: ${customerEmail} (${plan})`);
+      } else {
+        // Update existing customer with new plan/payment info
+        await customerService.updateCustomer(customerEmail, {
+          plan: plan,
+          status: 'paid',
+          lastPayment: new Date().toISOString(),
+          paymentDetected: true
+        });
+        console.log(`✅ Customer updated from success page: ${customerEmail} (${plan})`);
+      }
+    } catch (error) {
+      console.error('❌ Error auto-adding customer from success page:', error);
+      // Don't fail the page load if customer tracking fails
+    }
+  }
   
   res.render('success', { 
     title: 'Welcome to GetYourTester! 🎉',
