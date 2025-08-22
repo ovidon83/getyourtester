@@ -1,10 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const customerService = require('../utils/customerService');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+// Only initialize Stripe if API key is available
+let stripe = null;
+if (process.env.STRIPE_SECRET_KEY) {
+  try {
+    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    console.log('✅ Stripe client initialized successfully');
+  } catch (error) {
+    console.warn('⚠️ Failed to initialize Stripe client:', error.message);
+  }
+} else {
+  console.warn('⚠️ STRIPE_SECRET_KEY not set, Stripe webhooks disabled');
+}
 
 // Stripe webhook endpoint for payment events
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  // Check if Stripe is available
+  if (!stripe) {
+    console.error('❌ Stripe webhook received but Stripe client not initialized');
+    return res.status(503).send('Stripe service unavailable');
+  }
+
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
