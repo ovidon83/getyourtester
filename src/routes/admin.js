@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const githubService = require('../utils/githubService');
 const emailService = require('../utils/emailService');
+const customerService = require('../utils/customerService');
 
 // Authentication middleware
 const isAuthenticated = (req, res, next) => {
@@ -14,6 +15,27 @@ const isAuthenticated = (req, res, next) => {
     return next();
   }
   res.redirect('/admin/login');
+};
+
+// Simple password protection middleware
+const requireAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader) {
+    res.setHeader('WWW-Authenticate', 'Basic');
+    return res.status(401).send('Authentication required');
+  }
+  
+  const credentials = Buffer.from(authHeader.split(' ')[1], 'base64').toString();
+  const [username, password] = credentials.split(':');
+  
+  // Simple hardcoded credentials - in production use environment variables
+  if (username === 'admin' && password === 'GetYourTester2025!') {
+    next();
+  } else {
+    res.setHeader('WWW-Authenticate', 'Basic');
+    res.status(401).send('Invalid credentials');
+  }
 };
 
 // Helper function to get test requests
@@ -90,13 +112,55 @@ router.get('/logout', (req, res) => {
   res.redirect('/admin/login');
 });
 
-// Admin dashboard
-router.get('/dashboard', isAuthenticated, (req, res) => {
-  const testRequests = getTestRequests();
-  res.render('admin/dashboard', {
-    title: 'Admin Dashboard',
-    testRequests
-  });
+// Admin dashboard - requires authentication
+router.get('/dashboard', requireAuth, async (req, res) => {
+  try {
+    const customers = await customerService.getAllCustomers();
+    const stats = await customerService.getCustomerStats();
+    
+    res.render('admin/dashboard', {
+      title: 'Admin Dashboard - GetYourTester',
+      customers: customers.customers || [],
+      stats: stats,
+      moment: require('moment')
+    });
+  } catch (error) {
+    console.error('Error loading admin dashboard:', error);
+    res.status(500).render('error', {
+      title: 'Admin Dashboard Error',
+      message: 'Failed to load customer data',
+      error: { status: 500 }
+    });
+  }
+});
+
+// Customer details view - requires authentication
+router.get('/customers/:id', requireAuth, async (req, res) => {
+  try {
+    const customers = await customerService.getAllCustomers();
+    const customer = customers.customers.find(c => c.id === req.params.id);
+    
+    if (!customer) {
+      return res.status(404).render('error', {
+        title: 'Customer Not Found',
+        message: 'The requested customer was not found',
+        error: { status: 404 }
+      });
+    }
+    
+    res.render('admin/customer-details', {
+      title: `Customer Details - ${customer.email}`,
+      customer: customer,
+      moment: require('moment')
+    });
+  } catch (error) {
+    console.error('Error loading customer details:', error);
+    res.status(500).render('error', {
+      title: 'Customer Details Error',
+      message: 'Failed to load customer data',
+      error: { status: 500 }
+    });
+  }
 });
 
 // Test request details
@@ -177,6 +241,28 @@ router.post('/request/:id/update', isAuthenticated, async (req, res) => {
       message: 'Failed to update test request',
       error: { status: 500, details: err.message }
     });
+  }
+});
+
+// API endpoint for customer data (JSON) - requires authentication
+router.get('/api/customers', requireAuth, async (req, res) => {
+  try {
+    const customers = await customerService.getAllCustomers();
+    res.json(customers);
+  } catch (error) {
+    console.error('Error fetching customers:', error);
+    res.status(500).json({ error: 'Failed to fetch customers' });
+  }
+});
+
+// API endpoint for customer statistics - requires authentication
+router.get('/api/stats', requireAuth, async (req, res) => {
+  try {
+    const stats = await customerService.getCustomerStats();
+    res.json(stats);
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    res.status(500).json({ error: 'Failed to fetch statistics' });
   }
 });
 

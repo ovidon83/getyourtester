@@ -1,146 +1,249 @@
-<%- include('../partials/header', { title: 'Test Requests Dashboard' }) %>
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1><i class="bi bi-speedometer2 me-2"></i> Test Requests Dashboard <small class="text-muted fs-6">(v2.0.1)</small></h1>
-</div>
-
-<div class="card shadow-sm">
-  <div class="card-header bg-primary text-white">
-    <h3 class="card-title mb-0">Test Requests</h3>
-  </div>
-  <div class="card-body">
-    <% if (testRequests && testRequests.length > 0) { %>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Repository</th>
-              <th>PR #</th>
-              <th>Test Preview</th>
-              <th>Requested By</th>
-              <th>Requested At</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% testRequests.forEach(request => { %>
-              <tr>
-                <td><a href="/request/<%= request.id %>"><%= request.id %></a></td>
-                <td><%= request.repository %></td>
-                <td><a href="<%= request.prUrl %>" target="_blank"><%= request.prNumber %></a></td>
-                <td>
-                  <% if (request.parsedDetails && request.parsedDetails.fullContent) { %>
-                    <div class="text-truncate" style="max-width: 250px;" title="<%= request.parsedDetails.fullContent %>">
-                      <%= request.parsedDetails.fullContent.substring(0, 60) %><%= request.parsedDetails.fullContent.length > 60 ? '...' : '' %>
-                    </div>
-                  <% } else if (request.comment) { %>
-                    <div class="text-truncate" style="max-width: 250px;" title="<%= request.comment.replace(/^\/test\s+/, '').trim() %>">
-                      <%= request.comment.replace(/^\/test\s+/, '').trim().substring(0, 60) %><%= request.comment.replace(/^\/test\s+/, '').trim().length > 60 ? '...' : '' %>
-                    </div>
-                  <% } else { %>
-                    <em>No details</em>
-                  <% } %>
-                </td>
-                <td><%= request.requestedBy %></td>
-                <td><%= new Date(request.requestedAt).toLocaleString() %></td>
-                <td>
-                  <span class="badge rounded-pill 
-                    <% if (request.status === 'pending') { %>bg-warning<% } %>
-                    <% if (request.status === 'in-progress') { %>bg-info<% } %>
-                    <% if (request.status === 'delayed') { %>bg-secondary text-white<% } %>
-                    <% if (request.status === 'blocked') { %>bg-danger<% } %>
-                    <% if (request.status === 'complete-pass') { %>bg-success<% } %>
-                    <% if (request.status === 'complete-fail') { %>bg-danger<% } %>
-                  ">
-                    <% if (request.status === 'pending') { %>⏳ GYT-Pending<% } %>
-                    <% if (request.status === 'in-progress') { %>🔄 GYT-In Progress<% } %>
-                    <% if (request.status === 'delayed') { %>⏰ GYT-Delayed<% } %>
-                    <% if (request.status === 'blocked') { %>🚫 GYT-Blocked<% } %>
-                    <% if (request.status === 'complete-pass') { %>✅ GYT-Complete: PASS<% } %>
-                    <% if (request.status === 'complete-fail') { %>❌ GYT-Complete: FAIL<% } %>
-                  </span>
-                </td>
-                <td>
-                  <a href="/request/<%= request.id %>" class="btn btn-sm btn-primary">
-                    <i class="bi bi-pencil-square"></i> Manage
-                  </a>
-                </td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-    <% } else { %>
-      <div class="alert alert-info">
-        <i class="bi bi-info-circle me-2"></i> No test requests found. Try adding a "/test" comment to a GitHub PR to create one.
-      </div>
-    <% } %>
-  </div>
-</div>
-
-<div class="row mt-5">
-  <div class="col-md-3">
-    <div class="card text-white bg-warning mb-3">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title">⏳ GYT-Pending</h5>
-            <h2 class="mb-0">
-              <%= testRequests.filter(r => r.status === 'pending').length %>
-            </h2>
-          </div>
-          <i class="bi bi-hourglass-split" style="font-size: 3rem; opacity: 0.5;"></i>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .customer-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+        .customer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .plan-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .search-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-users me-2"></i>Customer Dashboard</h1>
+            <div>
+                <a href="/admin" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Admin
+                </a>
+                <button class="btn btn-primary" onclick="refreshData()">
+                    <i class="fas fa-sync-alt me-1"></i>Refresh
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card text-white bg-info mb-3">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title">🔄 GYT-In Progress</h5>
-            <h2 class="mb-0">
-              <%= testRequests.filter(r => r.status === 'in-progress').length %>
-            </h2>
-          </div>
-          <i class="bi bi-gear-wide-connected" style="font-size: 3rem; opacity: 0.5;"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card text-white bg-secondary mb-3">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title">🚫 GYT-Blocked/Delayed</h5>
-            <h2 class="mb-0">
-              <%= testRequests.filter(r => r.status === 'blocked' || r.status === 'delayed').length %>
-            </h2>
-          </div>
-          <i class="bi bi-exclamation-triangle" style="font-size: 3rem; opacity: 0.5;"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card text-white bg-success mb-3">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title">✅ GYT-Complete</h5>
-            <h2 class="mb-0">
-              <%= testRequests.filter(r => r.status === 'complete-pass' || r.status === 'complete-fail').length %>
-            </h2>
-          </div>
-          <i class="bi bi-check-circle" style="font-size: 3rem; opacity: 0.5;"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<%- include('../partials/footer') %> 
+        <!-- Statistics Cards -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <h3><i class="fas fa-users me-2"></i><%= stats.totalCustomers %></h3>
+                    <p class="mb-0">Total Customers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3><i class="fas fa-dollar-sign me-2"></i><%= stats.paidCustomers %></h3>
+                    <p class="mb-0">Paid Customers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <h3><i class="fas fa-gift me-2"></i><%= stats.freeTrialCustomers %></h3>
+                    <p class="mb-0">Free Trial</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3><i class="fas fa-clock me-2"></i><%= stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleDateString() : 'N/A' %></h3>
+                    <p class="mb-0">Last Updated</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="search-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search customers by name, email, or company...">
+                </div>
+                <div class="col-md-3">
+                    <select id="planFilter" class="form-select">
+                        <option value="">All Plans</option>
+                        <option value="Free Trial">Free Trial</option>
+                        <option value="Starter">Starter</option>
+                        <option value="Growth">Growth</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="free_trial">Free Trial</option>
+                        <option value="paid">Paid</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Table -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Customer List</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Customer</th>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>Company</th>
+                                <th>Team Size</th>
+                                <th>Signup Date</th>
+                                <th>Last Activity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <% customers.forEach(customer => { %>
+                            <tr class="customer-row" 
+                                data-name="<%= (customer.name || '').toLowerCase() %>"
+                                data-email="<%= (customer.email || '').toLowerCase() %>"
+                                data-company="<%= (customer.company || '').toLowerCase() %>"
+                                data-plan="<%= customer.plan %>"
+                                data-status="<%= customer.status %>">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                            <%= (customer.name || customer.email).charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold"><%= customer.name || 'N/A' %></div>
+                                            <div class="text-muted small"><%= customer.email %></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="plan-badge badge bg-info"><%= customer.plan %></span>
+                                </td>
+                                <td>
+                                    <% if (customer.status === 'paid') { %>
+                                        <span class="status-badge badge bg-success">💰 Paid</span>
+                                    <% } else { %>
+                                        <span class="status-badge badge bg-warning">🆓 Free Trial</span>
+                                    <% } %>
+                                </td>
+                                <td><%= customer.company || 'N/A' %></td>
+                                <td><%= customer.teamSize || 'N/A' %></td>
+                                <td><%= new Date(customer.createdAt).toLocaleDateString() %></td>
+                                <td><%= new Date(customer.lastActivity).toLocaleDateString() %></td>
+                                <td>
+                                    <a href="/admin/customers/<%= customer.id %>" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyCustomerData('<%= customer.id %>')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Customers Message -->
+        <% if (customers.length === 0) { %>
+        <div class="text-center py-5">
+            <i class="fas fa-users text-muted" style="font-size: 3rem;"></i>
+            <h4 class="text-muted mt-3">No Customers Yet</h4>
+            <p class="text-muted">When customers sign up, they'll appear here.</p>
+        </div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Search and filter functionality
+        document.getElementById('searchInput').addEventListener('input', filterCustomers);
+        document.getElementById('planFilter').addEventListener('change', filterCustomers);
+        document.getElementById('statusFilter').addEventListener('change', filterCustomers);
+
+        function filterCustomers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const planFilter = document.getElementById('planFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            document.querySelectorAll('.customer-row').forEach(row => {
+                const name = row.dataset.name;
+                const email = row.dataset.email;
+                const company = row.dataset.company;
+                const plan = row.dataset.plan;
+                const status = row.dataset.status;
+
+                const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm) || company.includes(searchTerm);
+                const matchesPlan = !planFilter || plan === planFilter;
+                const matchesStatus = !statusFilter || status === statusFilter;
+
+                row.style.display = matchesSearch && matchesPlan && matchesStatus ? '' : 'none';
+            });
+        }
+
+        function refreshData() {
+            location.reload();
+        }
+
+        function copyCustomerData(customerId) {
+            // Find customer data and copy to clipboard
+            const row = document.querySelector(`[data-customer-id="${customerId}"]`);
+            if (row) {
+                const customerData = {
+                    id: customerId,
+                    name: row.dataset.name,
+                    email: row.dataset.email,
+                    plan: row.dataset.plan,
+                    status: row.dataset.status
+                };
+                
+                navigator.clipboard.writeText(JSON.stringify(customerData, null, 2))
+                    .then(() => alert('Customer data copied to clipboard!'))
+                    .catch(() => alert('Failed to copy data'));
+            }
+        }
+    </script>
+</body>
+</html> 
