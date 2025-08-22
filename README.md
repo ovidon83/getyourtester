@@ -61,13 +61,14 @@ GetYourTester offers AI-powered QA with optional human validation:
 - **Perfect for**: Scaling teams
 
 ### **👥 Human QA Add-on**
-- **Price**: $25 per PR review
+- **Starter Package**: $199/month (10 hours/month)
+- **Growth Package**: $399/month (25 hours/month) - Most Popular
+- **Scale Package**: $699/month (50 hours/month)
 - Expert QA engineers (10+ years experience)
 - Manual testing & validation
 - Cross-browser & device testing
-- 4-hour turnaround time
-- **Bulk Discounts**: 10+ reviews (20% off), 25+ reviews (30% off)
-- **Add to any plan** for comprehensive testing
+- Flexible usage for critical features
+- **Perfect for**: Feature launches, complex integrations, performance testing
 
 ## 🛠️ **Tech Stack**
 

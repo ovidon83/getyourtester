@@ -236,32 +236,76 @@
                         <p class="text-center mb-4">Add expert human QA engineers to any plan for comprehensive testing</p>
                         
                         <div class="row justify-content-center">
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <div class="addon-pricing">
                                     <div class="addon-card">
-                                        <h4>Human QA Add-on</h4>
+                                        <h4>Starter QA Package</h4>
                                         <div class="addon-price">
-                                            <span class="price">$25</span>
-                                            <span class="period">per PR review</span>
+                                            <span class="price">$199</span>
+                                            <span class="period">/month</span>
                                         </div>
+                                        <div class="addon-hours">10 hours/month</div>
                                         <ul class="addon-features">
                                             <li>Expert QA engineers (10+ years experience)</li>
                                             <li>Manual testing & validation</li>
                                             <li>Cross-browser & device testing</li>
                                             <li>Detailed bug reports & screenshots</li>
-                                            <li>4-hour turnaround time</li>
+                                            <li>24-hour turnaround time</li>
                                         </ul>
-                                        <div class="addon-discounts">
-                                            <p><strong>Bulk Discounts:</strong></p>
-                                            <ul>
-                                                <li>10+ reviews: 20% off</li>
-                                                <li>25+ reviews: 30% off</li>
-                                                <li>Priority queue: +$10 per review</li>
-                                            </ul>
-                                        </div>
                                         <div class="addon-cta">
-                                            <a href="mailto:ovi@qakarma.com?subject=Human QA Add-on Inquiry&body=Hi, I'm interested in adding Human QA to my plan. Please provide more details about pricing and availability." class="btn btn-outline-primary">Get Human QA Quote</a>
+                                            <a href="mailto:ovi@qakarma.com?subject=Starter QA Package Inquiry&body=Hi, I'm interested in the Starter QA Package (10 hours/month). Please provide more details about availability and setup." class="btn btn-outline-primary">Get Started</a>
                                         </div>
+                                    </div>
+                                    
+                                    <div class="addon-card featured">
+                                        <div class="featured-badge">Most Popular</div>
+                                        <h4>Growth QA Package</h4>
+                                        <div class="addon-price">
+                                            <span class="price">$399</span>
+                                            <span class="period">/month</span>
+                                        </div>
+                                        <div class="addon-hours">25 hours/month</div>
+                                        <ul class="addon-features">
+                                            <li>Everything in Starter +</li>
+                                            <li>Priority queue access</li>
+                                            <li>8-hour turnaround time</li>
+                                            <li>Custom test scenarios</li>
+                                            <li>Performance & load testing</li>
+                                        </ul>
+                                        <div class="addon-cta">
+                                            <a href="mailto:ovi@qakarma.com?subject=Growth QA Package Inquiry&body=Hi, I'm interested in the Growth QA Package (25 hours/month). Please provide more details about availability and setup." class="btn btn-primary">Get Started</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="addon-card">
+                                        <h4>Scale QA Package</h4>
+                                        <div class="addon-price">
+                                            <span class="price">$699</span>
+                                            <span class="period">/month</span>
+                                        </div>
+                                        <div class="addon-hours">50 hours/month</div>
+                                        <ul class="addon-features">
+                                            <li>Everything in Growth +</li>
+                                            <li>Dedicated QA engineer</li>
+                                            <li>4-hour turnaround time</li>
+                                            <li>API & integration testing</li>
+                                            <li>Security testing basics</li>
+                                        </ul>
+                                        <div class="addon-cta">
+                                            <a href="mailto:ovi@qakarma.com?subject=Scale QA Package Inquiry&body=Hi, I'm interested in the Scale QA Package (50 hours/month). Please provide more details about availability and setup." class="btn btn-outline-primary">Get Started</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="addon-info mt-4">
+                                    <div class="alert alert-info">
+                                        <h5>💡 How It Works</h5>
+                                        <ul class="mb-0">
+                                            <li><strong>Flexible Usage:</strong> Use hours for critical features, complex testing, or when you need human expertise</li>
+                                            <li><strong>Rollover:</strong> Unused hours carry over to next month (up to 50% of package)</li>
+                                            <li><strong>Add Hours:</strong> Need more? Add hours at $20/hour for Starter, $18/hour for Growth, $16/hour for Scale</li>
+                                            <li><strong>Perfect for:</strong> Feature launches, complex integrations, performance testing, security reviews</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -1504,513 +1548,6 @@
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-    /* Pricing Section */
-    .pricing-section {
-      padding: 6rem 0;
-      background: #ffffff;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .section-header {
-      margin-bottom: 4rem;
-      text-align: center;
-    }
-
-    .section-header h2 {
-      font-size: 2.5rem;
-      color: #1a202c;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-
-    .section-header p {
-      font-size: 1.25rem;
-      color: #4a5568;
-      font-weight: 400;
-    }
-
-    .pricing-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s ease;
-      position: relative;
-      height: 100%;
-      border: 1px solid #e2e8f0;
-    }
-
-    .pricing-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-      border-color: #cbd5e0;
-    }
-
-    .pricing-card.featured {
-      border: 2px solid #3182ce;
-      box-shadow: 0 8px 32px rgba(49, 130, 206, 0.15);
-    }
-
-    .featured-badge {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #3182ce;
-      color: white;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .pricing-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .pricing-header h3 {
-      font-size: 1.5rem;
-      color: #1a202c;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .pricing-badge {
-      display: inline-block;
-      background: #f7fafc;
-      color: #4a5568;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      border: 1px solid #e2e8f0;
-    }
-
-    .pricing-price {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .price {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #1a202c;
-      line-height: 1;
-    }
-
-    .period {
-      font-size: 1rem;
-      color: #718096;
-      font-weight: 400;
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
-
-    .pricing-features li {
-      padding: 0.5rem 0;
-      color: #4a5568;
-      position: relative;
-      padding-left: 1.5rem;
-      font-weight: 400;
-    }
-
-    .pricing-features li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: #38a169;
-      font-weight: 600;
-    }
-
-    .pricing-footer {
-      margin-top: 2rem;
-    }
-
-    .pricing-footer p {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      font-weight: 400;
-    }
-
-    .pricing-footer a {
-      color: #3182ce;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .pricing-footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Features Section */
-    .features-section {
-      padding: 6rem 0;
-      background: #f7fafc;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .features-content h2 {
-      font-size: 2.5rem;
-      color: #1a202c;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .feature-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1.5rem;
-      background: white;
-      border-radius: 12px;
-      transition: all 0.2s ease;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .feature-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      border-color: #cbd5e0;
-    }
-
-    .feature-card .feature-icon {
-      font-size: 1.5rem;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f7fafc;
-      border-radius: 8px;
-      flex-shrink: 0;
-      border: 1px solid #e2e8f0;
-      color: #3182ce;
-    }
-
-    .feature-card h4 {
-      font-size: 1rem;
-      color: #1a202c;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .feature-card p {
-      font-size: 0.875rem;
-      color: #4a5568;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* Demo Card */
-    .demo-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
-    }
-
-    .demo-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .demo-avatar {
-      width: 40px;
-      height: 40px;
-      background: #3182ce;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .demo-header strong {
-      color: #1a202c;
-      display: block;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .demo-header span {
-      font-size: 0.875rem;
-      color: #718096;
-      font-weight: 400;
-    }
-
-    .demo-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .demo-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 1rem;
-      background: #f7fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      transition: all 0.2s ease;
-    }
-
-    .demo-item:hover {
-      background: #edf2f7;
-      border-color: #cbd5e0;
-    }
-
-    .badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      flex-shrink: 0;
-      margin-top: 2px;
-      letter-spacing: 0.5px;
-    }
-
-    .badge.risk {
-      background: #fef5e7;
-      color: #c05621;
-      border: 1px solid #fed7aa;
-    }
-
-    .badge.question {
-      background: #ebf8ff;
-      color: #2b6cb0;
-      border: 1px solid #bee3f8;
-    }
-
-    .badge.plan {
-      background: #f0fff4;
-      color: #22543d;
-      border: 1px solid #c6f6d5;
-    }
-
-    .badge.example {
-      background: #faf5ff;
-      color: #553c9a;
-      border: 1px solid #e9d8fd;
-    }
-
-    .demo-item p {
-      margin: 0;
-      font-size: 0.875rem;
-      color: #1a202c;
-      line-height: 1.5;
-      font-weight: 400;
-    }
-
-    /* Human QA Section */
-    .human-qa-section {
-      padding: 6rem 0;
-      background: #ffffff;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .human-qa-content h2 {
-      font-size: 2.5rem;
-      color: #1a202c;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .benefit-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1.5rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      transition: all 0.2s ease;
-      border: 1px solid #e2e8f0;
-    }
-
-    .benefit-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      border-color: #cbd5e0;
-    }
-
-    .benefit-icon {
-      font-size: 1.5rem;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f7fafc;
-      border-radius: 8px;
-      flex-shrink: 0;
-      border: 1px solid #e2e8f0;
-      color: #3182ce;
-    }
-
-    .benefit-item h4 {
-      font-size: 1rem;
-      color: #1a202c;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .benefit-item p {
-      font-size: 0.875rem;
-      color: #4a5568;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* Partnership Card */
-    .partnership-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
-    }
-
-    .partnership-card h3 {
-      font-size: 1.5rem;
-      color: #1a202c;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .partnership-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      background: #f7fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      transition: all 0.2s ease;
-    }
-
-    .partnership-item:hover {
-      background: #edf2f7;
-      border-color: #cbd5e0;
-    }
-
-    .partnership-item:last-child {
-      margin-bottom: 2rem;
-    }
-
-    .partnership-icon {
-      font-size: 1.5rem;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f7fafc;
-      border-radius: 8px;
-      flex-shrink: 0;
-      border: 1px solid #e2e8f0;
-      color: #3182ce;
-    }
-
-    .partnership-item h4 {
-      font-size: 1rem;
-      color: #1a202c;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .partnership-item p {
-      font-size: 0.875rem;
-      color: #4a5568;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* CTA Section */
-    .cta-section {
-      padding: 5rem 0;
-      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .cta-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      position: relative;
-      z-index: 2;
-      color: #ffffff;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .cta-section .lead {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-      opacity: 1;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
-      color: #e2e8f0;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    .cta-buttons {
-      margin-bottom: 2rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .cta-trial-info {
-      font-size: 0.875rem;
-      opacity: 1;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
-      color: #cbd5e0;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
     /* Human QA Add-on Section */
     .human-qa-addon {
       padding: 4rem 0;
@@ -2037,7 +1574,7 @@
       justify-content: center;
       gap: 1.5rem;
     }
-
+    
     .addon-card {
       background: white;
       border-radius: 12px;
@@ -2045,47 +1582,67 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
       border: 1px solid #e2e8f0;
       width: 100%;
-      max-width: 450px;
+      max-width: 300px;
+      position: relative;
     }
-
+    
+    .addon-card.featured {
+      border: 2px solid #3182ce;
+      box-shadow: 0 8px 32px rgba(49, 130, 206, 0.15);
+    }
+    
     .addon-card h4 {
       font-size: 1.25rem;
       color: #1a202c;
       margin-bottom: 1rem;
       font-weight: 600;
+      text-align: center;
     }
-
+    
     .addon-price {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
     }
-
+    
     .addon-price .price {
       font-size: 2.5rem;
       font-weight: 700;
       color: #1a202c;
       line-height: 1;
     }
-
+    
     .addon-price .period {
       font-size: 0.875rem;
       color: #718096;
       font-weight: 400;
     }
-
+    
+    .addon-hours {
+      text-align: center;
+      font-size: 1.125rem;
+      color: #3182ce;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+      background: #ebf8ff;
+      border-radius: 8px;
+      border: 1px solid #bee3f8;
+    }
+    
     .addon-features {
       list-style: none;
       margin-bottom: 1.5rem;
     }
-
+    
     .addon-features li {
       padding: 0.5rem 0;
       color: #4a5568;
       position: relative;
       padding-left: 1.5rem;
       font-weight: 400;
+      font-size: 0.875rem;
     }
-
+    
     .addon-features li::before {
       content: '✓';
       position: absolute;
@@ -2093,38 +1650,40 @@
       color: #38a169;
       font-weight: 600;
     }
-
-    .addon-discounts {
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .addon-discounts p {
-      font-size: 0.875rem;
-      color: #4a5568;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    .addon-discounts ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .addon-discounts ul li {
-      font-size: 0.875rem;
-      color: #4a5568;
-      margin-bottom: 0.25rem;
-    }
-
+    
     .addon-cta {
       text-align: center;
     }
-
+    
     .addon-cta .btn {
       padding: 12px 24px;
       font-size: 0.9rem;
+      width: 100%;
+    }
+    
+    .addon-info {
+      margin-top: 2rem;
+    }
+    
+    .addon-info .alert {
+      border: 1px solid #bee3f8;
+      background: #ebf8ff;
+    }
+    
+    .addon-info h5 {
+      color: #2b6cb0;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .addon-info ul {
+      padding-left: 1.5rem;
+    }
+    
+    .addon-info li {
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+      line-height: 1.5;
     }
 
     /* Footer */
