@@ -4,40 +4,108 @@ const nodemailer = require('nodemailer');
 
 class CustomerService {
   constructor() {
-    // Use production-accessible path instead of local home directory
-    // Handle case where server runs from src/ directory
-    const projectRoot = process.cwd().includes('/src') 
-      ? path.join(process.cwd(), '..') 
-      : process.cwd();
-    
-    this.dataDir = path.join(projectRoot, 'data');
+    // NUCLEAR OPTION: Multiple fallback strategies for data directory
+    this.dataDir = this.findDataDirectory();
     this.customersFile = path.join(this.dataDir, 'customers.json');
     
-    console.log(`🔧 CustomerService initialized:`);
-    console.log(`   📁 Project root: ${projectRoot}`);
-    console.log(`   📁 Data directory: ${this.dataDir}`);
-    console.log(`   📄 Customers file: ${this.customersFile}`);
+    console.log(`🔧 CustomerService initialized with NUCLEAR approach:`);
+    console.log(`   📁 Final data directory: ${this.dataDir}`);
+    console.log(`   📄 Final customers file: ${this.customersFile}`);
+    console.log(`   📁 Current working directory: ${process.cwd()}`);
     
     this.ensureDataDirectory();
     this.initializeCustomersFile();
   }
 
+  findDataDirectory() {
+    // Strategy 1: Try current directory
+    let dataDir = path.join(process.cwd(), 'data');
+    if (this.isWritable(dataDir)) {
+      console.log(`✅ Strategy 1: Using current directory data: ${dataDir}`);
+      return dataDir;
+    }
+
+    // Strategy 2: Try parent directory (if running from src/)
+    if (process.cwd().includes('/src')) {
+      dataDir = path.join(process.cwd(), '..', 'data');
+      if (this.isWritable(dataDir)) {
+        console.log(`✅ Strategy 2: Using parent directory data: ${dataDir}`);
+        return dataDir;
+      }
+    }
+
+    // Strategy 3: Try project root (look for package.json)
+    let currentDir = process.cwd();
+    for (let i = 0; i < 5; i++) { // Go up max 5 levels
+      const packageJsonPath = path.join(currentDir, 'package.json');
+      if (fs.existsSync(packageJsonPath)) {
+        dataDir = path.join(currentDir, 'data');
+        if (this.isWritable(dataDir)) {
+          console.log(`✅ Strategy 3: Using project root data: ${dataDir}`);
+          return dataDir;
+        }
+      }
+      currentDir = path.join(currentDir, '..');
+    }
+
+    // Strategy 4: Use absolute path in project root
+    dataDir = '/opt/render/project/data';
+    if (this.isWritable(dataDir)) {
+      console.log(`✅ Strategy 4: Using absolute path: ${dataDir}`);
+      return dataDir;
+    }
+
+    // Strategy 5: Create in current directory (last resort)
+    dataDir = path.join(process.cwd(), 'data');
+    console.log(`⚠️  All strategies failed, using current directory: ${dataDir}`);
+    return dataDir;
+  }
+
+  isWritable(dirPath) {
+    try {
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+      const testFile = path.join(dirPath, '.test-write');
+      fs.writeFileSync(testFile, 'test');
+      fs.unlinkSync(testFile);
+      return true;
+    } catch (error) {
+      console.log(`❌ Directory not writable: ${dirPath} - ${error.message}`);
+      return false;
+    }
+  }
+
   ensureDataDirectory() {
-    if (!fs.existsSync(this.dataDir)) {
-      fs.mkdirSync(this.dataDir, { recursive: true });
+    try {
+      if (!fs.existsSync(this.dataDir)) {
+        fs.mkdirSync(this.dataDir, { recursive: true });
+        console.log(`✅ Created data directory: ${this.dataDir}`);
+      }
+    } catch (error) {
+      console.error(`❌ Failed to create data directory: ${error.message}`);
+      throw error;
     }
   }
 
   initializeCustomersFile() {
-    if (!fs.existsSync(this.customersFile)) {
-      const initialData = {
-        customers: [],
-        lastUpdated: new Date().toISOString(),
-        totalCustomers: 0,
-        paidCustomers: 0,
-        freeTrialCustomers: 0
-      };
-      fs.writeFileSync(this.customersFile, JSON.stringify(initialData, null, 2));
+    try {
+      if (!fs.existsSync(this.customersFile)) {
+        const initialData = {
+          customers: [],
+          lastUpdated: new Date().toISOString(),
+          totalCustomers: 0,
+          paidCustomers: 0,
+          freeTrialCustomers: 0
+        };
+        fs.writeFileSync(this.customersFile, JSON.stringify(initialData, null, 2));
+        console.log(`✅ Created initial customers file: ${this.customersFile}`);
+      } else {
+        console.log(`✅ Customers file exists: ${this.customersFile}`);
+      }
+    } catch (error) {
+      console.error(`❌ Failed to initialize customers file: ${error.message}`);
+      throw error;
     }
   }
 
@@ -109,8 +177,8 @@ class CustomerService {
       
       // Check if SMTP credentials are available
       if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-        console.warn('⚠️ SMTP credentials missing, skipping email notification');
-        console.warn('⚠️ Set SMTP_USER and SMTP_PASSWORD environment variables');
+        console.log('⚠️ SMTP credentials missing, skipping email notification');
+        console.log('⚠️ Set SMTP_USER and SMTP_PASSWORD environment variables');
         return;
       }
 
@@ -126,56 +194,35 @@ class CustomerService {
       });
 
       // Email content
-      const subject = `🎉 New ${customer.plan} Customer: ${customer.email}`;
-      const html = `
-        <h2>🎉 New Customer Signup!</h2>
-        
-        <h3>Customer Details:</h3>
-        <ul>
-          <li><strong>Email:</strong> ${customer.email}</li>
-          <li><strong>Plan:</strong> ${customer.plan}</li>
-          <li><strong>Status:</strong> ${customer.status === 'paid' ? '💰 Paid' : '🆓 Free Trial'}</li>
-          <li><strong>Signup Date:</strong> ${new Date(customer.createdAt).toLocaleDateString()}</li>
-          <li><strong>Customer ID:</strong> ${customer.id}</li>
-        </ul>
-
-        ${customer.name ? `<p><strong>Name:</strong> ${customer.name}</p>` : ''}
-        ${customer.company ? `<p><strong>Company:</strong> ${customer.company}</p>` : ''}
-        ${customer.phone ? `<p><strong>Phone:</strong> ${customer.phone}</p>` : ''}
-
-        <h3>Next Steps:</h3>
-        <ul>
-          <li>👋 Send welcome email</li>
-          <li>📚 Share onboarding resources</li>
-          <li>📅 Schedule demo call if needed</li>
-          <li>🔍 Monitor GitHub App installation</li>
-        </ul>
-
-        <p><strong>Total Customers:</strong> ${customer.status === 'paid' ? 'Paid: ' + (customer.status === 'paid' ? 'Increased' : 'Same') : 'Free Trial: ' + (customer.status === 'free_trial' ? 'Increased' : 'Same')}</p>
-        
-        <hr>
-        <p><em>This notification was sent automatically by GetYourTester customer tracking system.</em></p>
-      `;
+      const mailOptions = {
+        from: process.env.SMTP_USER,
+        to: 'ovi@qakarma.com',
+        subject: `🎉 New Customer: ${customer.email} - ${customer.plan}`,
+        html: `
+          <h2>🎉 New Customer Added!</h2>
+          <p><strong>Email:</strong> ${customer.email}</p>
+          <p><strong>Plan:</strong> ${customer.plan}</p>
+          <p><strong>Status:</strong> ${customer.status}</p>
+          <p><strong>Source:</strong> ${customer.source || 'Unknown'}</p>
+          <p><strong>Signup Date:</strong> ${new Date(customer.signupDate || customer.createdAt).toLocaleString()}</p>
+          <p><strong>Payment Detected:</strong> ${customer.paymentDetected ? 'Yes' : 'No'}</p>
+          <hr>
+          <p><em>This notification was sent automatically when the customer reached the success page.</em></p>
+        `
+      };
 
       // Send email
-      await transporter.sendMail({
-        from: process.env.SMTP_USER || 'noreply@getyourtester.com',
-        to: 'ovi@qakarma.com',
-        subject: subject,
-        html: html
-      });
-
-      console.log(`📧 Customer notification sent to ovi@qakarma.com for ${customer.email}`);
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`✅ Customer notification sent successfully: ${info.messageId}`);
 
     } catch (error) {
       console.error('❌ Error sending customer notification:', error);
-      console.error('❌ Email error details:', {
-        error: error.message,
-        code: error.code,
-        command: error.command,
-        response: error.response
+      console.error('❌ SMTP Error details:', {
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        user: process.env.SMTP_USER ? 'Set' : 'Missing',
+        error: error.message
       });
-      // Don't throw error - customer tracking should continue even if email fails
     }
   }
 
@@ -189,18 +236,14 @@ class CustomerService {
     }
   }
 
-  async updateCustomer(email, updates) {
+  async updateCustomer(email, updateData) {
     try {
       const data = JSON.parse(fs.readFileSync(this.customersFile, 'utf8'));
       const customerIndex = data.customers.findIndex(c => c.email === email);
       
       if (customerIndex !== -1) {
-        data.customers[customerIndex] = {
-          ...data.customers[customerIndex],
-          ...updates,
-          lastActivity: new Date().toISOString()
-        };
-        
+        data.customers[customerIndex] = { ...data.customers[customerIndex], ...updateData };
+        data.lastUpdated = new Date().toISOString();
         fs.writeFileSync(this.customersFile, JSON.stringify(data, null, 2));
         console.log(`✅ Customer updated: ${email}`);
         return data.customers[customerIndex];
@@ -216,10 +259,10 @@ class CustomerService {
   async getAllCustomers() {
     try {
       const data = JSON.parse(fs.readFileSync(this.customersFile, 'utf8'));
-      return data;
+      return data.customers;
     } catch (error) {
       console.error('❌ Error getting all customers:', error);
-      return { customers: [], totalCustomers: 0, paidCustomers: 0, freeTrialCustomers: 0 };
+      return [];
     }
   }
 
@@ -234,7 +277,12 @@ class CustomerService {
       };
     } catch (error) {
       console.error('❌ Error getting customer stats:', error);
-      return { totalCustomers: 0, paidCustomers: 0, freeTrialCustomers: 0, lastUpdated: null };
+      return {
+        totalCustomers: 0,
+        paidCustomers: 0,
+        freeTrialCustomers: 0,
+        lastUpdated: new Date().toISOString()
+      };
     }
   }
 }
