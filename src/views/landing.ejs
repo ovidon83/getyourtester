@@ -156,22 +156,25 @@
             
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="pricing-card">
+                    <div class="pricing-card trial-card">
+                        <div class="trial-badge">Free Trial</div>
                         <div class="pricing-header">
-                            <h3>Free Trial</h3>
+                            <h3>Try GetYourTester</h3>
                         </div>
                         <div class="pricing-price">
                             <span class="price">$0</span>
-                            <span class="period">/month</span>
+                            <span class="period">for 7 days</span>
                         </div>
                         <ul class="pricing-features">
-                            <li>Up to 10 PR reviews/5 days</li>
-                            <li>Customer support</li>
-                            <li>Standard response time</li>
+                            <li>Up to 10 PR reviews</li>
+                            <li>Full Ovi AI analysis</li>
+                            <li>Sample human QA validation</li>
+                            <li>All integrations included</li>
+                            <li>No credit card required</li>
                         </ul>
                         <div class="pricing-footer">
-                            <p>Give it a try for 5 days</p>
-                            <a href="#pricing">Get Started Free</a>
+                            <p>Experience the full platform</p>
+                            <a href="#pricing" class="btn btn-primary">Start Free Trial</a>
                         </div>
                     </div>
                 </div>
@@ -180,20 +183,22 @@
                     <div class="pricing-card featured">
                         <div class="featured-badge">Most Popular</div>
                         <div class="pricing-header">
-                            <h3>Starter</h3>
+                            <h3>Growth</h3>
                         </div>
                         <div class="pricing-price">
-                            <span class="price">$99</span>
+                            <span class="price">$499</span>
                             <span class="period">/month</span>
                         </div>
                         <ul class="pricing-features">
-                            <li>Up to 50 PR reviews/month</li>
-                            <li>Priority support</li>
-                            <li>Advanced integrations</li>
+                            <li>Up to 100 PR reviews/month</li>
+                            <li>Ovi AI + Human QA validation</li>
+                            <li>Priority support (4h response)</li>
+                            <li>Linear/Jira integration (coming soon)</li>
                             <li>Custom test scenarios</li>
+                            <li>Advanced analytics & reporting</li>
                         </ul>
                         <div class="pricing-footer">
-                            <p>Perfect for early-stage startups</p>
+                            <p>Ideal for scaling teams</p>
                             <a href="#pricing">Start Free Trial</a>
                         </div>
                     </div>
@@ -202,21 +207,24 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="pricing-card">
                         <div class="pricing-header">
-                            <h3>Growth</h3>
+                            <h3>Enterprise</h3>
                         </div>
                         <div class="pricing-price">
-                            <span class="price">$299</span>
+                            <span class="price">$999</span>
                             <span class="period">/month</span>
                         </div>
                         <ul class="pricing-features">
-                            <li>Up to 200 PR reviews/month</li>
-                            <li>Dedicated support</li>
-                            <li>Custom integrations</li>
-                            <li>Advanced analytics</li>
+                            <li>Unlimited PR reviews</li>
+                            <li>Full Ovi AI + Human QA team</li>
+                            <li>Dedicated support (1h response)</li>
+                            <li>Full Linear/Jira integration</li>
+                            <li>Custom QA workflows</li>
+                            <li>Onboarding & training</li>
+                            <li>SLA guarantees</li>
                         </ul>
                         <div class="pricing-footer">
-                            <p>Ideal for scaling teams</p>
-                            <a href="mailto:ovi@qakarma.com?subject=Growth Plan Inquiry&body=Hi, I'm interested in the Growth plan for GetYourTester. Please provide more details about pricing and features.">Contact Us</a>
+                            <p>For established companies</p>
+                            <a href="mailto:ovi@qakarma.com?subject=Enterprise Plan Inquiry&body=Hi, I'm interested in the Enterprise plan for GetYourTester. Please provide more details about pricing and features.">Contact Us</a>
                         </div>
                     </div>
                 </div>
@@ -929,6 +937,531 @@
     .docs-link:hover {
       background: #edf2f7;
       border-color: #cbd5e0;
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: #4a5568;
+      font-weight: 400;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+      position: relative;
+      height: 100%;
+      border: 1px solid #e2e8f0;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e0;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid #3182ce;
+      box-shadow: 0 8px 32px rgba(49, 130, 206, 0.15);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3182ce;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-header h3 {
+      font-size: 1.5rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .pricing-badge {
+      display: inline-block;
+      background: #f7fafc;
+      color: #4a5568;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid #e2e8f0;
+    }
+
+    .pricing-price {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a202c;
+      line-height: 1;
+    }
+
+    .period {
+      font-size: 1rem;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      color: #4a5568;
+      position: relative;
+      padding-left: 1.5rem;
+      font-weight: 400;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #38a169;
+      font-weight: 600;
+    }
+
+    .pricing-footer {
+      margin-top: 2rem;
+    }
+
+    .pricing-footer p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .pricing-footer a {
+      color: #3182ce;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .pricing-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .trial-card {
+      border: 2px solid #38a169;
+      background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+    }
+    
+    .trial-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #38a169;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Features Section */
+    .features-section {
+      padding: 6rem 0;
+      background: #f7fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .features-content h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e0;
+    }
+
+    .feature-card .feature-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .feature-card h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Demo Card */
+    .demo-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .demo-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .demo-avatar {
+      width: 40px;
+      height: 40px;
+      background: #3182ce;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .demo-header strong {
+      color: #1a202c;
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .demo-header span {
+      font-size: 0.875rem;
+      color: #718096;
+      font-weight: 400;
+    }
+
+    .demo-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .demo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .demo-item:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge.risk {
+      background: #fef5e7;
+      color: #c05621;
+      border: 1px solid #fed7aa;
+    }
+
+    .badge.question {
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+    }
+
+    .badge.plan {
+      background: #f0fff4;
+      color: #22543d;
+      border: 1px solid #c6f6d5;
+    }
+
+    .badge.example {
+      background: #faf5ff;
+      color: #553c9a;
+      border: 1px solid #e9d8fd;
+    }
+
+    .demo-item p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #1a202c;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    /* Human QA Section */
+    .human-qa-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .human-qa-content h2 {
+      font-size: 2.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      border: 1px solid #e2e8f0;
+    }
+
+    .benefit-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e0;
+    }
+
+    .benefit-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .benefit-item h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .benefit-item p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Partnership Card */
+    .partnership-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .partnership-card h3 {
+      font-size: 1.5rem;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .partnership-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .partnership-item:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    .partnership-item:last-child {
+      margin-bottom: 2rem;
+    }
+
+    .partnership-icon {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+      color: #3182ce;
+    }
+
+    .partnership-item h4 {
+      font-size: 1rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .partnership-item p {
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-section .lead {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 1;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+      color: #e2e8f0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-buttons {
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-trial-info {
+      font-size: 0.875rem;
+      opacity: 1;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+      color: #cbd5e0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     /* Pricing Section */

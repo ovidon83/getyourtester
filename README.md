@@ -38,23 +38,35 @@ GetYourTester is a comprehensive QA platform that combines AI-powered analysis w
 
 ## 💰 **Pricing & Plans**
 
-### **🆓 Free Trial (5 Days)**
-- Up to 10 PR reviews/5 days
-- Customer support
-- Standard response time
-- **Perfect for**: Give it a try for 5 days
+GetYourTester offers strategic pricing that scales with your team's success:
 
-### **🚀 Starter ($99/month)**
-- Up to 50 PR reviews/month
-- Priority support
-- Advanced integrations
+### **🚀 Free Trial (7 days)**
+- Up to 10 PR reviews
+- Full Ovi AI analysis
+- Sample human QA validation
+- All integrations included
+- **Perfect for**: Trying the platform
+
+### **💼 Starter ($199/month)**
+- Up to 25 PR reviews/month
+- Ovi AI analysis & test recipes
+- Email support (24h response)
+- Basic integrations
 - **Perfect for**: Early-stage startups
 
-### **🏢 Growth ($299/month)**
-- Up to 200 PR reviews/month
-- Dedicated support
-- Custom integrations
+### **🏢 Growth ($499/month)**
+- Up to 100 PR reviews/month
+- Ovi AI + Human QA validation
+- Priority support (4h response)
+- Linear/Jira integration (coming soon)
 - **Perfect for**: Scaling teams
+
+### **🚀 Enterprise ($999/month)**
+- Unlimited PR reviews
+- Full Ovi AI + Human QA team
+- Dedicated support (1h response)
+- Full Linear/Jira integration
+- **Perfect for**: Established companies
 
 ## 🛠️ **Tech Stack**
 
