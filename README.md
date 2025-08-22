@@ -61,13 +61,12 @@ GetYourTester offers AI-powered QA with optional human validation:
 - **Perfect for**: Scaling teams
 
 ### **👥 Human QA Add-on**
-- **Starter Package**: $199/month (10 hours/month)
-- **Growth Package**: $399/month (25 hours/month) - Most Popular
-- **Scale Package**: $699/month (50 hours/month)
+- **Human QA Package**: $699/month (50 hours/month)
 - Expert QA engineers (10+ years experience)
 - Manual testing & validation
 - Cross-browser & device testing
 - Flexible usage for critical features
+- **Custom Plans**: Contact us for tailored solutions
 - **Perfect for**: Feature launches, complex integrations, performance testing
 
 ## 🛠️ **Tech Stack**
