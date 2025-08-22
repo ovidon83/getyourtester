@@ -145,18 +145,7 @@ app.post('/api/customers', (req, res) => {
   }
 });
 
-// Success page route for post-payment onboarding
-app.get('/success', (req, res) => {
-  // Extract customer email from Stripe success URL parameters
-  const customerEmail = req.query.email || req.query.customer_email || '';
-  const plan = req.query.plan || 'Starter';
-  
-  res.render('success', { 
-    title: 'Welcome to GetYourTester! 🎉',
-    plan: plan,
-    customerEmail: customerEmail
-  });
-});
+// Success page route is handled by webhook-server.js with customer tracking
 
 // 404 handler
 app.use((req, res) => {
