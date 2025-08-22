@@ -47,14 +47,14 @@ GetYourTester offers strategic pricing that scales with your team's success:
 - All integrations included
 - **Perfect for**: Trying the platform
 
-### **💼 Starter ($199/month)**
+### **💼 Starter ($49/month)**
 - Up to 50 PR reviews/month
 - Ovi AI analysis & test recipes
 - Email support (24h response)
 - Basic integrations
 - **Perfect for**: Early-stage startups
 
-### **🏢 Growth ($499/month)**
+### **🏢 Growth ($149/month)**
 - Unlimited PR reviews
 - Ovi AI + Human QA validation
 - Priority support (4h response)
