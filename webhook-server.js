@@ -66,6 +66,15 @@ app.use('/support', supportRoutes);
 app.use('/email', emailRoutes);
 app.use('/contact', contactRoutes);
 
+// Success page route for post-payment onboarding
+app.get('/success', (req, res) => {
+  res.render('success', { 
+    title: 'Welcome to GetYourTester! 🎉',
+    plan: req.query.plan || 'Starter',
+    customerEmail: req.query.email || ''
+  });
+});
+
 // Special route for generate-test-recipe with larger payload support
 app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req, res) => {
   try {
