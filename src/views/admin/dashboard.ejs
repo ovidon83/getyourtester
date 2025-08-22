@@ -162,8 +162,16 @@
                                 <td>
                                     <% if (customer.status === 'paid') { %>
                                         <span class="status-badge badge bg-success">💰 Paid</span>
-                                    <% } else { %>
+                                        <% if (customer.paymentAmount) { %>
+                                            <br><small class="text-muted">$<%= (customer.paymentAmount / 100).toFixed(2) %></small>
+                                        <% } %>
+                                    <% } else if (customer.status === 'free_trial') { %>
                                         <span class="status-badge badge bg-warning">🆓 Free Trial</span>
+                                        <% if (customer.trialEnd) { %>
+                                            <br><small class="text-muted">Until <%= new Date(customer.trialEnd).toLocaleDateString() %></small>
+                                        <% } %>
+                                    <% } else { %>
+                                        <span class="status-badge badge bg-secondary"><%= customer.status %></span>
                                     <% } %>
                                 </td>
                                 <td><%= customer.company || 'N/A' %></td>

@@ -21,6 +21,7 @@ const emailRoutes = require('./src/routes/email');
 const contactRoutes = require('./src/routes/contact');
 const customerRoutes = require('./src/routes/customers');
 const adminRoutes = require('./src/routes/admin');
+const stripeRoutes = require('./src/routes/stripe');
 
 // Create Express app
 const app = express();
@@ -69,6 +70,7 @@ app.use('/email', emailRoutes);
 app.use('/contact', contactRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/admin', adminRoutes);
+app.use('/stripe', stripeRoutes);
 
 // Success page route for post-payment onboarding
 app.get('/success', (req, res) => {

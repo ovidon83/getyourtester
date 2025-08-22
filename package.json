@@ -40,6 +40,7 @@
     "nodemailer": "^6.9.7",
     "openai": "^5.5.1",
     "smee-client": "^1.2.5",
+    "stripe": "^18.4.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
