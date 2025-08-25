@@ -14,69 +14,52 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 # 🎯 Ovi QA Analysis
 
-## 📊 Pulse
+## 📊 QA Pulse
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| **Risk** | [Low/Medium/High] | [One-line justification focusing on user impact] |
-| **Confidence** | [X/10] | [Brief note on code quality, context clarity, test coverage] |
-| **Release Readiness** | [Ready/Conditional/Blocked] | [One-line bottom line assessment] |
+| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line justification based on actual code changes] |
+| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [Brief note on code quality and test coverage] |
+| **Release Readiness** | [⚠️ Conditional/✅ Ready/❌ Blocked] | [One-line assessment based on risks found] |
+| **Blast Radius** | [Small/Medium/Large] | [Impact scope based on affected files and dependencies] |
+| **Change Scope** | [Minor/Moderate/Major] | [Complexity assessment of the actual changes] |
 
-## 🧩 Scope of Change
-
-- `[file/path]` : [Brief description of what changed in this file]
-- `[file/path]` : [Brief description of what changed in this file]
-- `[file/path]` : [Brief description of what changed in this file]
-- `[file/path]` : [Brief description of what changed in this file]
-
-## ❓ Questions to Clarify
-
-- [Specific question about implementation, edge cases, or potential risks]
-- [Question about user experience, performance, or data handling]
-- [Question about integration points, security, or error handling]
-- [Question about mobile responsiveness, browser compatibility, or accessibility]
-
-## 🧪 Test Recipe
-
-| Scenario | Steps | Expected Result | Priority | Type |
-|----------|-------|-----------------|----------|------|
-| [Main feature workflow] | [Complete user journey for new feature] | [End-to-end functionality works] | Critical | ✅ Auto (e2e) |
-| [Critical path integration] | [Test integration with existing systems] | [No breaking changes to core flows] | Critical | ✅ Auto (Integration) |
-| [Data integrity check] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual |
-| [Authentication/authorization] | [Test access controls if security-related] | [Proper permissions maintained] | Critical | ✅ Auto (Integration) |
-| [Error state handling] | [Trigger failure conditions] | [Graceful error handling and recovery] | High | ✅ Auto (e2e) |
-| [Performance validation] | [Test under expected load conditions] | [Acceptable response times maintained] | High | ❌ Manual |
-| [UI/UX consistency] | [Verify design and interaction patterns] | [Consistent user experience] | High | ❌ Manual |
-| [Cross-browser compatibility] | [Test on Chrome, Safari, Firefox] | [Consistent behavior across browsers] | High | ❌ Manual |
-| [Mobile responsiveness] | [Test on mobile devices and tablets] | [Proper mobile layout and functionality] | High | ❌ Manual |
-| [Edge case handling] | [Test boundary conditions and limits] | [System handles edge cases gracefully] | Medium | ❌ Manual |
-| [Accessibility compliance] | [Test with screen readers, keyboard nav] | [Accessible to users with disabilities] | Medium | ❌ Manual |
-| [Integration rollback] | [Test reverting changes if needed] | [Clean rollback without side effects] | Medium | ❌ Manual |
-
-## ⚠️ Key Risks
+## ⚠️ Key Questions & Risks
 
 **Based on actual code changes and diff analysis:**
 
-- [Specific risk from code changes - not generic]
-- [Another specific risk from the actual diff]
-- [Third specific risk if applicable]
+1. **[Functional]** [Specific question about implementation based on code changes]
+2. **[Performance]** [Performance concern from actual code if applicable]
+3. **[Security]** [Security risk from code if applicable]
+4. **[Integration]** [Integration risk from dependencies if applicable]
+5. **[Regression]** [Specific regression risk based on affected product areas]
 
-*Focus on concrete risks from the code, not general best practices*
+*Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
+
+## 🧪 Test Recipe
+
+| Scenario | Steps | Expected Result | Priority | Type | Coverage |
+|----------|-------|-----------------|----------|------|----------|
+| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
+| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
+| [Critical data validation] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual | [Data area] |
+| [High priority edge case] | [Test boundary conditions from code] | [System handles edge cases gracefully] | High | ❌ Manual | [Edge case area] |
+| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
+
+## ✅ Release Gate
+
+**Release Gate: [Safe to release if Test #1-#3 pass / Conditional release based on Test #1-#5 / Blocked until critical issues resolved]**
 
 ---
 
 **ANALYSIS INSTRUCTIONS (Do not include in output):**
 - Focus specifically on the actual code changes made in this PR
-- Prioritize tests by business impact: Critical = main feature + critical path, High = important supporting functionality, Medium = edge cases and nice-to-haves
+- Analyze affected files deeply to understand product area impact and regression risks
+- Consider dependencies and integration points that might be affected
+- Look for potential performance, security, or accessibility implications from the actual code
+- Prioritize tests by business impact: Critical = main feature + critical path, High = important supporting functionality
 - Provide concrete, actionable test steps based on the real changes
 - Consider the full user journey and potential impact areas
 - Include comprehensive test coverage while being specific to this PR
-- Analyze affected files deeply to understand product area impact
-- Consider dependencies and integration points that might be affected
-- Look for potential performance, security, or accessibility implications
-Behavioral Regression Heuristics (for internal AI reasoning only — do not include in output):
-	•	When reviewing the diff, build a mental table of DOM nodes or React components where the following props changed: onClick, onKeyDown, tabIndex, role, aria-*, onFocus, onBlur, gesture/drag handlers, or any use of useGesture, onTouchStart, etc.
-	•	If a component or DOM node includes both gesture/drag and keyboard/mouse event handlers after the change, flag internally as a possible interaction conflict.
-	•	For each affected node/component, cross-reference with known user flows (e.g. capture, urgency switch, selection) and evaluate risk of regression.
-	•	Pay special attention to dynamic rendering, reordered elements, or changes in focusable elements that may affect accessibility, keyboard navigation, or interaction behavior.
-	•	Suggest a manual test case in the Test Recipe for each significant behavior change that may not be covered by existing automated tests.
+- Always specify file names with line numbers in questions and risks
+- Focus on real, code-based risks, not potential or generic ones

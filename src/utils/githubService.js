@@ -522,10 +522,10 @@ async function sendEmailNotification(testRequest) {
     const mailOptions = {
       from: `"GetYourTester" <${fromEmail}>`,
       to: toEmail,
-      subject: `New Test Request for PR #${testRequest.prNumber}`,
+      subject: `Ovi QA Analysis Complete for PR #${testRequest.prNumber}`,
       html: `
-        <h2>🧪 New Test Request Received</h2>
-        <p>A new test request has been submitted and requires your attention.</p>
+        <h2>🤖 Ovi QA Analysis Complete</h2>
+        <p>Ovi QA Assistant has completed analysis of this PR.</p>
         
         <h3>Request Details:</h3>
         <ul>
@@ -547,14 +547,14 @@ async function sendEmailNotification(testRequest) {
           <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/qa\s+/, '').trim() : 'No content available'}</pre>
         </div>
         
-        <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to manage this request.</p>
+        <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to view full analysis details.</p>
         
-        <p>Thank you,<br/>GetYourTester Bot</p>
+        <p>Thank you,<br/>Ovi QA Assistant</p>
       `,
       text: `
-🧪 New Test Request Received
+🤖 Ovi QA Analysis Complete
 
-A new test request has been submitted and requires your attention.
+Ovi QA Assistant has completed analysis of this PR.
 
 Request Details:
 - Request ID: ${testRequest.id}
@@ -570,10 +570,10 @@ ${testRequest.prDescription || 'No description provided'}
 Test Request Content:
         ${testRequest.comment ? testRequest.comment.replace(/^\/qa\s+/, '').trim() : 'No content available'}
 
-Please login to the dashboard to manage this request: http://localhost:3000/dashboard
+Please login to the dashboard to view full analysis details: http://localhost:3000/dashboard
 
 Thank you,
-GetYourTester Bot
+Ovi QA Assistant
       `
     };
 
