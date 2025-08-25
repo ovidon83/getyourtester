@@ -14,13 +14,13 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 # 🎯 Ovi QA Analysis
 
-## 📊 Assessment Summary
+## 📊 Pulse
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| 🔴 Risk | [Low/Medium/High] | [One-line justification focusing on user impact] |
-| ⚖️ Confidence | [Low/Medium/High] | [Brief note on code quality, context clarity, test coverage] |
-| ⭐ Score | [X/10] | [One-line bottom line assessment] |
+| **Risk** | [Low/Medium/High] | [One-line justification focusing on user impact] |
+| **Confidence** | [X/10] | [Brief note on code quality, context clarity, test coverage] |
+| **Release Readiness** | [Ready/Conditional/Blocked] | [One-line bottom line assessment] |
 
 ## 🧩 Scope of Change
 
@@ -53,6 +53,16 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 | [Accessibility compliance] | [Test with screen readers, keyboard nav] | [Accessible to users with disabilities] | Medium | ❌ Manual |
 | [Integration rollback] | [Test reverting changes if needed] | [Clean rollback without side effects] | Medium | ❌ Manual |
 
+## ⚠️ Key Risks
+
+**Based on actual code changes and diff analysis:**
+
+- [Specific risk from code changes - not generic]
+- [Another specific risk from the actual diff]
+- [Third specific risk if applicable]
+
+*Focus on concrete risks from the code, not general best practices*
+
 ---
 
 **ANALYSIS INSTRUCTIONS (Do not include in output):**
@@ -61,6 +71,9 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 - Provide concrete, actionable test steps based on the real changes
 - Consider the full user journey and potential impact areas
 - Include comprehensive test coverage while being specific to this PR
+- Analyze affected files deeply to understand product area impact
+- Consider dependencies and integration points that might be affected
+- Look for potential performance, security, or accessibility implications
 Behavioral Regression Heuristics (for internal AI reasoning only — do not include in output):
 	•	When reviewing the diff, build a mental table of DOM nodes or React components where the following props changed: onClick, onKeyDown, tabIndex, role, aria-*, onFocus, onBlur, gesture/drag handlers, or any use of useGesture, onTouchStart, etc.
 	•	If a component or DOM node includes both gesture/drag and keyboard/mouse event handlers after the change, flag internally as a possible interaction conflict.

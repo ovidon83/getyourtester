@@ -1,6 +1,6 @@
 /**
  * GitHub Service for webhook processing
- * Implements actual functionality for handling /qa-review commands
+ * Implements actual functionality for handling /qa commands
  */
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
@@ -447,11 +447,11 @@ function loadAllTestRequests() {
 }
 
 /**
- * Parse a /qa-review comment to extract test request details
+ * Parse a /qa comment to extract test request details
  */
 function parseTestRequestComment(comment) {
-  // Skip the "/qa-review" part
-  const content = comment.replace(/^\/qa-review\s+/, '').trim();
+  // Skip the "/qa" part
+  const content = comment.replace(/^\/qa\s+/, '').trim();
   
   const parsedDetails = {
     // Include the full content as the first field
@@ -544,7 +544,7 @@ async function sendEmailNotification(testRequest) {
         
         <h3>Test Request Content:</h3>
         <div style="background-color: #f6f8fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/qa-review\s+/, '').trim() : 'No content available'}</pre>
+          <pre style="white-space: pre-wrap; font-family: monospace;">${testRequest.comment ? testRequest.comment.replace(/^\/qa\s+/, '').trim() : 'No content available'}</pre>
         </div>
         
         <p>Please login to the <a href="http://localhost:3000/dashboard" style="background-color: #0366d6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">dashboard</a> to manage this request.</p>
@@ -568,7 +568,7 @@ PR Description:
 ${testRequest.prDescription || 'No description provided'}
 
 Test Request Content:
-${testRequest.comment ? testRequest.comment.replace(/^\/qa-review\s+/, '').trim() : 'No content available'}
+        ${testRequest.comment ? testRequest.comment.replace(/^\/qa\s+/, '').trim() : 'No content available'}
 
 Please login to the dashboard to manage this request: http://localhost:3000/dashboard
 
@@ -994,11 +994,11 @@ _Early-access mode: Your first test requests (up to 4 hours) are **FREE**!_
 
 If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
 
-Request a QA review by commenting: /qa-review followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
+Request a QA review by commenting: /qa followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
 
 **Example test request:**
 \`\`\`
-/qa-review
+/qa
 
 Please run a full manual QA on this PR. Here's what I'd like you to focus on:
 - Main goal: Verify the new user onboarding flow (sign up, email verification, and first login).
@@ -1373,7 +1373,7 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 }
 
 /**
- * Format hybrid analysis for GitHub comment (shared by /qa-review and automatic PR analysis)
+ * Format hybrid analysis for GitHub comment (shared by /qa and automatic PR analysis)
  */
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
@@ -1506,7 +1506,7 @@ ${aiData}
 
 ---
 
-*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+*🚀 Short QA analysis by Ovi QA Assistant. Use /qa for full details.*`;
               }
 
   // Check if we have the legacy simplified format (4 questions approach)
@@ -1549,11 +1549,11 @@ ${aiData}
     // If we couldn't extract properly, fall back to the full format
     if (!shipScoreMatch || !risksMatch || !testRecipeMatch) {
       shortOutput = `### 🤖 Ovi QA Assistant - Short Analysis\n\n---\n\n`;
-      shortOutput += `*Unable to generate short format. Please use /qa-review for full analysis.*\n\n`;
+      shortOutput += `*Unable to generate short format. Please use /qa for full analysis.*\n\n`;
       shortOutput += aiData;
     }
     
-    shortOutput += `---\n\n*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+    shortOutput += `---\n\n*🚀 Short QA analysis by Ovi QA Assistant. Use /qa for full details.*`;
     return shortOutput;
   }
 
@@ -1622,7 +1622,7 @@ ${testRecipeTable}
 
 ---
 
-*Unable to generate short format. Please use /qa-review for full analysis.*
+*Unable to generate short format. Please use /qa for full analysis.*
 
 ---
 
@@ -1747,7 +1747,7 @@ async function processWebhookEvent(event) {
     
     // Handle pull_request event (for PR opening - NEW BEHAVIOR)
     if (eventType === 'pull_request' && payload.action === 'opened') {
-      console.log('🚀 New PR opened - generating short summary analysis');
+      console.log('🚀 New PR opened - checking if ready for review');
       const { repository, pull_request: pr } = payload;
       
       if (!repository || !pr) {
@@ -1755,12 +1755,18 @@ async function processWebhookEvent(event) {
         return { success: false, message: 'Missing required properties in payload' };
       }
       
-      // Generate short summary for the PR
-      console.log(`⚡ Generating short critical summary for PR #${pr.number}`);
+      // Only analyze PRs that are ready for review (not draft)
+      if (pr.draft) {
+        console.log(`⏸️ PR #${pr.number} is draft - skipping analysis until ready for review`);
+        return { success: true, message: 'PR is draft, skipping analysis' };
+      }
+      
+      // Generate comprehensive analysis for ready-for-review PRs
+      console.log(`⚡ PR #${pr.number} ready for review - generating comprehensive analysis`);
       return await handlePROpened(repository, pr);
     }
     
-    // Handle issue comment event (for /ovi-details commands)
+    // Handle issue comment event (for /qa commands)
     if (eventType === 'issue_comment' && payload.action === 'created') {
       console.log('💬 New comment detected');
       const { repository, issue, comment, sender } = payload;
@@ -1789,9 +1795,9 @@ async function processWebhookEvent(event) {
 
       console.log(`Comment body: ${comment.body}`);
       
-      // Check for /qa-review command (manual QA review requests)
-      if (comment.body.trim().startsWith('/qa-review')) {
-        console.log('🧪 /qa-review command detected!');
+      // Check for /qa command (manual QA re-run)
+      if (comment.body.trim().startsWith('/qa')) {
+        console.log('🧪 /qa command detected!');
         return await handleTestRequest(repository, issue, comment, sender);
       }
       

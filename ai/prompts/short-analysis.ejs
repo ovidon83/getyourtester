@@ -11,17 +11,15 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 # 🎯 Ovi QA Analysis - Short Version
 
-## 📊 Deployment Score
+## 📊 Pulse
 
 | Metric | Value | Notes |
 |---------|---------|-------|
-| **Score** | [X.X/10] | (Pass threshold: 7.5) |
-| **Risk** | [Low/Medium/High] | ([X] blocker, [X] majors) |
-| **Confidence** | [Low/Medium/High] | (clear AC, unit + API tests present) |
-| **Scope** | [X] files, [X] LOC touched, [X] feature flags |
-| **Decision** | ✅ Merge OK / ❌ Block | (run [X]-step smoke before deploy) |
+| **Risk** | [Low/Medium/High] | [One-line justification focusing on user impact] |
+| **Confidence** | [X/10] | [Brief note on code quality, context clarity, test coverage] |
+| **Release Readiness** | [Ready/Conditional/Blocked] | [One-line bottom line assessment] |
 
-## ⚠️ Risks
+## ⚠️ Key Risks
 
 **Based on actual code changes and diff analysis:**
 
@@ -51,4 +49,6 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 - Use realistic test data and user actions
 - Prioritize tests by business impact: Critical = main feature, High = important functionality
 - For Type column: Use ✅ Auto (e2e) for automated tests, ❌ Manual for manual tests
-- Base the Deployment Score on actual code quality, test coverage, and risk assessment
+- Base the Release Readiness on actual code quality, test coverage, and risk assessment
+- Analyze affected files deeply to understand product area impact
+- Consider dependencies and integration points that might be affected
