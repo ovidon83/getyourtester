@@ -1158,7 +1158,7 @@ async function handleTestRequest(repository, issue, comment, sender) {
   let acknowledgmentComment = `
 ## 🤖 Ovi QA Analysis Complete
 
-A tester will be assigned to this PR soon and you'll receive status updates notifications.
+
   `;
   
   // Add AI insights to the comment if they were generated successfully
@@ -1331,7 +1331,7 @@ async function handleShortRequest(repository, issue, comment, sender) {
   let acknowledgmentComment = `
 ## 🤖 Ovi QA Analysis Complete
 
-A tester will be assigned to this PR soon and you'll receive status updates notifications.
+
   `;
   
   // Add AI insights to the comment if they were generated successfully
@@ -1374,19 +1374,15 @@ A tester will be assigned to this PR soon and you'll receive status updates noti
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
 
-  // Check if we have the new simplified format (4 questions approach)
+  // Check if we have the new AI prompt format
   if (typeof aiData === 'string' && (
-    aiData.includes('Ship Score') || 
-    aiData.includes('Risk Level') || 
-    aiData.includes('Confidence Level') ||
-    aiData.includes('biggest risk') ||
-    aiData.includes('test manually') ||
-    aiData.includes('automated tests') ||
     aiData.includes('🎯 Ovi QA Analysis') || 
-    aiData.includes('📊 **Ship Assessment**') || 
-    aiData.includes('📋 Summary')
+    aiData.includes('📊 QA Pulse') ||
+    aiData.includes('⚠️ Key Questions & Risks') ||
+    aiData.includes('🧪 Test Recipe') ||
+    aiData.includes('✅ Release Gate')
   )) {
-    // New format - just add GetYourTester branding around it
+    // New AI prompt format - just add GetYourTester branding around it
     return `### 🤖 Ovi QA Assistant by GetYourTester
 
 ---
