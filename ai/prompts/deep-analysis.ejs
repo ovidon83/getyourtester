@@ -72,8 +72,16 @@ ${getProductAreasAffected()}
   - Avoid duplication between questions/risks and bugs - consolidate similar concerns
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
 - For Score Emojis:
-  - Release: Combine value + emoji (e.g., "✅ Go", "⚠️ Conditional", "❌ Block")
-  - Risk: Combine value + emoji (e.g., "🟢 Low", "🟡 Medium", "🔴 High")
+  - Release: Combine numeric score + emoji (e.g., "8/10 ✅", "6/10 ⚠️", "3/10 ❌")
+  - Risk: Combine numeric score + emoji (e.g., "2/10 🟢", "5/10 🟡", "8/10 🔴")
 - For Steps: Support multiline text with proper formatting for complex test procedures
+  - Each step should be on its own line
+  - Example format:
+    ```
+    1. Open the form
+    2. Fill in required fields
+    3. Submit the form
+    ```
+  - NOT: "1. Open form 2. Fill fields 3. Submit"
 
 **REMEMBER: STOP YOUR OUTPUT AFTER THE "🎯 Product Areas Affected" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**
