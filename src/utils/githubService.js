@@ -1166,35 +1166,37 @@ async function handleShortRequest(repository, issue, comment, sender) {
  */
 function formatHybridAnalysisForComment(aiInsights) {
   const aiData = aiInsights.data;
+
   // Check if we have the new AI prompt format
   if (typeof aiData === 'string' && (
-    aiData.includes('🎯 Ovi QA Analysis') || 
-    aiData.includes('📊 QA Pulse') ||
-    aiData.includes('⚠️ Key Questions & Risks') ||
-    aiData.includes('🧪 Test Recipe')
+    aiData.includes('📊 Release Pulse') ||
+    aiData.includes('🎯 Ovi QA Analysis')
   )) {
-    // Debug logging to see what we're getting
-    console.log('🔍 AI Response Debug:');
-    console.log('AI Response length:', aiData.length);
-    console.log('Contains Questions & Risks:', aiData.includes('⚠️ Key Questions & Risks'));
-    console.log('Contains Test Recipe:', aiData.includes('🧪 Test Recipe'));
-    console.log('Contains QA Pulse:', aiData.includes('📊 QA Pulse'));
+    console.log('🔍 Detected new AI prompt format');
+    console.log('Contains Release Pulse:', aiData.includes('📊 Release Pulse'));
     console.log('Full AI Response:', aiData);
+    
     // New AI prompt format - just add GetYourTester branding around it
     // Clean up any potential formatting issues that GitHub might not like
     const cleanedData = aiData
-      .replace(/\r\n/g, '\n')  // Normalize line endings
-      .replace(/\r/g, '\n')    // Convert carriage returns to newlines
+      .replace(/\n{3,}/g, '\n\n')  // Remove excessive blank lines
       .replace(/\t/g, '\n')    // Convert tabs to newlines for better GitHub compatibility
       .trim();                  // Remove extra whitespace
+    
     const finalComment = `${cleanedData}
+
 ---
-*🤖 AI-powered QA analysis by GetYourTester*`;
+
+*🤖 **With Quality By Ovi** - AI-powered QA analysis by GetYourTester*
+
+💡 Need a human tester to help? [GetYourTester.com](https://getyourtester.com) - Professional QA testing for your releases.`;
+    
     // Debug the final comment that will be posted
     console.log('🔍 Final Comment Debug:');
     console.log('Final comment length:', finalComment.length);
     console.log('Final comment preview:', finalComment.substring(0, 500) + '...');
     console.log('Final comment end:', finalComment.substring(finalComment.length - 200));
+    
     return finalComment;
   }
   // Fallback for legacy JSON format (backward compatibility)
@@ -1261,19 +1263,24 @@ The analysis was generated but could not be properly formatted. Please check the
  */
             function formatShortAnalysisForComment(aiInsights) {
               const aiData = aiInsights.data;
+
               // Check if we have the new short analysis format
               if (typeof aiData === 'string' && (
-                aiData.includes('🎯 Ovi QA Analysis - Short Version') ||
-                aiData.includes('📊 Deployment Score') ||
-                aiData.includes('⚠️ Risks') ||
-                aiData.includes('🧪 Test Recipe')
+                aiData.includes('📊 Release Pulse') ||
+                aiData.includes('🎯 Ovi QA Analysis - Short Version')
               )) {
                 // This is already in the correct short format, just add branding
                 return `### 🤖 Ovi QA Assistant by GetYourTester
+
 ---
+
 ${aiData}
+
 ---
-*🚀 Short QA analysis by Ovi QA Assistant. Use /qa for full details.*`;
+
+*🤖 **With Quality By Ovi** - AI-powered QA analysis by GetYourTester*
+
+💡 Need a human tester to help? [GetYourTester.com](https://getyourtester.com) - Professional QA testing for your releases.*`;
               }
   // Check if we have the legacy simplified format (4 questions approach)
   if (typeof aiData === 'string' && (

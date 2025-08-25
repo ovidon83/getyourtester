@@ -14,35 +14,31 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 # 🎯 Ovi QA Analysis
 
-## 📊 QA Pulse
+## 📊 Release Pulse
 
 | Metric | Value | Impact |
 |---------|---------|---------|
-| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line risk assessment] |
-| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [One-line confidence level] |
-| **Release** | [✅ Go/⚠️ Conditional/❌ Block] | [One-line decision] |
+| 🚀 Release | ${getReleaseScore()} | ${getReleaseImpact()} |
+| ⚠️ Risk | ${getRiskLevel()} | ${getBusinessImpact()} |
+| ⭐ Confidence | ${getConfidenceLevel()} | ${getConfidenceImpact()} |
 
 ## 🧪 Test Recipe
 
-| Scenario | Steps | Expected Result | Priority | Type | Coverage |
-|----------|-------|-----------------|----------|------|----------|
-| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
-| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
-| [Critical data validation] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual | [Data area] |
-| [High priority edge case] | [Test boundary conditions from code] | [System handles edge cases gracefully] | High | ❌ Manual | [Edge case area] |
-| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
+### 🟢 Critical Path Scenarios
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+${getCriticalTests()}
+
+### 🔴 High Priority Scenarios  
+| Scenario | Steps | Expected Result | Priority |
+|----------|-------|-----------------|----------|
+${getHighPriorityTests()}
 
 ## ⚠️ Key Questions & Risks
 
 **Based on actual code changes and diff analysis:**
 
-1. **[Functional]** [Specific question about implementation based on code changes]
-2. **[Performance]** [Performance concern from actual code if applicable]
-3. **[Security]** [Security risk from code if applicable]
-4. **[Integration]** [Integration risk from dependencies if applicable]
-5. **[Regression]** [Specific regression risk based on affected product areas]
-
-*Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
+${getTop3CriticalConcerns()}
 
 ---
 
