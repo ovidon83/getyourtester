@@ -15,26 +15,22 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 | Metric | Score | Impact |
 |---------|---------|---------|
-| 🚀 Release | ${getReleaseScore()} | ${getReleaseImpact()} |
-| ⚠️ Risk | ${getRiskLevel()} | ${getBusinessImpact()} |
+| 🚀 Release | ${getReleaseScoreWithEmoji()} | ${getReleaseImpact()} |
+| ⚠️ Risk | ${getRiskLevelWithEmoji()} | ${getBusinessImpact()} |
 
 ## 🧪 Test Recipe
 
+**Critical & High Priority Scenarios Only:**
+
 | Scenario | Steps | Expected Result | Priority |
 |----------|-------|-----------------|----------|
-${getTestScenarios()}
+${getCriticalAndHighTestScenarios()}
 
-## ⚠️ Key Questions & Risks
+## ⚠️ Key Questions, Risks & Bugs
 
 **Based on actual code changes and diff analysis:**
 
-${getTop3CriticalConcerns()}
-
-## 🐛 Bugs & Issues Found
-
-**Code analysis results:**
-
-${getBugsAndIssues()}
+${getTop3CriticalConcernsAndBugs()}
 
 ## 🎯 Product Areas Affected
 
@@ -49,7 +45,7 @@ ${getProductAreasAffected()}
 - Focus ONLY on the actual code changes in the diff
 - Provide specific, actionable risks based on the real code
 - Create test scenarios that directly test the changed functionality
-- Keep it concise and focused on the 5 required sections
+- Keep it concise and focused on the 4 required sections
 - Use realistic test data and user actions
 - Prioritize tests by business impact: Critical = main feature, High = important functionality
 - Base the Release Readiness on actual code quality, test coverage, and risk assessment
@@ -57,15 +53,21 @@ ${getProductAreasAffected()}
 - Consider dependencies and integration points that might be affected
 - Always specify file names with line numbers in questions and risks
 - Focus on real, code-based risks, not potential or generic ones
-- For Questions & Risks: 
+- For Test Recipe: 
+  - ONLY include Critical and High priority scenarios
+  - Include positive test cases (happy path), negative test cases (error conditions), and edge cases
+  - Focus on scenarios that directly test the changed functionality
+  - Make steps detailed and actionable
+- For Questions, Risks & Bugs: 
   - ACTUALLY ANALYZE the code changes to see if they affect other modules/components/files
   - If dependencies are found, specify exactly which files/modules are affected and how
   - If no dependencies found, don't mention generic "could affect" statements
   - Look for actual code issues like missing error handling, potential null pointer exceptions, security vulnerabilities, performance bottlenecks, or integration problems that are visible in the diff
   - Give concrete results, not generic questions
-- For Test Recipe: Focus on scenarios that directly test the changed functionality, not generic test cases
-- Make every question and risk actionable and specific to the actual code changes
-- For Bugs & Issues: Look for actual code problems like syntax errors, logic flaws, missing error handling, security vulnerabilities, performance issues, or integration problems visible in the diff
+  - Avoid duplication between questions/risks and bugs - consolidate similar concerns
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
+- For Score Emojis:
+  - Release: ✅ (Go), ⚠️ (Conditional), ❌ (Block)
+  - Risk: 🟢 (Low), 🟡 (Medium), 🔴 (High)
 
 **REMEMBER: STOP YOUR OUTPUT AFTER THE "🎯 Product Areas Affected" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**
