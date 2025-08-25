@@ -12,33 +12,38 @@ Description: <%= body %>
 
 Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this exact format:
 
-# 🎯 Ovi QA Analysis
+# 🎯 QA Analysis - by Ovi (the AI QA)
 
 ## 📊 Release Pulse
 
-| Metric | Value | Impact |
+| Metric | Score | Impact |
 |---------|---------|---------|
 | 🚀 Release | ${getReleaseScore()} | ${getReleaseImpact()} |
 | ⚠️ Risk | ${getRiskLevel()} | ${getBusinessImpact()} |
-| ⭐ Confidence | ${getConfidenceLevel()} | ${getConfidenceImpact()} |
 
 ## 🧪 Test Recipe
 
-### 🟢 Critical Path Scenarios
 | Scenario | Steps | Expected Result | Priority |
 |----------|-------|-----------------|----------|
-${getCriticalTests()}
-
-### 🔴 High Priority Scenarios  
-| Scenario | Steps | Expected Result | Priority |
-|----------|-------|-----------------|----------|
-${getHighPriorityTests()}
+${getTestScenarios()}
 
 ## ⚠️ Key Questions & Risks
 
 **Based on actual code changes and diff analysis:**
 
 ${getTop3CriticalConcerns()}
+
+## 🐛 Bugs & Issues Found
+
+**Code analysis results:**
+
+${getBugsAndIssues()}
+
+## 🎯 Product Areas Affected
+
+**Impact analysis:**
+
+${getProductAreasAffected()}
 
 ---
 
@@ -62,5 +67,7 @@ ${getTop3CriticalConcerns()}
   - Give concrete results, not generic questions
 - For Test Recipe: Focus on scenarios that directly test the changed functionality, not generic test cases
 - Make every question and risk actionable and specific to the actual code changes
+- For Bugs & Issues: Look for actual code problems like syntax errors, logic flaws, missing error handling, security vulnerabilities, performance issues, or integration problems visible in the diff
+- For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
 
-**REMEMBER: STOP YOUR OUTPUT AFTER THE "⚠️ Key Questions & Risks" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**
+**REMEMBER: STOP YOUR OUTPUT AFTER THE "🎯 Product Areas Affected" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**

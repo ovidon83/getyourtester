@@ -1170,7 +1170,7 @@ function formatHybridAnalysisForComment(aiInsights) {
   // Check if we have the new AI prompt format
   if (typeof aiData === 'string' && (
     aiData.includes('📊 Release Pulse') ||
-    aiData.includes('🎯 Ovi QA Analysis')
+    aiData.includes('🎯 QA Analysis - by Ovi (the AI QA)')
   )) {
     console.log('🔍 Detected new AI prompt format');
     console.log('Contains Release Pulse:', aiData.includes('📊 Release Pulse'));
@@ -1267,7 +1267,7 @@ The analysis was generated but could not be properly formatted. Please check the
               // Check if we have the new short analysis format
               if (typeof aiData === 'string' && (
                 aiData.includes('📊 Release Pulse') ||
-                aiData.includes('🎯 Ovi QA Analysis - Short Version')
+                aiData.includes('🎯 QA Analysis - by Ovi (the AI QA) - Short Version')
               )) {
                 // This is already in the correct short format, just add branding
                 return `### 🤖 Ovi QA Assistant by GetYourTester
