@@ -1386,8 +1386,7 @@ function formatHybridAnalysisForComment(aiInsights) {
     aiData.includes('🎯 Ovi QA Analysis') || 
     aiData.includes('📊 QA Pulse') ||
     aiData.includes('⚠️ Key Questions & Risks') ||
-    aiData.includes('🧪 Test Recipe') ||
-    aiData.includes('✅ Release Gate')
+    aiData.includes('🧪 Test Recipe')
   )) {
     // Debug logging to see what we're getting
     console.log('🔍 AI Response Debug:');

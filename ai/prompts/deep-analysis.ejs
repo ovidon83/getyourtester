@@ -14,17 +14,13 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 # 🎯 Ovi QA Analysis
 
-## ⚠️ Key Questions & Risks
+## 📊 QA Pulse
 
-**Based on actual code changes and diff analysis:**
-
-1. **[Functional]** [Specific question about implementation based on code changes]
-2. **[Performance]** [Performance concern from actual code if applicable]
-3. **[Security]** [Security risk from code if applicable]
-4. **[Integration]** [Integration risk from dependencies if applicable]
-5. **[Regression]** [Specific regression risk based on affected product areas]
-
-*Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
+| Metric | Value | Impact |
+|---------|---------|---------|
+| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line risk assessment] |
+| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [One-line confidence level] |
+| **Release** | [✅ Go/⚠️ Conditional/❌ Block] | [One-line decision] |
 
 ## 🧪 Test Recipe
 
@@ -36,17 +32,17 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 | [High priority edge case] | [Test boundary conditions from code] | [System handles edge cases gracefully] | High | ❌ Manual | [Edge case area] |
 | [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
 
-## 📊 QA Pulse
+## ⚠️ Key Questions & Risks
 
-| Metric | Value | Impact |
-|---------|---------|---------|
-| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line risk assessment] |
-| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [One-line confidence level] |
-| **Release** | [✅ Go/⚠️ Conditional/❌ Block] | [One-line decision] |
+**Based on actual code changes and diff analysis:**
 
-## ✅ Release Gate
+1. **[Functional]** [Specific question about implementation based on code changes]
+2. **[Performance]** [Performance concern from actual code if applicable]
+3. **[Security]** [Security risk from code if applicable]
+4. **[Integration]** [Integration risk from dependencies if applicable]
+5. **[Regression]** [Specific regression risk based on affected product areas]
 
-**Release Gate: [Safe to release if Test #1-#3 pass / Conditional release based on Test #1-#5 / Blocked until critical issues resolved]**
+*Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
 
 ---
 
