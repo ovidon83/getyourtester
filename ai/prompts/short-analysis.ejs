@@ -20,11 +20,11 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 ## 🧪 Test Recipe
 
-**Critical & High Priority Scenarios Only:**
+**Critical & High Priority Scenarios Only - Ordered by Priority & Relevance:**
 
 | Scenario | Steps | Expected Result | Priority |
 |----------|-------|-----------------|----------|
-${getCriticalAndHighTestScenarios()}
+${getPrioritizedTestScenarios()}
 
 ## ⚠️ Key Questions, Risks & Bugs
 
@@ -55,9 +55,12 @@ ${getProductAreasAffected()}
 - Focus on real, code-based risks, not potential or generic ones
 - For Test Recipe: 
   - ONLY include Critical and High priority scenarios
+  - Order scenarios by priority (Critical first, then High)
+  - Within each priority level, order by relevance to the actual PR changes
   - Include positive test cases (happy path), negative test cases (error conditions), and edge cases
-  - Focus on scenarios that directly test the changed functionality
-  - Make steps detailed and actionable
+  - Focus on scenarios that directly test the changed functionality and affected product areas
+  - Make steps detailed, actionable, and multiline-friendly
+  - Evaluate which scenarios make most sense given the specific changes in the PR
 - For Questions, Risks & Bugs: 
   - ACTUALLY ANALYZE the code changes to see if they affect other modules/components/files
   - If dependencies are found, specify exactly which files/modules are affected and how
@@ -67,7 +70,8 @@ ${getProductAreasAffected()}
   - Avoid duplication between questions/risks and bugs - consolidate similar concerns
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
 - For Score Emojis:
-  - Release: ✅ (Go), ⚠️ (Conditional), ❌ (Block)
-  - Risk: 🟢 (Low), 🟡 (Medium), 🔴 (High)
+  - Release: Combine value + emoji (e.g., "✅ Go", "⚠️ Conditional", "❌ Block")
+  - Risk: Combine value + emoji (e.g., "🟢 Low", "🟡 Medium", "🔴 High")
+- For Steps: Support multiline text with proper formatting for complex test procedures
 
 **REMEMBER: STOP YOUR OUTPUT AFTER THE "🎯 Product Areas Affected" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**
