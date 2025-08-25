@@ -1156,10 +1156,8 @@ async function handleTestRequest(repository, issue, comment, sender) {
   
   // Post acknowledgment comment with AI insights if available
   let acknowledgmentComment = `
-## 🧪 Test Request Received
+## 🤖 Ovi QA Analysis Complete
 
-Thank you for the testing request! Your request has been received and is being processed.
-* **Status:** Pending
 A tester will be assigned to this PR soon and you'll receive status updates notifications.
   `;
   
@@ -1331,10 +1329,8 @@ async function handleShortRequest(repository, issue, comment, sender) {
   
   // Post acknowledgment comment with AI insights if available
   let acknowledgmentComment = `
-## 🧪 Test Request Received
+## 🤖 Ovi QA Analysis Complete
 
-Thank you for the testing request! Your request has been received and is being processed.
-* **Status:** Pending
 A tester will be assigned to this PR soon and you'll receive status updates notifications.
   `;
   

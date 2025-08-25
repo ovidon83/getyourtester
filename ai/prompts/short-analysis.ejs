@@ -11,13 +11,13 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 # 🎯 Ovi QA Analysis - Short Version
 
-## 📊 QA Pulse
+## 🧪 Test Recipe
 
-| Metric | Value | Notes |
-|---------|---------|-------|
-| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line justification based on actual code changes] |
-| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [Brief note on code quality and test coverage] |
-| **Release Readiness** | [⚠️ Conditional/✅ Ready/❌ Blocked] | [One-line assessment based on risks found] |
+| Scenario | Steps | Expected Result | Priority | Type | Coverage |
+|----------|-------|-----------------|----------|------|----------|
+| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
+| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
+| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
 
 ## ⚠️ Key Questions & Risks
 
@@ -29,13 +29,13 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 *Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
 
-## 🧪 Test Recipe
+## 📊 QA Pulse
 
-| Scenario | Steps | Expected Result | Priority | Type | Coverage |
-|----------|-------|-----------------|----------|------|----------|
-| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
-| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
-| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
+| Metric | Value | Notes |
+|---------|---------|-------|
+| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line justification based on actual code changes] |
+| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [Brief note on code quality and test coverage] |
+| **Release Readiness** | [⚠️ Conditional/✅ Ready/❌ Blocked] | [One-line assessment based on risks found] |
 
 ---
 
@@ -52,3 +52,6 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 - Consider dependencies and integration points that might be affected
 - Always specify file names with line numbers in questions and risks
 - Focus on real, code-based risks, not potential or generic ones
+- For Questions & Risks: Look for actual code issues like missing error handling, potential null pointer exceptions, security vulnerabilities, performance bottlenecks, or integration problems that are visible in the diff
+- For Test Recipe: Focus on scenarios that directly test the changed functionality, not generic test cases
+- Make every question and risk actionable and specific to the actual code changes

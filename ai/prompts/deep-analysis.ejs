@@ -14,15 +14,15 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 # 🎯 Ovi QA Analysis
 
-## 📊 QA Pulse
+## 🧪 Test Recipe
 
-| Metric | Value | Notes |
-|---------|---------|-------|
-| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line justification based on actual code changes] |
-| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [Brief note on code quality and test coverage] |
-| **Release Readiness** | [⚠️ Conditional/✅ Ready/❌ Blocked] | [One-line assessment based on risks found] |
-| **Blast Radius** | [Small/Medium/Large] | [Impact scope based on affected files and dependencies] |
-| **Change Scope** | [Minor/Moderate/Major] | [Complexity assessment of the actual changes] |
+| Scenario | Steps | Expected Result | Priority | Type | Coverage |
+|----------|-------|-----------------|----------|------|----------|
+| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
+| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
+| [Critical data validation] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual | [Data area] |
+| [High priority edge case] | [Test boundary conditions from code] | [System handles edge cases gracefully] | High | ❌ Manual | [Edge case area] |
+| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
 
 ## ⚠️ Key Questions & Risks
 
@@ -36,15 +36,15 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 *Focus on concrete risks from the code, not general best practices. Always specify file names with line numbers.*
 
-## 🧪 Test Recipe
+## 📊 QA Pulse
 
-| Scenario | Steps | Expected Result | Priority | Type | Coverage |
-|----------|-------|-----------------|----------|------|----------|
-| [Critical feature workflow] | [Complete user journey for main change] | [End-to-end functionality works] | Critical | ✅ Auto | [Product area] |
-| [Critical integration test] | [Test integration with affected systems] | [No breaking changes to core flows] | Critical | ✅ Auto | [Integration area] |
-| [Critical data validation] | [Verify data consistency across changes] | [Data remains accurate and consistent] | Critical | ❌ Manual | [Data area] |
-| [High priority edge case] | [Test boundary conditions from code] | [System handles edge cases gracefully] | High | ❌ Manual | [Edge case area] |
-| [High priority regression] | [Test affected product areas for regression] | [Existing functionality remains intact] | High | ❌ Manual | [Regression area] |
+| Metric | Value | Notes |
+|---------|---------|-------|
+| **Risk** | [🟡 Medium/🟢 Low/🔴 High] | [One-line justification based on actual code changes] |
+| **Confidence** | [🟢 High/🟡 Medium/🔴 Low] | [Brief note on code quality and test coverage] |
+| **Release Readiness** | [⚠️ Conditional/✅ Ready/❌ Blocked] | [One-line assessment based on risks found] |
+| **Blast Radius** | [Small/Medium/Large] | [Impact scope based on affected files and dependencies] |
+| **Change Scope** | [Minor/Moderate/Major] | [Complexity assessment of the actual changes] |
 
 ## ✅ Release Gate
 
@@ -63,3 +63,6 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 - Include comprehensive test coverage while being specific to this PR
 - Always specify file names with line numbers in questions and risks
 - Focus on real, code-based risks, not potential or generic ones
+- For Questions & Risks: Look for actual code issues like missing error handling, potential null pointer exceptions, security vulnerabilities, performance bottlenecks, or integration problems that are visible in the diff
+- For Test Recipe: Focus on scenarios that directly test the changed functionality, not generic test cases
+- Make every question and risk actionable and specific to the actual code changes
