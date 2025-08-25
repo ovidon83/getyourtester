@@ -1163,6 +1163,13 @@ async function handleTestRequest(repository, issue, comment, sender) {
   
   // Add AI insights to the comment if they were generated successfully
   if (aiInsights && aiInsights.success) {
+    // Debug logging to see what we're getting
+    console.log('🔍 AI Insights Debug:');
+    console.log('AI Insights success:', aiInsights.success);
+    console.log('AI Insights data type:', typeof aiInsights.data);
+    console.log('AI Insights data length:', aiInsights.data ? aiInsights.data.length : 'undefined');
+    console.log('AI Insights data preview:', aiInsights.data ? aiInsights.data.substring(0, 200) + '...' : 'undefined');
+    
     // Use the same hybrid formatting as the automatic PR analysis
     acknowledgmentComment += formatHybridAnalysisForComment(aiInsights);
   } else if (aiInsights && !aiInsights.success) {
@@ -1382,6 +1389,14 @@ function formatHybridAnalysisForComment(aiInsights) {
     aiData.includes('🧪 Test Recipe') ||
     aiData.includes('✅ Release Gate')
   )) {
+    // Debug logging to see what we're getting
+    console.log('🔍 AI Response Debug:');
+    console.log('AI Response length:', aiData.length);
+    console.log('Contains Questions & Risks:', aiData.includes('⚠️ Key Questions & Risks'));
+    console.log('Contains Test Recipe:', aiData.includes('🧪 Test Recipe'));
+    console.log('Contains QA Pulse:', aiData.includes('📊 QA Pulse'));
+    console.log('Full AI Response:', aiData);
+    
     // New AI prompt format - just add GetYourTester branding around it
     return `### 🤖 Ovi QA Assistant by GetYourTester
 
