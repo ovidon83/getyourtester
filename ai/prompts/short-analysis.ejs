@@ -41,7 +41,10 @@ ${getProductAreasAffected()}
 - Create test scenarios that directly test the changed functionality
 - Keep it concise and focused on the 4 required sections
 - Use realistic test data and user actions
-- Prioritize tests by business impact: Critical = main feature, High = important functionality
+- Prioritize tests by business impact and user dependency:
+  - **Critical Priority**: Core functionality that users absolutely depend on (main features, critical paths, essential workflows)
+  - **High Priority**: Important supporting functionality that enhances experience but isn't core
+  - Examples: User registration/login = Critical, profile customization = High
 - Base the Release Readiness on actual code quality, test coverage, and risk assessment
 - Analyze affected files deeply to understand product area impact
 - Consider dependencies and integration points that might be affected
@@ -50,11 +53,14 @@ ${getProductAreasAffected()}
 - For Test Recipe: 
   - ONLY include Critical and High priority scenarios
   - Order scenarios by priority (Critical first, then High)
-  - Within each priority level, order by relevance to the actual PR changes
-  - Include positive test cases (happy path), negative test cases (error conditions), and edge cases
+  - Within each priority level, order by relevance to the actual changes
+  - **For each priority level, include BOTH positive and negative scenarios:**
+    - Start with **positive test cases** (happy path, successful workflows)
+    - Then include **negative test cases** (error conditions, edge cases, failure scenarios)
   - Focus on scenarios that directly test the changed functionality and affected product areas
   - Make steps detailed, actionable, and multiline-friendly
   - Evaluate which scenarios make most sense given the specific changes in the PR
+  - **Priority Examples**: User login = Critical, form submission = Critical, data validation = Critical, UI polish = High
 - For Questions, Risks & Bugs: 
   - ACTUALLY ANALYZE the code changes to see if they affect other modules/components/files
   - If dependencies are found, specify exactly which files/modules are affected and how
