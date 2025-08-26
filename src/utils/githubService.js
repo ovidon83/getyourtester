@@ -62,19 +62,8 @@ const ARCHIVE_PATH = path.join(dataDir, 'archived-requests.json');
 const DATA_RETENTION_DAYS = process.env.DATA_RETENTION_DAYS ? parseInt(process.env.DATA_RETENTION_DAYS) : 14;
 console.log(`Test requests will be stored at: ${TEST_REQUESTS_PATH}`);
 console.log(`Data retention period: ${DATA_RETENTION_DAYS} days`);
-// Define status labels with emojis
-const STATUS_LABELS = {
-  'pending': '⏳ GYT-Pending',
-  'in-progress': '🔄 GYT-In Progress',
-  'delayed': '⏰ GYT-Delayed',
-  'blocked': '🚫 GYT-Blocked',
-  'complete-pass': '✅ GYT-Complete: PASS',
-  'complete-fail': '❌ GYT-Complete: FAIL'
-};
-// Get all status label patterns (without emoji) for removal
-const STATUS_LABEL_PATTERNS = Object.values(STATUS_LABELS).map(label => 
-  label.substring(label.indexOf('GYT-'))
-);
+// Simple label for when Ovi has reviewed a PR
+const OVI_REVIEWED_LABEL = 'Reviewed by Ovi';
 /**
  * Get production readiness score emoji
  * @param {number} score - The production readiness score (0-10)
@@ -627,68 +616,12 @@ async function postComment(repo, issueNumber, body) {
     return { success: false, error: error.message };
   }
 }
+
 /**
- * Update labels on a GitHub PR, removing old status labels and adding new ones
+ * Add the "Reviewed by Ovi" label to a GitHub PR
  */
-async function updateLabels(repo, issueNumber, newLabels) {
+async function addOviReviewedLabel(repo, issueNumber) {
   try {
-    const [owner, repoName] = repo.split('/');
-    if (!owner || !repoName) {
-      console.error(`Invalid repository format: ${repo}. Should be in format 'owner/repo'`);
-      return { success: false, error: 'Invalid repository format' };
-    }
-    // Get an Octokit instance for this repository
-    const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
-    if (!repoOctokit) {
-      console.log(`[SIMULATED] Would update labels on ${repo}#${issueNumber} to: ${newLabels.join(', ')}`);
-      return { success: true, simulated: true };
-    }
-    // Get current labels
-    const currentLabelsResponse = await repoOctokit.issues.listLabelsOnIssue({
-      owner,
-      repo: repoName,
-      issue_number: issueNumber
-    });
-    const currentLabels = currentLabelsResponse.data.map(label => label.name);
-    // Remove existing status labels
-    const labelsToKeep = currentLabels.filter(label => {
-      return !STATUS_LABEL_PATTERNS.some(pattern => label.includes(pattern));
-    });
-    // Add new labels
-    const updatedLabels = [...labelsToKeep, ...newLabels];
-    // Set the new labels
-    const response = await repoOctokit.issues.setLabels({
-      owner,
-      repo: repoName,
-      issue_number: issueNumber,
-      labels: updatedLabels
-    });
-    console.log(`Labels updated on ${repo}#${issueNumber}: ${updatedLabels.join(', ')}`);
-    return { success: true, data: response.data };
-  } catch (error) {
-    console.error(`Failed to update labels on ${repo}#${issueNumber}:`, error.message);
-    // Check if the error is due to invalid credentials or permissions
-    if (error.status === 401 || error.status === 403) {
-      console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
-    } else if (error.status === 404) {
-      console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
-    }
-    console.log(`[SIMULATED] Would update labels on ${repo}#${issueNumber} to: ${newLabels.join(', ')}`);
-    return { success: true, simulated: true, error: error.message };
-  }
-}
-/**
- * Add a label to a GitHub PR
- */
-async function addLabel(repo, issueNumber, labels) {
-  try {
-    // Use the new updateLabels function to ensure only one status label exists
-    const statusLabels = labels.filter(label => 
-      STATUS_LABEL_PATTERNS.some(pattern => label.includes(pattern))
-    );
-    if (statusLabels.length > 0) {
-      return await updateLabels(repo, issueNumber, labels);
-    }
     const [owner, repoName] = repo.split('/');
     // Handle case where repo might not have correct format
     if (!owner || !repoName) {
@@ -698,26 +631,26 @@ async function addLabel(repo, issueNumber, labels) {
     // Get an Octokit instance for this repository
     const repoOctokit = await githubAppAuth.getOctokitForRepo(owner, repoName);
     if (!repoOctokit) {
-      console.log(`[SIMULATED] Would add labels to ${repo}#${issueNumber}: ${labels.join(', ')}`);
+      console.log(`[SIMULATED] Would add "Reviewed by Ovi" label to ${repo}#${issueNumber}`);
       return { success: true, simulated: true };
     }
     const response = await repoOctokit.issues.addLabels({
       owner,
       repo: repoName,
       issue_number: issueNumber,
-      labels
+      labels: [OVI_REVIEWED_LABEL]
     });
-    console.log(`Labels added to ${repo}#${issueNumber}: ${labels.join(', ')}`);
+    console.log(`"Reviewed by Ovi" label added to ${repo}#${issueNumber}`);
     return { success: true, data: response.data };
   } catch (error) {
-    console.error(`Failed to add labels to ${repo}#${issueNumber}:`, error.message);
+    console.error(`Failed to add "Reviewed by Ovi" label to ${repo}#${issueNumber}:`, error.message);
     // Check if the error is due to invalid credentials or permissions
     if (error.status === 401 || error.status === 403) {
       console.warn('Authentication error: Invalid GitHub token or insufficient permissions');
     } else if (error.status === 404) {
       console.warn(`Repository or issue not found: ${repo}#${issueNumber}`);
     }
-    console.log(`[SIMULATED] Would add labels to ${repo}#${issueNumber}: ${labels.join(', ')}`);
+    console.log(`[SIMULATED] Would add "Reviewed by Ovi" label to ${repo}#${issueNumber}`);
     return { success: true, simulated: true, error: error.message };
   }
 }
@@ -768,19 +701,13 @@ async function updateTestRequestStatus(requestId, newStatus, postCommentUpdate =
   const oldStatus = testRequest.status;
   testRequest.status = newStatus;
   saveTestRequests(testRequests);
-  // Update the PR label
-  if (testRequest.repository && testRequest.prNumber) {
-    // Add the appropriate status label with emoji
-    const statusLabel = STATUS_LABELS[newStatus];
-    await updateLabels(testRequest.repository, testRequest.prNumber, [statusLabel]);
-    // Post a comment about the status change if requested
-    if (postCommentUpdate) {
-      const statusComment = `
+  // Post a comment about the status change if requested
+  if (postCommentUpdate && testRequest.repository && testRequest.prNumber) {
+    const statusComment = `
 ## 🔄 Test Status Update
 The test request status has been updated to ${newStatus}.
-      `;
-      await postComment(testRequest.repository, testRequest.prNumber, statusComment);
-    }
+    `;
+    await postComment(testRequest.repository, testRequest.prNumber, statusComment);
   }
   return { success: true, testRequest };
 }
@@ -819,9 +746,7 @@ ${reportContent}
   `;
   // Post the report as a comment
   const commentResult = await postComment(testRequest.repository, testRequest.prNumber, reportComment);
-  // Update the PR label with the status
-  const statusLabel = STATUS_LABELS[testResult];
-  await updateLabels(testRequest.repository, testRequest.prNumber, [statusLabel]);
+
   return { success: true, testRequest, commentResult };
 }
 /**
@@ -994,10 +919,9 @@ async function handleTestRequest(repository, issue, comment, sender) {
   }
   const commentResult = await postComment(repository.full_name, issue.number, acknowledgmentComment);
   console.log(`✅ Acknowledgment comment ${commentResult.simulated ? 'would be' : 'was'} posted`);
-  // Add status label
-  const statusLabel = STATUS_LABELS['pending'];
-  const labelResult = await addLabel(repository.full_name, issue.number, [statusLabel]);
-  console.log(`✅ Label ${labelResult.simulated ? 'would be' : 'was'} added`);
+  // Add "Reviewed by Ovi" label after AI analysis is complete
+  const labelResult = await addOviReviewedLabel(repository.full_name, issue.number);
+  console.log(`✅ "Reviewed by Ovi" label ${labelResult.simulated ? 'would be' : 'was'} added`);
   // Send email notification
   const emailResult = await sendEmailNotification(testRequest);
   if (emailResult.success) {
@@ -1144,10 +1068,9 @@ async function handleShortRequest(repository, issue, comment, sender) {
   }
   const commentResult = await postComment(repository.full_name, issue.number, acknowledgmentComment);
   console.log(`✅ Acknowledgment comment ${commentResult.simulated ? 'would be' : 'was'} posted`);
-  // Add status label
-  const statusLabel = STATUS_LABELS['pending'];
-  const labelResult = await addLabel(repository.full_name, issue.number, [statusLabel]);
-  console.log(`✅ Label ${labelResult.simulated ? 'would be' : 'was'} added`);
+  // Add "Reviewed by Ovi" label after AI analysis is complete
+  const labelResult = await addOviReviewedLabel(repository.full_name, issue.number);
+  console.log(`✅ "Reviewed by Ovi" label ${labelResult.simulated ? 'would be' : 'was'} added`);
   // Send email notification
   const emailResult = await sendEmailNotification(testRequest);
   if (emailResult.success) {
@@ -1793,7 +1716,7 @@ function restoreFromBackup() {
 module.exports = {
   processWebhookEvent,
   postComment,
-  addLabel,
+  addOviReviewedLabel,
   loadTestRequests,
   loadAllTestRequests,
   saveTestRequests,
