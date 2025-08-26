@@ -68,14 +68,10 @@ ${getProductAreasAffected()}
 - For Score Emojis:
   - Release: Combine numeric score + emoji (e.g., "8/10 ✅", "6/10 ⚠️", "3/10 ❌")
   - Risk: Combine numeric score + emoji (e.g., "2/10 🟢", "5/10 🟡", "8/10 🔴")
-- For Steps: Support multiline text with proper formatting for complex test procedures
-  - Each step should be on its own line
-  - Example format:
-    ```
-    1. Open the form
-    2. Fill in required fields
-    3. Submit the form
-    ```
+- For Steps: Use HTML line breaks within table cells to ensure proper formatting:
+  - Each step must be on its own line using `<br>` tags
+  - Example format: `1. Open the form<br>2. Fill in required fields<br>3. Submit the form`
   - NOT: "1. Open form 2. Fill fields 3. Submit"
+  - This ensures the table displays steps as proper numbered lists
 
 **REMEMBER: STOP YOUR OUTPUT AFTER THE "🎯 Product Areas Affected" SECTION. DO NOT INCLUDE ANY INSTRUCTIONS OR ADDITIONAL TEXT.**
