@@ -1,9 +1,0 @@
-# Replace this with your GitHub personal access token
-# Create a token with the following scopes:
-# - repo (for repository access)
-# - read:org (if you need organization access)
-# - user:email (to access email information)
-# 
-# Visit https://github.com/settings/tokens to create a new token
-
-YOUR_GITHUB_TOKEN=your-personal-access-token-here 

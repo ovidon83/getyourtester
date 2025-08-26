@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     
     // Send contact form email to ovi@qakarma.com
     const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@getyourtester.com',
+      from: process.env.SMTP_USER || 'noreply@qakarma.com',
       to: 'ovi@qakarma.com',
       subject: `[GetYourTester Contact] ${subject}`,
       replyTo: email,

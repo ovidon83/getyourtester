@@ -29,45 +29,33 @@ GetYourTester is a comprehensive QA platform that combines AI-powered analysis w
 - **⚡ Lightning Fast**: Get full QA support in seconds, no hiring required
 - **🔄 Human + AI**: Best of both worlds - speed and confidence
 
-## 🏗️ **How It Works**
+## 🏗️ **Project Structure**
 
-1. **🔗 Connect Your Tools**: Integrate with GitHub, Linear, and Jira
-2. **🤖 AI Analysis**: Instant expert review of tickets and PRs
-3. **📊 Get Feedback**: Instant QA insights and test recipes
-4. **👥 Human QA**: On-demand senior QA when it really matters
-
-## 💰 **Pricing & Plans**
-
-GetYourTester offers AI-powered QA with optional human validation:
-
-### **🚀 Free Trial (5 days)**
-- Up to 10 PR reviews
-- Full Ovi AI analysis
-- All integrations included
-- **Perfect for**: Trying the platform
-
-### **💼 Starter ($49/month)**
-- Up to 50 PR reviews/month
-- Ovi AI analysis & test recipes
-- Email support (24h response)
-- Basic integrations
-- **Perfect for**: Early-stage startups
-
-### **🏢 Growth ($149/month)**
-- Unlimited PR reviews
-- Advanced Ovi AI analysis
-- Priority support (4h response)
-- Linear/Jira integration (coming soon)
-- **Perfect for**: Scaling teams
-
-### **👥 Human QA Add-on**
-- **Human QA Package**: $699/month (50 hours/month)
-- Expert QA engineers (10+ years experience)
-- Manual testing & validation
-- Cross-browser & device testing
-- Flexible usage for critical features
-- **Custom Plans**: Contact us for tailored solutions
-- **Perfect for**: Feature launches, complex integrations, performance testing
+```
+GetYourTester/
+├── 📁 docs/                          # Documentation per product area
+│   ├── 📁 landing-page/             # Landing page documentation
+│   ├── 📁 github-app/               # GitHub App implementation docs
+│   ├── 📁 chrome-extension/         # Chrome extension docs (future)
+│   ├── 📁 api/                      # API documentation
+│   └── 📁 deployment/               # Deployment guides
+├── 📁 src/                          # Main application source
+│   ├── 📁 modules/                  # Feature modules
+│   ├── 📁 components/               # Reusable UI components
+│   ├── 📁 services/                 # Business logic services
+│   ├── 📁 config/                   # Configuration files
+│   ├── 📁 routes/                   # Express.js routes
+│   ├── 📁 views/                    # EJS templates
+│   ├── 📁 utils/                    # Utility functions
+│   └── 📁 public/                   # Static assets
+├── 📁 GetYourTester-Extension/      # Chrome extension (future)
+├── 📁 ai/                           # AI integration and prompts
+├── 📁 data/                         # Data storage (JSON files)
+├── 📁 public/                       # Public static assets
+├── webhook-server.js                # Main production server
+├── fixed-webhook.js                 # Webhook proxy for development
+└── package.json                     # Dependencies and scripts
+```
 
 ## 🛠️ **Tech Stack**
 

@@ -1,26 +1,23 @@
 {
   "name": "getyourtester",
   "version": "1.0.0",
-  "description": "GitHub app that allows developers to request manual testing on their PRs",
+  "description": "GetYourTester - The Only QA Stack Your Startup Needs. Ovi AI + Human QA Experts",
   "main": "webhook-server.js",
   "scripts": {
     "start": "node webhook-server.js",
     "dev": "nodemon webhook-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:ai": "node scripts/testAI.js",
-    "test:ovi": "node scripts/testOviQA.js",
-    "test:hybrid": "node scripts/testHybridAnalysis.js",
-    "test:integration": "node scripts/testIntegration.js",
-    "test:endpoint": "node scripts/testEndpoint.js",
-    "setup": "node scripts/setupSecure.js",
     "webhook": "node fixed-webhook.js"
   },
   "keywords": [
     "github-app",
     "manual-testing",
-    "pr-testing"
+    "pr-testing",
+    "qa-automation",
+    "ai-qa",
+    "getyourtester"
   ],
-  "author": "",
+  "author": "GetYourTester Team",
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^19.0.13",

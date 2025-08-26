@@ -415,7 +415,7 @@ function generateDataAccessError(title, repo, prNumber) {
       reasoning: "Analysis cannot be performed without access to actual code changes"
     },
     questions: [
-      "🔐 **Authentication Issue**: Is the QAKarma GitHub App properly installed on this repository?",
+      "🔐 **Authentication Issue**: Is the GetYourTester GitHub App properly installed on this repository?",
       "🔑 **Permissions**: Does the GitHub App have 'Pull requests' read permissions?",
       "📊 **Repository Access**: Can the app access private repositories if needed?",
       "⚙️ **Configuration**: Are the GITHUB_APP_ID and GITHUB_PRIVATE_KEY properly configured?",
@@ -439,7 +439,7 @@ function generateDataAccessError(title, repo, prNumber) {
     },
     risks: [
       "🚨 **Critical**: Cannot assess risks without access to actual code changes",
-      "🔐 **Authentication Failure**: QAKarma app may not be properly configured for this repository",
+      "🔐 **Authentication Failure**: GetYourTester app may not be properly configured for this repository",
       "⚠️ **Manual Review Essential**: All changes must be manually reviewed and tested",
       "📞 **Support Needed**: Contact GetYourTester support to resolve access issues"
     ]
