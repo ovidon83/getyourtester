@@ -16,13 +16,12 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 ## 🧪 Release Pulse
 
-<table>
-<tr><th style="min-width: 200px;">Metric</th><th>Level</th><th>Summary</th></tr>
-<tr><td>🎯 **User Value**</td><td>High / Medium / Low</td><td>[1 sentence summary]</td></tr>
-<tr><td>✅ **Release Confidence**</td><td>High / Medium-High / Medium / Low</td><td>[1 sentence summary]</td></tr>
-<tr><td>📍 **Change Impact**</td><td>High / Medium-High / Medium / Low</td><td>[1 sentence summary]</td></tr>
-<tr><td>🚦 **Release Decision**</td><td>🟢 Go / 🔴 No-Go</td><td>[1 sentence recommendation]</td></tr>
-</table>
+| Metric | Level | Summary |
+|:-------|:------:|:--------|
+| 🎯 **User Value** | High / Medium / Low | [1 sentence summary] |
+| ✅ **Release Confidence** | High / Medium-High / Medium / Low | [1 sentence summary] |
+| 📍 **Change Impact** | High / Medium-High / Medium / Low | [1 sentence summary] |
+| 🚦 **Release Decision** | 🟢 Go / 🔴 No-Go | [1 sentence recommendation] |
 
 ## 🧪 Test Recipe
 
@@ -62,6 +61,8 @@ ${getProductAreasAffected()}
   - **For each priority level, include BOTH positive and negative scenarios:**
     - Start with **positive test cases** (happy path, successful workflows)
     - Then include **negative test cases** (error conditions, edge cases, failure scenarios)
+  - **IMPORTANT**: Scenario names should be descriptive and concise WITHOUT prefixes like "Positive Scenario:" or "Negative Scenario:"
+  - Examples: "User Login Success", "Invalid Credentials", "Password Reset Flow", "Session Timeout"
   - Focus on scenarios that directly test the changed functionality and affected product areas
   - Make steps detailed, actionable, and multiline-friendly
   - Evaluate which scenarios make most sense given the specific changes in the PR
