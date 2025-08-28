@@ -158,7 +158,7 @@ GetYourTester/
 
 For questions about the project structure or cleanup:
 - **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)
 - **Documentation**: Check the `docs/` directory for detailed guides
 
 ---

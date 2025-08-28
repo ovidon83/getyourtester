@@ -166,7 +166,7 @@ Before considering the cleanup complete, verify:
 If you encounter any issues or have questions:
 
 - **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)
 - **Documentation**: Check the `docs/` directory
 
 ## 🎉 **Success Metrics**
