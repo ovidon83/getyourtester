@@ -11,12 +11,14 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 # 🎯 QA Analysis - by Ovi (the AI QA) - Short Version
 
-## 📊 Release Pulse
+## 🧪 Release Pulse
 
-| Metric | Score | Impact |
-|---------|---------|---------|
-| 🚀 Release | ${getReleaseScoreWithEmoji()} | ${getReleaseImpact()} |
-| ⚠️ Risk | ${getRiskLevelWithEmoji()} | ${getBusinessImpact()} |
+| Metric                | Level   | Summary |
+|-----------------------|---------|---------|
+| 🎯 **User Value**       | High / Medium / Low | [1 sentence summary] |
+| ✅ **Release Confidence** | High / Medium / Low | [1 sentence summary] |
+| 📍 **Change Impact**     | High / Medium / Low | [1 sentence summary] |
+| 🚦 **Release Decision**  | 🟢 Go / 🔴 No-Go | [1 sentence recommendation] |
 
 ## 🧪 Test Recipe
 
@@ -45,7 +47,11 @@ ${getProductAreasAffected()}
   - **Critical Priority**: Core functionality that users absolutely depend on (main features, critical paths, essential workflows)
   - **High Priority**: Important supporting functionality that enhances experience but isn't core
   - Examples: User registration/login = Critical, profile customization = High
-- Base the Release Readiness on actual code quality, test coverage, and risk assessment
+- For Release Pulse Analysis:
+  - **User Value**: Infer from PR description and code diff. What is the meaningful value or benefit to the end user?
+  - **Release Confidence**: Evaluate test coverage, presence of test files, handling of edge cases, and overall implementation confidence.
+  - **Change Impact**: Evaluate scope of code diff — number of files, components/modules touched, shared or risky areas.
+  - **Release Decision**: Recommend Go or No-Go based on a weighted judgment of the above. Go if value is meaningful, confidence is high/medium, and impact is low/medium. No-Go if confidence is low or impact is high without mitigations.
 - Analyze affected files deeply to understand product area impact
 - Consider dependencies and integration points that might be affected
 - Always specify file names with line numbers in questions and risks
@@ -69,9 +75,7 @@ ${getProductAreasAffected()}
   - Give concrete results, not generic questions
   - Avoid duplication between questions/risks and bugs - consolidate similar concerns
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
-- For Score Emojis:
-  - Release: Combine numeric score + emoji (e.g., "8/10 ✅", "6/10 ⚠️", "3/10 ❌")
-  - Risk: Combine numeric score + emoji (e.g., "2/10 🟢", "5/10 🟡", "8/10 🔴")
+
 - For Steps: Use HTML line breaks within table cells to ensure proper formatting:
   - Each step must be on its own line using `<br>` tags
   - Example format: `1. Open the form<br>2. Fill in required fields<br>3. Submit the form`
