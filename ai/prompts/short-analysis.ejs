@@ -76,6 +76,14 @@ ${getProductAreasAffected()}
   - Look for actual code issues like missing error handling, potential null pointer exceptions, security vulnerabilities, performance bottlenecks, or integration problems that are visible in the diff
   - Give concrete results, not generic questions
   - Avoid duplication between questions/risks and bugs - consolidate similar concerns
+  - **IMPORTANT**: Always provide exactly 3 items total, with this specific format:
+    - 1 Risk: Focus on potential runtime issues, security vulnerabilities, or performance problems
+    - 1 Bug: Focus on actual code defects or missing error handling
+    - 1 Question: Focus on edge cases or integration concerns
+  - **Example format**:
+    - **Risk**: "Missing null check for user input could cause runtime errors (line 45)"
+    - **Bug**: "No error handling when API call fails (lines 67-72)"
+    - **Question**: "How does this handle concurrent user access?"
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
 
 - For Steps: Use HTML line breaks within table cells to ensure proper formatting:

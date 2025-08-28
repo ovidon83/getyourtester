@@ -132,7 +132,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
               content: prompt
             }
           ],
-          temperature: 0.3, // Lower temperature for more focused analysis
+          temperature: 0.1, // Very low temperature for maximum consistency
           max_tokens: 2500 // Higher limit for detailed analysis
         });
 
@@ -894,7 +894,7 @@ async function generateShortAnalysis({ repo, pr_number, title, body, diff }) {
         }
       ],
       max_tokens: 2000, // Lower token limit for short analysis
-      temperature: 0.3, // Lower temperature for more focused output
+      temperature: 0.1, // Very low temperature for maximum consistency
       top_p: 0.9
     });
 
