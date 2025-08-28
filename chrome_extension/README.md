@@ -48,8 +48,8 @@ AI-powered QA insights for Linear and Jira tickets. Get smart questions, test ca
 
 ## API Integration
 
-The extension calls the GetYourTester Copilot API:
-- **Endpoint**: `POST https://www.getyourtester.com/generate-test-recipe`
+The extension calls the FirstQA Ovi AI API:
+- **Endpoint**: `POST https://www.firstqa.dev/generate-test-recipe`
 - **Request**: `{ title: string, description: string }`
 - **Response**: `{ smartQuestions: string[], testCases: string[], risks: string[] }`
 
@@ -76,7 +76,7 @@ The extension calls the GetYourTester Copilot API:
 **API errors?**
 - Check browser console for error messages
 - Verify internet connection
-- Ensure the GetYourTester API is accessible
+- Ensure the FirstQA API is accessible
 
 **Styling issues?**
 - The extension uses high z-index (10000) to appear above page content
@@ -85,6 +85,6 @@ The extension calls the GetYourTester Copilot API:
 ## Privacy & Security
 
 - Only activates on Linear and Jira domains
-- Sends ticket title and description to GetYourTester API
+- Sends ticket title and description to FirstQA Ovi AI API
 - No data is stored locally
 - Uses Content Security Policy for XSS protection 

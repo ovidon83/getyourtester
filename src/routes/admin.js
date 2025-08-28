@@ -1,5 +1,5 @@
 /**
- * Admin routes for GetYourTester
+ * Admin routes for FirstQA
  */
 const express = require('express');
 const router = express.Router();

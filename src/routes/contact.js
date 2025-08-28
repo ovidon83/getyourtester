@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 // GET /contact - Render contact page
 router.get('/', (req, res) => {
   res.render('contact', { 
-    title: 'Contact GetYourTester',
+            title: 'Contact FirstQA',
     success: req.query.success,
     error: req.query.error
   });
@@ -33,11 +33,11 @@ router.post('/', async (req, res) => {
   const mailOptions = {
     from: process.env.SMTP_USER || 'noreply@firstqa.dev',
     to: 'hello@firstqa.dev',
-      subject: `[GetYourTester Contact] ${subject}`,
+              subject: `[FirstQA Contact] ${subject}`,
       replyTo: email,
       html: `
         <h1>New Contact Form Submission</h1>
-        <p>Someone has submitted a contact form on GetYourTester.</p>
+                    <p>Someone has submitted a contact form on FirstQA.</p>
         
         <h2>Contact Details:</h2>
         <ul>
@@ -52,12 +52,12 @@ router.post('/', async (req, res) => {
         
         <p><strong>Reply to:</strong> <a href="mailto:${email}">${email}</a></p>
         
-        <p>Thank you for using GetYourTester!</p>
+                    <p>Thank you for using FirstQA!</p>
       `,
       text: `
 New Contact Form Submission
 
-Someone has submitted a contact form on GetYourTester.
+Someone has submitted a contact form on FirstQA.
 
 Contact Details:
 - Name: ${name}
@@ -70,7 +70,7 @@ ${message}
 
 Reply to: ${email}
 
-Thank you for using GetYourTester!
+Thank you for using FirstQA!
       `
     };
     

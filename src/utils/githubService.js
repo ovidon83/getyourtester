@@ -39,7 +39,7 @@ try {
 }
 // Ensure data directory exists
 const homeDir = process.env.HOME || process.env.USERPROFILE;
-let dataDir = process.env.DATA_DIR || path.join(homeDir, '.getyourtester', 'data');
+let dataDir = process.env.DATA_DIR || path.join(homeDir, '.firstqa', 'data');
 if (!fs.existsSync(dataDir)) {
   // Create the directory structure recursively
   try {
@@ -439,7 +439,7 @@ async function sendEmailNotification(testRequest) {
     // Extract repository owner and name
     const [owner, repo] = testRequest.repository ? testRequest.repository.split('/') : ['unknown', 'unknown'];
     const mailOptions = {
-      from: `"GetYourTester" <${fromEmail}>`,
+              from: `"FirstQA" <${fromEmail}>`,
       to: toEmail,
       subject: `Ovi QA Analysis Complete for PR #${testRequest.prNumber}`,
       html: `
@@ -1099,7 +1099,7 @@ function formatHybridAnalysisForComment(aiInsights) {
     console.log('Contains Release Pulse:', aiData.includes('📊 Release Pulse'));
     console.log('Full AI Response:', aiData);
     
-    // New AI prompt format - just add GetYourTester branding around it
+    // New AI prompt format - just add FirstQA branding around it
     // Clean up any potential formatting issues that GitHub might not like
     const cleanedData = aiData
       .replace(/\n{3,}/g, '\n\n')  // Remove excessive blank lines

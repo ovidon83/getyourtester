@@ -1,5 +1,5 @@
 /**
- * Main public routes for GetYourTester
+ * Main public routes for FirstQA
  */
 const express = require('express');
 const router = express.Router();
@@ -149,7 +149,7 @@ router.post('/request', async (req, res) => {
 // Contact page
 router.get('/contact', (req, res) => {
   res.render('contact', { 
-    title: 'Contact GetYourTester',
+            title: 'Contact FirstQA',
     success: req.query.success
   });
 });
@@ -213,13 +213,13 @@ ${message}
 // About page
 router.get('/about', (req, res) => {
   res.render('about', { 
-    title: 'About GetYourTester' 
+            title: 'About FirstQA' 
   });
 });
 
 // GET waitlist thank you page
 router.get('/waitlist-thank-you', (req, res) => {
-  res.render('waitlist-thank-you', { title: 'Thanks for Joining the Waitlist - GetYourTester' });
+          res.render('waitlist-thank-you', { title: 'Thanks for Joining the Waitlist - FirstQA' });
 });
 
 // Ovi QA Agent endpoint for comprehensive PR analysis

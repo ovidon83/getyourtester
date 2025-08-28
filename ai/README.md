@@ -1,6 +1,6 @@
-# OpenAI Integration for GetYourTester
+# OpenAI Integration for FirstQA
 
-This module adds AI-powered QA insights to GetYourTester using OpenAI's GPT-4o model.
+This module adds AI-powered QA insights to FirstQA using OpenAI's GPT-4o model.
 
 ## Features
 
@@ -161,9 +161,9 @@ The system handles several error scenarios:
 - Automatic retry adds 1-2 seconds on failure
 - Token usage: ~500-1500 tokens per request (depending on diff size)
 
-## Integration with GetYourTester
+## Integration with FirstQA
 
-This AI module can be integrated into the main GetYourTester workflow by:
+This AI module can be integrated into the main FirstQA workflow by:
 
 1. Adding AI insights to GitHub PR comments
 2. Including insights in test request dashboard

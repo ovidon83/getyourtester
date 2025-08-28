@@ -1,5 +1,5 @@
 /**
- * GitHub webhook routes for GetYourTester
+ * GitHub webhook routes for FirstQA
  * Handles incoming GitHub events
  */
 const express = require('express');
