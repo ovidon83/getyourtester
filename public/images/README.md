@@ -12,3 +12,4 @@ To complete the demo section, save your actual screenshots with these exact file
 4. The landing page will automatically display these screenshots in the demo section
 
 The screenshots should be high-quality PNG files that clearly show Ovi's analysis output in GitHub pull requests.
+

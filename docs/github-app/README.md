@@ -1,6 +1,6 @@
 # GitHub App Documentation
 
-The GetYourTester GitHub App provides automated QA analysis for pull requests using AI-powered insights and human QA expertise.
+The FirstQA GitHub App provides automated QA analysis for pull requests using AI-powered insights and human QA expertise.
 
 ## 🏗️ **Architecture**
 
@@ -226,6 +226,6 @@ DEBUG=true
 
 ### **Support**
 For technical support, contact:
-- **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **Email**: hello@firstqa.dev
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)
 - **Documentation**: [Full Documentation](../)

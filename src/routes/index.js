@@ -21,27 +21,27 @@ try {
 
 // Home/landing page route
 router.get('/', (req, res) => {
-  res.render('landing', { title: 'GetYourTester - Your First QA Hire for Solo Founders & Startups' });
+  res.render('landing', { title: 'FirstQA - Your First QA Hire for Solo Founders & Startups' });
 });
 
 // How it works page
 router.get('/how-it-works', (req, res) => {
   res.render('how-it-works', { 
-    title: 'How GetYourTester Works' 
+    title: 'How FirstQA Works' 
   });
 });
 
 // Pricing page
 router.get('/pricing', (req, res) => {
   res.render('pricing', { 
-    title: 'GetYourTester Pricing' 
+    title: 'FirstQA Pricing' 
   });
 });
 
 // Request services page
 router.get('/request', (req, res) => {
   res.render('request', {
-    title: 'Request Services - GetYourTester',
+    title: 'Request Services - FirstQA',
     success: req.query.success
   });
 });
@@ -120,9 +120,9 @@ router.post('/request', async (req, res) => {
     const textContent = emailContent.replace(/<[^>]*>/g, '');
     
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'noreply@getyourtester.com',
-      to: 'ovidon83@gmail.com',
-      subject: `[GetYourTester Service Request] from ${formData.name}`,
+      from: process.env.EMAIL_FROM || 'noreply@firstqa.dev',
+      to: 'hello@firstqa.dev',
+      subject: `[FirstQA Service Request] from ${formData.name}`,
       html: emailContent,
       text: textContent
     };
@@ -161,9 +161,9 @@ router.post('/contact', async (req, res) => {
     
     // Create email content
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'noreply@getyourtester.com',
-      to: 'ovidon83@gmail.com',
-      subject: `[GetYourTester Contact] ${subject}`,
+      from: process.env.EMAIL_FROM || 'noreply@firstqa.dev',
+      to: 'hello@firstqa.dev',
+      subject: `[FirstQA Contact] ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>

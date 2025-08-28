@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * GetYourTester Webhook Server
+ * FirstQA Webhook Server
  * Handles GitHub webhook events for test requests
  * Version: 2.0.2 - FORCE DEPLOYMENT TRIGGER
  */
@@ -150,7 +150,7 @@ app.get('/success', async (req, res) => {
   
   console.log('🎨 Rendering success page...');
   res.render('success', { 
-    title: 'Welcome to GetYourTester! 🎉',
+    title: 'Welcome to FirstQA! 🎉',
     plan: plan,
     customerEmail: customerEmail
   });
@@ -174,7 +174,7 @@ app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req
       });
     }
     
-    console.log(`🤖 Ovi QA Agent analyzing PR #${pr_number} in ${repo}`);
+    console.log(`🤖 FirstQA Ovi AI analyzing PR #${pr_number} in ${repo}`);
     console.log('🔍 Input Debug:');
     console.log(`   Repo: ${repo}`);
     console.log(`   PR #: ${pr_number}`);
@@ -192,14 +192,14 @@ app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req
     });
     
     if (aiInsights && aiInsights.success) {
-      console.log('✅ Ovi QA Agent analysis completed successfully via webhook server');
+      console.log('✅ FirstQA Ovi AI analysis completed successfully via webhook server');
       res.json({
         success: true,
         data: aiInsights.data,
         metadata: aiInsights.metadata
       });
     } else {
-      console.error('❌ Ovi QA Agent analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ FirstQA Ovi AI analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
       res.status(500).json({
         success: false,
         error: aiInsights?.error || 'Failed to generate insights',
@@ -208,12 +208,12 @@ app.post('/generate-test-recipe', bodyParser.json({ limit: '10mb' }), async (req
     }
     
   } catch (error) {
-    console.error('❌ Exception in Ovi QA Agent analysis:', error.message);
+          console.error('❌ Exception in FirstQA Ovi AI analysis:', error.message);
     console.error('Stack trace:', error.stack);
     
     res.status(500).json({
       success: false,
-      error: 'Ovi QA Agent analysis failed',
+      error: 'FirstQA Ovi AI analysis failed',
       details: error.message
     });
   }
@@ -236,7 +236,7 @@ app.post('/generate-short-analysis', bodyParser.json({ limit: '10mb' }), async (
       });
     }
     
-    console.log(`🤖 Ovi QA Agent generating short analysis for PR #${pr_number} in ${repo}`);
+    console.log(`🤖 FirstQA Ovi AI generating short analysis for PR #${pr_number} in ${repo}`);
     console.log('🔍 Input Debug:');
     console.log(`   Repo: ${repo}`);
     console.log(`   PR #: ${pr_number}`);
@@ -254,14 +254,14 @@ app.post('/generate-short-analysis', bodyParser.json({ limit: '10mb' }), async (
     });
     
     if (aiInsights && aiInsights.success) {
-      console.log('✅ Ovi QA Agent short analysis completed successfully via webhook server');
+      console.log('✅ FirstQA Ovi AI short analysis completed successfully via webhook server');
       res.json({
         success: true,
         data: aiInsights.data,
         metadata: aiInsights.metadata
       });
     } else {
-      console.error('❌ Ovi QA Agent short analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ FirstQA Ovi AI short analysis failed via webhook server:', aiInsights?.error, aiInsights?.details);
       res.status(500).json({
         success: false,
         error: aiInsights?.error || 'Failed to generate short insights',
@@ -270,12 +270,12 @@ app.post('/generate-short-analysis', bodyParser.json({ limit: '10mb' }), async (
     }
     
   } catch (error) {
-    console.error('❌ Exception in Ovi QA Agent short analysis:', error.message);
+          console.error('❌ Exception in FirstQA Ovi AI short analysis:', error.message);
     console.error('Stack trace:', error.stack);
     
     res.status(500).json({
       success: false,
-      error: 'Ovi QA Agent short analysis failed',
+      error: 'FirstQA Ovi AI short analysis failed',
       details: error.message
     });
   }

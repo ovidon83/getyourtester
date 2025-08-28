@@ -1,8 +1,8 @@
-# GetYourTester
+# FirstQA
 
-> **The Only QA Stack Your Startup Needs** - Ovi AI + Human QA Experts
+> **Your First QA Hire for Solo Founders & Startups** - Ovi AI + Human QA Experts
 
-GetYourTester is a comprehensive QA platform that combines AI-powered analysis with on-demand human QA expertise. Our platform offers instant PR feedback through Ovi AI and connects you with expert QA engineers for complex testing scenarios.
+FirstQA is a comprehensive QA platform that combines AI-powered analysis with on-demand human QA expertise. Our platform offers instant PR feedback through Ovi AI and connects you with expert QA engineers for complex testing scenarios.
 
 ## 🚀 **What We Offer**
 
@@ -32,7 +32,7 @@ GetYourTester is a comprehensive QA platform that combines AI-powered analysis w
 ## 🏗️ **Project Structure**
 
 ```
-GetYourTester/
+FirstQA/
 ├── 📁 docs/                          # Documentation per product area
 │   ├── 📁 landing-page/             # Landing page documentation
 │   ├── 📁 github-app/               # GitHub App implementation docs
@@ -48,7 +48,7 @@ GetYourTester/
 │   ├── 📁 views/                    # EJS templates
 │   ├── 📁 utils/                    # Utility functions
 │   └── 📁 public/                   # Static assets
-├── 📁 GetYourTester-Extension/      # Chrome extension (future)
+├── 📁 FirstQA-Extension/            # Chrome extension (future)
 ├── 📁 ai/                           # AI integration and prompts
 ├── 📁 data/                         # Data storage (JSON files)
 ├── 📁 public/                       # Public static assets
@@ -79,8 +79,8 @@ GetYourTester/
 
 1. **Clone the repository**:
 ```bash
-git clone https://github.com/ovidon83/getyourtester.git
-cd getyourtester
+git clone https://github.com/ovidon83/firstqa.git
+cd firstqa
 ```
 
 2. **Install dependencies**:
@@ -129,7 +129,7 @@ npm start
 
 ## 🤖 **Ovi AI - Your AI QA Agent**
 
-GetYourTester features **Ovi**, an AI-powered QA Agent that provides comprehensive analysis for your pull requests.
+FirstQA features **Ovi**, an AI-powered QA Agent that provides comprehensive analysis for your pull requests.
 
 ### **What Ovi Analyzes**
 
@@ -176,17 +176,17 @@ Ovi uses a business-focused scoring system (1-10) to assess release readiness:
 
 ## 📚 **Documentation & Support**
 
-- **📖 Documentation**: [View Documentation →](https://getyourtester.com/docs)
-- **💬 Support**: [Get Support](https://getyourtester.com/support)
-- **📧 Contact**: [Contact Us](https://getyourtester.com/contact)
-- **💰 Pricing**: [View Plans](https://getyourtester.com/pricing)
+- **📖 Documentation**: [View Documentation →](https://firstqa.dev/docs)
+- **💬 Support**: [Get Support](https://firstqa.dev/support)
+- **📧 Contact**: [Contact Us](https://firstqa.dev/contact)
+- **💰 Pricing**: [View Plans](https://firstqa.dev/pricing)
 
 ## 🔗 **Quick Links**
 
-- **🚀 Start Free Trial**: [Get Started](https://getyourtester.com)
-- **📅 Schedule Demo**: [Book Demo](https://calendly.com/getyourtester/demo)
-- **📧 Contact Sales**: [Contact Sales](mailto:sales@getyourtester.com)
-- **🐛 Report Issues**: [GitHub Issues](https://github.com/ovidon83/getyourtester/issues)
+- **🚀 Start Free Trial**: [Get Started](https://firstqa.dev)
+- **📅 Schedule Demo**: [Book Demo](https://calendly.com/firstqa/demo)
+- **📧 Contact Sales**: [Contact Sales](mailto:sales@firstqa.dev)
+- **🐛 Report Issues**: [GitHub Issues](https://github.com/ovidon83/firstqa/issues)
 
 ## 📄 **License**
 
@@ -194,6 +194,6 @@ This project is licensed under the ISC License.
 
 ---
 
-**Built with ❤️ by the GetYourTester Team**
+**Built with ❤️ by the FirstQA Team**
 
 *The Only QA Stack Your Startup Needs* 

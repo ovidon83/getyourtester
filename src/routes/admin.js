@@ -33,7 +33,7 @@ router.get('/dashboard', requireAuth, async (req, res) => {
     const stats = getCustomerStats();
     
     res.render('admin/dashboard', {
-      title: 'Admin Dashboard - GetYourTester',
+      title: 'Admin Dashboard - FirstQA',
       customers: customers || [],
       stats: stats,
       moment: require('moment')

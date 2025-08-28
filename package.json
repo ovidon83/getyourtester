@@ -1,7 +1,7 @@
 {
-  "name": "getyourtester",
+  "name": "firstqa",
   "version": "1.0.0",
-  "description": "GetYourTester - The Only QA Stack Your Startup Needs. Ovi AI + Human QA Experts",
+  "description": "FirstQA - Your First QA Hire for Solo Founders & Startups. Ovi AI by FirstQA + Human QA Experts",
   "main": "webhook-server.js",
   "scripts": {
     "start": "node webhook-server.js",
@@ -15,9 +15,9 @@
     "pr-testing",
     "qa-automation",
     "ai-qa",
-    "getyourtester"
+    "firstqa"
   ],
-  "author": "GetYourTester Team",
+  "author": "FirstQA Team",
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^19.0.13",

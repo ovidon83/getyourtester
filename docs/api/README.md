@@ -1,6 +1,6 @@
 # API Reference
 
-GetYourTester provides a REST API for integrating with the platform and managing QA workflows.
+FirstQA provides a REST API for integrating with the platform and managing QA workflows.
 
 ## 🔑 **Authentication**
 
@@ -284,7 +284,7 @@ All inputs are validated and sanitized:
 ```javascript
 // CORS configuration
 {
-  origin: ['https://yourdomain.com', 'https://app.getyourtester.com'],
+  origin: ['https://yourdomain.com', 'https://app.firstqa.dev'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -296,8 +296,8 @@ All inputs are validated and sanitized:
 ### **JavaScript/Node.js**
 ```javascript
 // Example API client
-class GetYourTesterAPI {
-  constructor(apiKey, baseURL = 'https://api.getyourtester.com') {
+class FirstQAAPI {
+  constructor(apiKey, baseURL = 'https://api.firstqa.dev') {
     this.apiKey = apiKey;
     this.baseURL = baseURL;
   }
@@ -317,8 +317,8 @@ class GetYourTesterAPI {
 ```python
 import requests
 
-class GetYourTesterAPI:
-    def __init__(self, api_key, base_url="https://api.getyourtester.com"):
+class FirstQAAPI:
+    def __init__(self, api_key, base_url="https://api.firstqa.dev"):
         self.api_key = api_key
         self.base_url = base_url
         self.headers = {"Authorization": f"Bearer {api_key}"}
@@ -349,7 +349,7 @@ class GetYourTesterAPI:
 ## 🚀 **Getting Started**
 
 ### **1. Get API Key**
-Contact support to get your API key: ovi@getyourtester.com
+Contact support to get your API key: hello@firstqa.dev
 
 ### **2. Test Connection**
 ```bash
@@ -373,6 +373,6 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 ## 🆘 **Support**
 
 For API support:
-- **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **Email**: hello@firstqa.dev
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)
 - **Documentation**: [Full Documentation](../)

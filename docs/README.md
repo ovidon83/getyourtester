@@ -1,6 +1,6 @@
-# GetYourTester Documentation
+# FirstQA Documentation
 
-Welcome to the GetYourTester documentation. This section contains comprehensive guides and information for each product area.
+Welcome to the FirstQA documentation. This section contains comprehensive guides and information for each product area.
 
 ## 📚 **Documentation Sections**
 
@@ -49,7 +49,7 @@ To contribute to this documentation:
 
 ## 🔗 **External Resources**
 
-- [Main Website](https://getyourtester.com)
-- [GitHub Repository](https://github.com/ovidon83/getyourtester)
-- [Support Portal](https://getyourtester.com/support)
-- [Contact Us](mailto:ovi@getyourtester.com)
+- [Main Website](https://firstqa.dev)
+- [GitHub Repository](https://github.com/ovidon83/firstqa)
+- [Support Portal](https://firstqa.dev/support)
+- [Contact Us](mailto:hello@firstqa.dev)

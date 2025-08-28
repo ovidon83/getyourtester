@@ -1,0 +1,47 @@
+# FirstQA Environment Configuration
+# Copy this file to .env and fill in your actual values
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Session Management
+SESSION_SECRET=your-session-secret-here
+
+# GitHub App Configuration
+GITHUB_APP_ID=your-github-app-id
+GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nYour private key here\n-----END RSA PRIVATE KEY-----"
+GITHUB_WEBHOOK_SECRET=your-webhook-secret
+ENABLE_GITHUB=true
+
+# OpenAI Configuration
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_MODEL=gpt-4o
+
+# Webhook Configuration
+WEBHOOK_PROXY_URL=https://your-domain.com/github/webhook
+
+# SMTP Configuration (for production emails)
+SMTP_HOST=smtp.your-provider.com
+SMTP_PORT=587
+SMTP_USER=your-email@domain.com
+SMTP_PASSWORD=your-app-password
+
+# Email Configuration
+EMAIL_FROM=hello@firstqa.dev
+EMAIL_TO=hello@firstqa.dev
+NOTIFICATION_EMAIL=hello@firstqa.dev
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=your-stripe-secret-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+
+# FirstQA Branding
+BRAND_NAME=FirstQA
+BRAND_DOMAIN=firstqa.dev
+BRAND_EMAIL=hello@firstqa.dev
+SUPPORT_EMAIL=support@firstqa.dev
+
+# Development Settings
+DEBUG=false
+LOG_LEVEL=info

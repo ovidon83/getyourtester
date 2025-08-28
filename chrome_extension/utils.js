@@ -128,7 +128,7 @@ function getElementText(selectors) {
  */
 async function getQAInsights(ticketData) {
   try {
-    const response = await fetch('https://www.getyourtester.com/generate-test-recipe', {
+    const response = await fetch('https://www.firstqa.dev/generate-test-recipe', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

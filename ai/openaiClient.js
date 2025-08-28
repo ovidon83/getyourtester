@@ -113,7 +113,7 @@ async function generateQAInsights({ repo, pr_number, title, body, diff }) {
       });
     }
 
-    console.log(`🤖 Ovi QA Agent performing DEEP CODE ANALYSIS for PR #${pr_number} in ${repo}`);
+    console.log(`🤖 FirstQA Ovi AI performing DEEP CODE ANALYSIS for PR #${pr_number} in ${repo}`);
 
     // Get model from environment or use default
     const model = process.env.OPENAI_MODEL || 'gpt-4o';
@@ -886,7 +886,7 @@ async function generateShortAnalysis({ repo, pr_number, title, body, diff }) {
       messages: [
         {
           role: 'system',
-          content: 'You are Ovi, a senior QA engineer. Generate ONLY the requested short analysis format with the exact sections specified. Do not include any additional content or explanations outside the format.'
+          content: 'You are Ovi AI, FirstQA\'s senior QA engineer. Generate ONLY the requested short analysis format with the exact sections specified. Do not include any additional content or explanations outside the format.'
         },
         {
           role: 'user',

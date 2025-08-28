@@ -4,7 +4,7 @@
 
 ## 🔮 **Future Features**
 
-The GetYourTester Chrome extension will provide:
+The FirstQA Chrome extension will provide:
 - **Browser-based QA tools**
 - **Integration with web platforms**
 - **Enhanced user experience**
@@ -34,5 +34,5 @@ The GetYourTester Chrome extension will provide:
 ## 🆘 **Support**
 
 For questions about the Chrome extension:
-- **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **Email**: hello@firstqa.dev
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)

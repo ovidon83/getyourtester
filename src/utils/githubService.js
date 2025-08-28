@@ -62,8 +62,8 @@ const ARCHIVE_PATH = path.join(dataDir, 'archived-requests.json');
 const DATA_RETENTION_DAYS = process.env.DATA_RETENTION_DAYS ? parseInt(process.env.DATA_RETENTION_DAYS) : 14;
 console.log(`Test requests will be stored at: ${TEST_REQUESTS_PATH}`);
 console.log(`Data retention period: ${DATA_RETENTION_DAYS} days`);
-// Simple label for when Ovi has reviewed a PR
-const OVI_REVIEWED_LABEL = 'Reviewed by Ovi';
+// Simple label for when Ovi AI has reviewed a PR
+const OVI_REVIEWED_LABEL = 'Reviewed by Ovi AI';
 /**
  * Get production readiness score emoji
  * @param {number} score - The production readiness score (0-10)
@@ -434,8 +434,8 @@ async function sendEmailNotification(testRequest) {
     return { success: false, simulated: true };
   }
   try {
-    const toEmail = process.env.NOTIFICATION_EMAIL || process.env.EMAIL_TO || 'ovidon83@gmail.com';
-    const fromEmail = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@getyourtester.com';
+          const toEmail = process.env.NOTIFICATION_EMAIL || process.env.EMAIL_TO || 'hello@firstqa.dev';
+    const fromEmail = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@firstqa.dev';
     // Extract repository owner and name
     const [owner, repo] = testRequest.repository ? testRequest.repository.split('/') : ['unknown', 'unknown'];
     const mailOptions = {
@@ -742,7 +742,7 @@ ${reportContent}
 ### Status
 **Test result:** ${testResult === 'complete-pass' ? '✅ PASS' : '❌ FAIL'}
 ---
-☕ If this helped you ship better, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
+☕ If this helped you ship better, you can support the project: [BuyMeACoffee.com/firstqa](https://buymeacoffee.com/firstqa)
   `;
   // Post the report as a comment
   const commentResult = await postComment(testRequest.repository, testRequest.prNumber, reportComment);
@@ -754,9 +754,9 @@ ${reportContent}
  */
 async function postWelcomeComment(repository, prNumber) {
   const welcomeComment = `
-**Welcome to GetYourTester!**
+**Welcome to FirstQA!**
 _Early-access mode: Your first test requests (up to 4 hours) are **FREE**!_
-If you find value, you can support the project: [BuyMeACoffee.com/getyourtester](https://buymeacoffee.com/getyourtester)
+If you find value, you can support the project: [BuyMeACoffee.com/firstqa](https://buymeacoffee.com/firstqa)
 Request a QA review by commenting: /qa followed by details like: Title, Acceptance Criteria, Test Environment, Design, and so on.
 **Example test request:**
 \`\`\`
@@ -804,7 +804,7 @@ async function handleTestRequest(repository, issue, comment, sender) {
   console.log(`   Body length: ${prDescription?.length || 0}`);
   console.log(`   Diff length: ${prDiff?.length || 0}`);
   // Generate AI insights for the PR via API endpoint
-  console.log('🤖 Ovi QA Agent analyzing PR...');
+  console.log('🤖 FirstQA Ovi AI analyzing PR...');
   let aiInsights;
   try {
     aiInsights = await callTestRecipeEndpoint({
@@ -815,17 +815,17 @@ async function handleTestRequest(repository, issue, comment, sender) {
       diff: prDiff
     });
     if (aiInsights && aiInsights.success) {
-      console.log('✅ Ovi QA Agent analysis completed successfully');
+      console.log('✅ FirstQA Ovi AI analysis completed successfully');
     } else {
-      console.error('❌ Ovi QA Agent analysis failed:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ FirstQA Ovi AI analysis failed:', aiInsights?.error, aiInsights?.details);
     }
   } catch (error) {
-    console.error('❌ Ovi QA Agent analysis threw exception:', error.message);
+    console.error('❌ FirstQA Ovi AI analysis threw exception:', error.message);
     console.error('Stack trace:', error.stack);
     // Create error result
     aiInsights = {
       success: false,
-      error: 'Ovi QA Agent analysis failed',
+      error: 'FirstQA Ovi AI analysis failed',
       details: error.message
     };
   }
@@ -959,7 +959,7 @@ async function handleShortRequest(repository, issue, comment, sender) {
   console.log(`   Body length: ${prDescription?.length || 0}`);
   console.log(`   Diff length: ${prDiff?.length || 0}`);
   // Generate AI insights for the PR via API endpoint - SHORT ANALYSIS VERSION
-  console.log('🤖 Ovi QA Agent analyzing PR...');
+  console.log('🤖 FirstQA Ovi AI analyzing PR...');
   let aiInsights;
   try {
     aiInsights = await callShortAnalysisEndpoint({
@@ -970,17 +970,17 @@ async function handleShortRequest(repository, issue, comment, sender) {
       diff: prDiff
     });
     if (aiInsights && aiInsights.success) {
-      console.log('✅ Ovi QA Agent short analysis completed successfully');
+      console.log('✅ FirstQA Ovi AI short analysis completed successfully');
     } else {
-      console.error('❌ Ovi QA Agent short analysis failed:', aiInsights?.error, aiInsights?.details);
+      console.error('❌ FirstQA Ovi AI short analysis failed:', aiInsights?.error, aiInsights?.details);
     }
   } catch (error) {
-    console.error('❌ Ovi QA Agent short analysis threw exception:', error.message);
+    console.error('❌ FirstQA Ovi AI short analysis threw exception:', error.message);
     console.error('Stack trace:', error.stack);
     // Create error result
     aiInsights = {
       success: false,
-      error: 'Ovi QA Agent short analysis failed',
+      error: 'FirstQA Ovi AI short analysis failed',
       details: error.message
     };
   }
@@ -1110,9 +1110,9 @@ function formatHybridAnalysisForComment(aiInsights) {
 
 ---
 
-*🤖 **With Quality By Ovi** - AI-powered QA analysis by GetYourTester*
+*🤖 **With Quality By Ovi** - AI-powered QA analysis by FirstQA*
 
-💡 Need a human tester to help? [GetYourTester.com](https://getyourtester.com) - Professional QA testing for your releases.`;
+💡 Need a human tester to help? [FirstQA.com](https://firstqa.dev) - Professional QA testing for your releases.`;
     
     // Debug the final comment that will be posted
     console.log('🔍 Final Comment Debug:');
@@ -1156,7 +1156,7 @@ function formatHybridAnalysisForComment(aiInsights) {
       ...(aiData.bugs || []),
       ...(aiData.criticalRisks || [])
     ];
-    return `### 🤖 Ovi QA Assistant by GetYourTester
+    return `### 🤖 Ovi AI by FirstQA
 ---
 ### 📋 Summary
 **Risk Level:** ${getRiskLevel(aiData.summary?.riskLevel)}
@@ -1171,15 +1171,15 @@ ${bugsAndRisks.length > 0 ? bugsAndRisks.map(item => `- 🚨 ${item}`).join('\n'
 ### 🧪 Test Recipe
 ${testRecipeTable}
 ---
-*🚀 Professional QA analysis generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
+*🚀 Professional QA analysis generated by Ovi AI by FirstQA. Designed to support rapid releases with high quality.*`;
   }
   // Final fallback for unexpected format
-  return `### 🤖 Ovi QA Assistant by GetYourTester
+  return `### 🤖 Ovi AI by FirstQA
 ---
 **Analysis Status:** ⚠️ Processing Issue
 The analysis was generated but could not be properly formatted. Please check the logs for more details.
 ---
-*🚀 Professional QA analysis generated by Ovi QA Assistant. Designed to support rapid releases with high quality.*`;
+*🚀 Professional QA analysis generated by Ovi AI by FirstQA. Designed to support rapid releases with high quality.*`;
 }
 /**
  * Format short analysis for GitHub comment (only Release Confidence Score, Risks, Test Recipe)
@@ -1193,7 +1193,7 @@ The analysis was generated but could not be properly formatted. Please check the
                 aiData.includes('🎯 QA Analysis - by Ovi (the AI QA) - Short Version')
               )) {
                 // This is already in the correct short format, just add branding
-                return `### 🤖 Ovi QA Assistant by GetYourTester
+                return `### 🤖 Ovi AI by FirstQA
 
 ---
 
@@ -1201,9 +1201,9 @@ ${aiData}
 
 ---
 
-*🤖 **With Quality By Ovi** - AI-powered QA analysis by GetYourTester*
+*🤖 **With Quality By Ovi AI** - AI-powered QA analysis by FirstQA*
 
-💡 Need a human tester to help? [GetYourTester.com](https://getyourtester.com) - Professional QA testing for your releases.*`;
+💡 Need a human tester to help? [FirstQA.com](https://firstqa.dev) - Professional QA testing for your releases.*`;
               }
   // Check if we have the legacy simplified format (4 questions approach)
   if (typeof aiData === 'string' && (
@@ -1218,7 +1218,7 @@ ${aiData}
     aiData.includes('📋 Summary')
   )) {
     // Extract the key sections from the existing format
-    let shortOutput = '### 🤖 Ovi QA Assistant - Short Analysis\n\n---\n\n';
+    let shortOutput = '### 🤖 Ovi AI by FirstQA - Short Analysis\n\n---\n\n';
     // Extract Release Confidence Score (Ship Score)
     const shipScoreMatch = aiData.match(/Ship Score.*?(\d+)\/10/);
     const confidenceMatch = aiData.match(/Confidence.*?(LOW|MEDIUM|HIGH)/i);
@@ -1240,11 +1240,11 @@ ${aiData}
     }
     // If we couldn't extract properly, fall back to the full format
     if (!shipScoreMatch || !risksMatch || !testRecipeMatch) {
-      shortOutput = `### 🤖 Ovi QA Assistant - Short Analysis\n\n---\n\n`;
+      shortOutput = `### 🤖 Ovi AI by FirstQA - Short Analysis\n\n---\n\n`;
       shortOutput += `*Unable to generate short format. Please use /qa for full analysis.*\n\n`;
       shortOutput += aiData;
     }
-    shortOutput += `---\n\n*🚀 Short QA analysis by Ovi QA Assistant. Use /qa for full details.*`;
+    shortOutput += `---\n\n*🚀 Short QA analysis by Ovi AI by FirstQA. Use /qa for full details.*`;
     return shortOutput;
   }
   // Fallback for legacy JSON format (backward compatibility)
@@ -1279,7 +1279,7 @@ ${aiData}
       ...(aiData.bugs || []),
       ...(aiData.criticalRisks || [])
     ];
-    return `### 🤖 Ovi QA Assistant - Short Analysis
+    return `### 🤖 Ovi AI by FirstQA - Short Analysis
 ---
 ## 📊 Release Confidence Score
 **Ship Score:** ${aiData.summary?.shipScore || 5}/10 — ${getShipStatus(aiData.summary?.shipScore || 5)}
@@ -1291,10 +1291,10 @@ ${bugsAndRisks.length > 0 ? bugsAndRisks.map(item => `- 🚨 ${item}`).join('\n'
 ## 🧪 Test Recipe
 ${testRecipeTable}
 ---
-*🚀 Short QA analysis by Ovi QA Assistant. Use /qa-review for full details.*`;
+*🚀 Short QA analysis by Ovi AI by FirstQA. Use /qa-review for full details.*`;
   }
   // Final fallback for unexpected format
-  return `### 🤖 Ovi QA Assistant - Short Analysis
+  return `### 🤖 Ovi AI by FirstQA - Short Analysis
 ---
 *Unable to generate short format. Please use /qa for full analysis.*
 ---

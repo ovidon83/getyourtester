@@ -1,15 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "QA Copilot",
+  "name": "FirstQA Ovi AI",
   "version": "1.0.0",
-  "description": "AI-powered QA insights for Linear and Jira tickets",
+  "description": "FirstQA's Ovi AI - AI-powered QA insights for Linear and Jira tickets",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage",
+    "https://www.firstqa.dev/*"
   ],
   "host_permissions": [
     "https://*.linear.app/*",
     "https://*.atlassian.net/*",
-    "https://www.getyourtester.com/*"
+    "https://www.firstqa.dev/*"
   ],
   "content_scripts": [
     {
@@ -24,7 +26,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "QA Copilot"
+    "default_title": "FirstQA Ovi AI"
   },
   "icons": {
     "16": "icon16.png",

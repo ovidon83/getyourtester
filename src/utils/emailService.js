@@ -1,5 +1,5 @@
 /**
- * Email Service for GetYourTester
+ * Email Service for FirstQA
  * Handles sending email notifications
  */
 const nodemailer = require('nodemailer');
@@ -34,14 +34,14 @@ async function sendTestRequestEmail(testRequest) {
     initialize();
   }
 
-  const adminEmail = process.env.EMAIL_TO || 'ovidon83@gmail.com';
+  const adminEmail = process.env.EMAIL_TO || 'hello@firstqa.dev';
   
   try {
     // Create email content
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'noreply@getyourtester.com',
+      from: process.env.EMAIL_FROM || 'noreply@firstqa.dev',
       to: adminEmail,
-      subject: `[GetYourTester] New Test Request: ${testRequest.owner}/${testRequest.repo} #${testRequest.prNumber}`,
+      subject: `[FirstQA] New Test Request: ${testRequest.owner}/${testRequest.repo} #${testRequest.prNumber}`,
       html: `
         <h1>New Test Request</h1>
         <p>A new test has been requested for a pull request.</p>
@@ -66,7 +66,7 @@ async function sendTestRequestEmail(testRequest) {
           </a>
         </p>
         
-        <p>Thank you for using GetYourTester!</p>
+        <p>Thank you for using FirstQA's Ovi AI!</p>
       `,
       text: `
 New Test Request
@@ -84,7 +84,7 @@ Details:
 View Pull Request: ${testRequest.prUrl}
 Go to Admin Dashboard: ${process.env.APP_URL || 'http://localhost:3000'}/admin/login
 
-Thank you for using GetYourTester!
+Thank you for using FirstQA's Ovi AI!
       `
     };
 
@@ -109,14 +109,14 @@ async function sendTestUpdateEmail(testRequest) {
     initialize();
   }
 
-  const adminEmail = process.env.EMAIL_TO || 'ovidon83@gmail.com';
+  const adminEmail = process.env.EMAIL_TO || 'hello@firstqa.dev';
   
   try {
     // Create email content
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'noreply@getyourtester.com',
+      from: process.env.EMAIL_FROM || 'noreply@firstqa.dev',
       to: adminEmail,
-      subject: `[GetYourTester] Test Update: ${testRequest.owner}/${testRequest.repo} #${testRequest.prNumber} (${testRequest.status})`,
+      subject: `[FirstQA] Test Update: ${testRequest.prNumber} (${testRequest.status})`,
       html: `
         <h1>Test Request Updated</h1>
         <p>A test request has been updated.</p>
@@ -135,7 +135,7 @@ async function sendTestUpdateEmail(testRequest) {
           </a>
         </p>
         
-        <p>Thank you for using GetYourTester!</p>
+        <p>Thank you for using FirstQA's Ovi AI!</p>
       `,
       text: `
 Test Request Updated
@@ -150,7 +150,7 @@ Details:
 
 View Pull Request: ${testRequest.prUrl}
 
-Thank you for using GetYourTester!
+Thank you for using FirstQA's Ovi AI!
       `
     };
 

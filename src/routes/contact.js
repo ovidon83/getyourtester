@@ -24,15 +24,15 @@ router.post('/', async (req, res) => {
     const contactTransporter = nodemailer.createTransporter({
       service: 'gmail',
       auth: {
-        user: process.env.SMTP_USER || process.env.EMAIL_FROM || 'ovidon83@gmail.com',
+        user: process.env.SMTP_USER || process.env.EMAIL_FROM || 'hello@firstqa.dev',
         pass: process.env.SMTP_PASSWORD || process.env.EMAIL_APP_PASSWORD
       }
     });
     
-    // Send contact form email to ovi@qakarma.com
-    const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@qakarma.com',
-      to: 'ovi@qakarma.com',
+      // Send contact form email to hello@firstqa.dev
+  const mailOptions = {
+    from: process.env.SMTP_USER || 'noreply@firstqa.dev',
+    to: 'hello@firstqa.dev',
       subject: `[GetYourTester Contact] ${subject}`,
       replyTo: email,
       html: `

@@ -8,7 +8,7 @@ try {
   emailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.SMTP_USER || process.env.EMAIL_FROM || 'ovidon83@gmail.com',
+      user: process.env.SMTP_USER || process.env.EMAIL_FROM || 'hello@firstqa.dev',
       pass: process.env.SMTP_PASSWORD || process.env.EMAIL_APP_PASSWORD
     }
   });
@@ -35,15 +35,15 @@ router.post('/contact', async (req, res) => {
   }
   
   try {
-    // Send contact form email to ovi@qakarma.com
-    const mailOptions = {
-      from: process.env.SMTP_USER || 'noreply@qakarma.com',
-      to: 'ovi@qakarma.com',
-      subject: `[GetYourTester Contact] ${subject}`,
+      // Send contact form email to hello@firstqa.dev
+  const mailOptions = {
+    from: process.env.SMTP_USER || 'noreply@firstqa.dev',
+    to: 'hello@firstqa.dev',
+      subject: `[FirstQA Contact] ${subject}`,
       replyTo: email,
       html: `
         <h1>New Contact Form Submission</h1>
-        <p>Someone has submitted a contact form on GetYourTester.</p>
+        <p>Someone has submitted a contact form on FirstQA.</p>
         
         <h2>Contact Details:</h2>
         <ul>
@@ -58,12 +58,12 @@ router.post('/contact', async (req, res) => {
         
         <p><strong>Reply to:</strong> <a href="mailto:${email}">${email}</a></p>
         
-        <p>Thank you for using GetYourTester!</p>
+        <p>Thank you for using FirstQA!</p>
       `,
       text: `
 New Contact Form Submission
 
-Someone has submitted a contact form on GetYourTester.
+Someone has submitted a contact form on FirstQA.
 
 Contact Details:
 - Name: ${name}
@@ -76,7 +76,7 @@ ${message}
 
 Reply to: ${email}
 
-Thank you for using GetYourTester!
+Thank you for using FirstQA!
       `
     };
     
@@ -127,10 +127,10 @@ router.post('/', async (req, res) => {
     
     // Send email
     const mailOptions = {
-      from: 'ovidon83@gmail.com',
+      from: 'hello@firstqa.dev',
       to: recipientList.join(','),
       subject: subject,
-      replyTo: 'ovidon83@gmail.com',
+      replyTo: 'hello@firstqa.dev',
       html: htmlContent,
       text: message // Keep original plain text version
     };

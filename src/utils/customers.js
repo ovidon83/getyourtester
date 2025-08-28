@@ -123,7 +123,7 @@ function sendCustomerEmail(customer) {
     // Send email
     transporter.sendMail({
       from: process.env.SMTP_USER,
-      to: 'ovi@qakarma.com',
+      to: 'hello@firstqa.dev',
       subject: `🎉 New Customer: ${customer.email} - ${customer.plan}`,
       html: `
         <h2>🎉 New Customer Added!</h2>
@@ -136,7 +136,7 @@ function sendCustomerEmail(customer) {
       `
     });
     
-    console.log(`✅ Email sent to ovi@qakarma.com`);
+    console.log(`✅ Email sent to hello@firstqa.dev`);
   } catch (error) {
     console.error('❌ Error sending email:', error);
   }

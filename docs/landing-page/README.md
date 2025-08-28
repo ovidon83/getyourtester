@@ -1,6 +1,6 @@
 # Landing Page Documentation
 
-The GetYourTester landing page is the main entry point for users to learn about our platform and sign up for services.
+The FirstQA landing page is the main entry point for users to learn about our platform and sign up for services.
 
 ## 🏗️ **Architecture**
 
@@ -112,7 +112,7 @@ The landing page is fully responsive and optimized for:
 
 ## 🚀 **Deployment**
 
-The landing page is deployed as part of the main GetYourTester application and can be accessed at the root URL of your domain.
+The landing page is deployed as part of the main FirstQA application and can be accessed at the root URL of your domain.
 
 ## 🔧 **Customization**
 

@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers deploying GetYourTester to various production environments.
+This guide covers deploying FirstQA to various production environments.
 
 ## 🚀 **Quick Start**
 
@@ -13,8 +13,8 @@ This guide covers deploying GetYourTester to various production environments.
 ### **Basic Deployment**
 ```bash
 # Clone repository
-git clone https://github.com/ovidon83/getyourtester.git
-cd getyourtester
+git clone https://github.com/ovidon83/firstqa.git
+cd firstqa
 
 # Install dependencies
 npm install
@@ -88,7 +88,7 @@ CMD ["npm", "start"]
 ```yaml
 version: '3.8'
 services:
-  getyourtester:
+  firstqa:
     build: .
     ports:
       - "3000:3000"
@@ -103,8 +103,8 @@ services:
 ### **Docker Commands**
 ```bash
 # Build and run
-docker build -t getyourtester .
-docker run -p 3000:3000 getyourtester
+docker build -t firstqa .
+docker run -p 3000:3000 firstqa
 
 # With Docker Compose
 docker-compose up -d
@@ -118,7 +118,7 @@ docker-compose up -d
 npm install -g heroku
 
 # Create app
-heroku create your-getyourtester-app
+heroku create your-firstqa-app
 
 # Set environment variables
 heroku config:set NODE_ENV=production
@@ -151,8 +151,8 @@ nvm install 18
 nvm use 18
 
 # Clone and deploy
-git clone https://github.com/ovidon83/getyourtester.git
-cd getyourtester
+git clone https://github.com/ovidon83/firstqa.git
+cd firstqa
 npm install
 npm start
 ```
@@ -342,6 +342,6 @@ node -e "console.log(process.env.NODE_ENV)"
 ## 🆘 **Support**
 
 For deployment issues:
-- **Email**: ovi@getyourtester.com
-- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/getyourtester/issues)
+- **Email**: hello@firstqa.dev
+- **GitHub Issues**: [Report Issues](https://github.com/ovidon83/firstqa/issues)
 - **Documentation**: [Full Documentation](../)
