@@ -15,10 +15,10 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
 
 | Metric | Level | Summary |
 |:-------|:------:|:--------|
-| 🎯 **User Value** | High / Medium / Low | [1 sentence summary] |
-| ✅ **Release Confidence** | High / Medium-High / Medium / Low | [1 sentence summary] |
-| 📍 **Change Impact** | High / Medium-High / Medium / Low | [1 sentence summary] |
-| 🚦 **Release Decision** | 🟢 Go / 🔴 No-Go | [1 sentence recommendation] |
+| 🎯 User Value | High / Medium / Low | [1 sentence summary] |
+| ✅ Release Confidence | High / Medium-High / Medium / Low | [1 sentence summary] |
+| 📍 Change Impact | High / Medium-High / Medium / Low | [1 sentence summary] |
+| 🚦 Release Decision | 🟢 Go / 🔴 No-Go | [1 sentence recommendation] |
 
 ## 🧪 Test Recipe
 
@@ -50,10 +50,10 @@ Based on THESE SPECIFIC CODE CHANGES (not assumptions), provide your analysis in
   - **High Priority**: Important supporting functionality that enhances experience but isn't core
   - Examples: User registration/login = Critical, profile customization = High
 - For Release Pulse Analysis:
-  - **User Value**: Infer from PR description and code diff. What is the meaningful value or benefit to the end user?
-  - **Release Confidence**: Evaluate test coverage, presence of test files, handling of edge cases, and overall implementation confidence.
-  - **Change Impact**: Evaluate scope of code diff — number of files, components/modules touched, shared or risky areas.
-  - **Release Decision**: Recommend Go or No-Go based on a weighted judgment of the above. Go if value is meaningful, confidence is high/medium, and impact is low/medium. No-Go if confidence is low or impact is high without mitigations.
+  - **User Value**: Infer from PR description and code diff. What is the meaningful value or benefit to the end user? Keep summary to 1 short sentence.
+  - **Release Confidence**: Evaluate test coverage, presence of test files, handling of edge cases, and overall implementation confidence. Keep summary to 1 short sentence.
+  - **Change Impact**: Evaluate scope of code diff — number of files, components/modules touched, shared or risky areas. Keep summary to 1 short sentence.
+  - **Release Decision**: Recommend Go or No-Go based on a weighted judgment of the above. Go if value is meaningful, confidence is high/medium, and impact is low/medium. No-Go if confidence is low or impact is high without mitigations. Keep summary to 1 short sentence.
 - Analyze affected files deeply to understand product area impact
 - Consider dependencies and integration points that might be affected
 - Always specify file names with line numbers in questions and risks
