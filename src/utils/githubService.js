@@ -1112,7 +1112,7 @@ function formatHybridAnalysisForComment(aiInsights) {
 
 *🤖 **With Quality By Ovi** - AI-powered QA analysis by FirstQA*
 
-💡 Need a human tester to help? [FirstQA.com](https://firstqa.dev) - Professional QA testing for your releases.`;
+💡 Need a human tester to help? [FirstQA.dev](https://firstqa.dev) - Professional QA testing for your releases.`;
     
     // Debug the final comment that will be posted
     console.log('🔍 Final Comment Debug:');
@@ -1203,7 +1203,7 @@ ${aiData}
 
 *🤖 **With Quality By Ovi AI** - AI-powered QA analysis by FirstQA*
 
-💡 Need a human tester to help? [FirstQA.com](https://firstqa.dev) - Professional QA testing for your releases.*`;
+💡 Need a human tester to help? [FirstQA.dev](https://firstqa.dev) - Professional QA testing for your releases.*`;
               }
   // Check if we have the legacy simplified format (4 questions approach)
   if (typeof aiData === 'string' && (
