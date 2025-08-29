@@ -22,12 +22,12 @@ FirstQA is a comprehensive QA platform that combines AI-powered analysis with on
 
 ## ✨ **Key Features**
 
-- **🎯 AC Analysis & Test Recipe**: Extract user scenarios and create comprehensive test plans
-- **🔧 Code-diff & Risk Analysis**: Deep technical analysis with risk assessment
-- **🤖 AI-Powered QA Review**: Instant expert review of tickets and PRs
-- **👥 Human QA Experts**: On-demand senior QA when it really matters
-- **⚡ Lightning Fast**: Get full QA support in seconds, no hiring required
-- **🔄 Human + AI**: Best of both worlds - speed and confidence
+- **🎯 Release Pulse Analysis**: Instant assessment of user value, confidence, and change impact
+- **🧪 AI-Generated Test Recipes**: Comprehensive test scenarios with actionable steps
+- **⚠️ Risk & Bug Detection**: Identifies potential issues and missing error handling
+- **🔍 Product Area Analysis**: Maps changes to affected features and user flows
+- **⚡ Instant GitHub Integration**: Works directly in your PRs with `/qa` command
+- **👥 Human QA Experts**: On-demand senior QA when you need real expertise
 
 ## 🏗️ **Project Structure**
 
@@ -133,32 +133,23 @@ FirstQA features **Ovi**, an AI-powered QA Agent that provides comprehensive ana
 
 ### **What Ovi Analyzes**
 
-1. **🔍 Change Review**
-   - Analyzes PR metadata (title, description, comments)
-   - Identifies potential ambiguity or missing requirements
-   - Generates smart questions a QA engineer would ask
-   - Assesses risks and edge cases
-   - Provides a **Production Readiness Score** (1-10)
+1. **🔍 Release Pulse Analysis**
+   - **User Value**: Assesses the meaningful value and benefit to end users
+   - **Release Confidence**: Evaluates test coverage, implementation quality, and edge case handling
+   - **Change Impact**: Analyzes scope of changes and affected components
+   - **Release Decision**: Provides Go/No-Go recommendation with clear reasoning
 
 2. **🧪 Test Recipe**
-   - Creates comprehensive test scenarios (Critical Path, General, Edge Cases)
-   - Suggests automation plans (Unit, Integration, E2E tests)
-   - Provides specific test cases with actionable steps
+   - Creates comprehensive test scenarios (Critical Priority, High Priority)
+   - Includes both positive and negative test cases
+   - Provides actionable test steps with expected results
+   - Focuses on business impact and user dependency
 
-3. **📊 Code Quality Assessment**
-   - Identifies affected modules and dependencies
-   - Analyzes existing test coverage and gaps
-   - Recommends best practices and improvements
-
-### **Production Readiness Scoring**
-
-Ovi uses a business-focused scoring system (1-10) to assess release readiness:
-
-- **🚀 9-10: Ship It!** - No critical issues, ready for production
-- **✅ 7-8: Ship with Monitoring** - Minor issues, can be monitored and fixed quickly
-- **⚠️ 5-6: Needs More Testing** - Potential issues affecting some users
-- **❌ 3-4: Block Release** - Issues that could significantly impact customer experience
-- **🚨 1-2: Critical Block** - Critical bugs that will definitely affect customers
+3. **⚠️ Risk Assessment**
+   - Identifies potential runtime issues and security vulnerabilities
+   - Highlights missing error handling and code defects
+   - Asks critical questions about edge cases and integration
+   - Analyzes affected product areas and dependencies
 
 ## 🌐 **Production Deployment**
 

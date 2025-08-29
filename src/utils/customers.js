@@ -56,8 +56,7 @@ function addCustomer(customerData) {
     fs.writeFileSync(customersFile, JSON.stringify(data, null, 2));
     console.log(`✅ Customer saved to: ${customersFile}`);
     
-    // Send email notification
-    sendCustomerEmail(customer);
+    // Email notification removed to prevent spam
     
     return customer;
   } catch (error) {
@@ -98,49 +97,7 @@ function getCustomerStats() {
   }
 }
 
-// Simple function to send email
-function sendCustomerEmail(customer) {
-  try {
-    console.log(`📧 Sending email notification for: ${customer.email}`);
-    
-    // Check SMTP credentials
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-      console.log('⚠️ SMTP credentials missing, skipping email');
-      return;
-    }
-    
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: process.env.SMTP_PORT || 587,
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD
-      }
-    });
-    
-    // Send email
-    transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: 'hello@firstqa.dev',
-      subject: `🎉 New Customer: ${customer.email} - ${customer.plan}`,
-      html: `
-        <h2>🎉 New Customer Added!</h2>
-        <p><strong>Email:</strong> ${customer.email}</p>
-        <p><strong>Plan:</strong> ${customer.plan}</p>
-        <p><strong>Status:</strong> ${customer.status}</p>
-        <p><strong>Signup Date:</strong> ${new Date(customer.createdAt).toLocaleString()}</p>
-        <hr>
-        <p><em>Customer automatically added when they reached the success page.</em></p>
-      `
-    });
-    
-    console.log(`✅ Email sent to hello@firstqa.dev`);
-  } catch (error) {
-    console.error('❌ Error sending email:', error);
-  }
-}
+// Email notification function removed to prevent spam
 
 module.exports = {
   addCustomer,
