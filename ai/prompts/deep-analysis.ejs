@@ -16,12 +16,13 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 
 ## 🧪 Release Pulse
 
-| Metric | Level | Summary |
-|:-------|:------:|:--------|
-| 🎯 Value | High / Medium / Low | [1 sentence summary] |
-| ✅ Confidence | High / Medium-High / Medium / Low | [1 sentence summary] |
-| 📍 Impact | High / Medium-High / Medium / Low | [1 sentence summary] |
-| 🚦 Decision | 🟢 Go / 🔴 No-Go | [1 sentence recommendation] |
+<table>
+<tr><th style="width: 35%; white-space: nowrap;">Metric</th><th style="width: 20%;">Level</th><th style="width: 45%;">Summary</th></tr>
+<tr><td>🎯 User Value</td><td>High / Medium / Low</td><td>[1 sentence summary]</td></tr>
+<tr><td>✅ Release Confidence</td><td>High / Medium-High / Medium / Low</td><td>[1 sentence summary]</td></tr>
+<tr><td>📍 Change Impact</td><td>High / Medium-High / Medium / Low</td><td>[1 sentence summary]</td></tr>
+<tr><td>🚦 Release Decision</td><td>🟢 Go / 🔴 No-Go</td><td>[1 sentence recommendation]</td></tr>
+</table>
 
 ## 🧪 Test Recipe
 
@@ -86,10 +87,10 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
     - **Question**: "How does this handle concurrent user access?"
 - For Product Areas: Identify specific features, modules, user flows, or business processes that are directly affected by the code changes
 - For Release Pulse Analysis:
-  - **Value**: Infer from PR description and code diff. What is the meaningful value or benefit to the end user? Keep summary to 1 short sentence.
-  - **Confidence**: Evaluate test coverage, presence of test files, handling of edge cases, and overall implementation confidence. Keep summary to 1 short sentence.
-  - **Impact**: Evaluate scope of code diff — number of files, components/modules touched, shared or risky areas. Keep summary to 1 short sentence.
-  - **Decision**: Recommend Go or No-Go based on a weighted judgment of the above. Go if value is meaningful, confidence is high/medium, and impact is low/medium. No-Go if confidence is low or impact is high without mitigations. Keep summary to 1 short sentence.
+  - **User Value**: Infer from PR description and code diff. What is the meaningful value or benefit to the end user? Keep summary to 1 short sentence.
+  - **Release Confidence**: Evaluate test coverage, presence of test files, handling of edge cases, and overall implementation confidence. Keep summary to 1 short sentence.
+  - **Change Impact**: Evaluate scope of code diff — number of files, components/modules touched, shared or risky areas. Keep summary to 1 short sentence.
+  - **Release Decision**: Recommend Go or No-Go based on a weighted judgment of the above. Go if value is meaningful, confidence is high/medium, and impact is low/medium. No-Go if confidence is low or impact is high without mitigations. Keep summary to 1 short sentence.
 - For Steps: Use HTML line breaks within table cells to ensure proper formatting:
   - Each step must be on its own line using `<br>` tags
   - Example format: `1. Open the form<br>2. Fill in required fields<br>3. Submit the form`
