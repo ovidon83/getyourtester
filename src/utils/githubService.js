@@ -22,21 +22,22 @@ try {
   console.error('⚠️ Error initializing GitHub client:', error.message);
   console.warn('⚠️ Will use GitHub App authentication');
 }
-// Configure email transporter
-let emailTransporter;
-try {
-  // Use nodemailer to send emails
-  emailTransporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.SMTP_USER || process.env.EMAIL_FROM,
-      pass: process.env.SMTP_PASSWORD || process.env.EMAIL_APP_PASSWORD
-    }
-  });
-  console.log('✅ Email transporter initialized');
-} catch (error) {
-  console.error('⚠️ Error initializing email transporter:', error.message);
-}
+// Configure email transporter - DISABLED to prevent spam
+let emailTransporter = null;
+// try {
+//   // Use nodemailer to send emails
+//   emailTransporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//       user: process.env.SMTP_USER || process.env.EMAIL_FROM,
+//       pass: process.env.SMTP_PASSWORD || process.env.EMAIL_APP_PASSWORD
+//     }
+//   });
+//   console.log('✅ Email transporter initialized');
+// } catch (error) {
+//   console.error('⚠️ Error initializing email transporter:', error.message);
+// }
+console.log('📧 Email notifications disabled to prevent spam');
 // Ensure data directory exists
 const homeDir = process.env.HOME || process.env.USERPROFILE;
 let dataDir = process.env.DATA_DIR || path.join(homeDir, '.firstqa', 'data');
@@ -922,13 +923,13 @@ async function handleTestRequest(repository, issue, comment, sender) {
   // Add "Reviewed by Ovi" label after AI analysis is complete
   const labelResult = await addOviReviewedLabel(repository.full_name, issue.number);
   console.log(`✅ "Reviewed by Ovi" label ${labelResult.simulated ? 'would be' : 'was'} added`);
-  // Send email notification
-  const emailResult = await sendEmailNotification(testRequest);
-  if (emailResult.success) {
-    console.log(`✅ Email notification sent about PR #${issue.number}`);
-  } else {
-    console.log(`❌ Email notification failed: ${emailResult.error || 'Unknown error'}`);
-  }
+  // Send email notification - DISABLED to prevent spam
+  // const emailResult = await sendEmailNotification(testRequest);
+  // if (emailResult.success) {
+  //   console.log(`✅ Email notification sent about PR #${issue.number}`);
+  // } else {
+  //   console.log(`❌ Email notification failed: ${emailResult.error || 'Unknown error'}`);
+  // }
   return {
     success: true,
     requestId,
@@ -1071,13 +1072,13 @@ async function handleShortRequest(repository, issue, comment, sender) {
   // Add "Reviewed by Ovi" label after AI analysis is complete
   const labelResult = await addOviReviewedLabel(repository.full_name, issue.number);
   console.log(`✅ "Reviewed by Ovi" label ${labelResult.simulated ? 'would be' : 'was'} added`);
-  // Send email notification
-  const emailResult = await sendEmailNotification(testRequest);
-  if (emailResult.success) {
-    console.log(`✅ Email notification sent about PR #${issue.number}`);
-  } else {
-    console.log(`❌ Email notification failed: ${emailResult.error || 'Unknown error'}`);
-  }
+  // Send email notification - DISABLED to prevent spam
+  // const emailResult = await sendEmailNotification(testRequest);
+  // if (emailResult.success) {
+  //   console.log(`✅ Email notification sent about PR #${issue.number}`);
+  // } else {
+  //   console.log(`❌ Email notification failed: ${emailResult.error || 'Unknown error'}`);
+  // }
   return {
     success: true,
     requestId,
