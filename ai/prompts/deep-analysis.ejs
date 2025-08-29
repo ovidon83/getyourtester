@@ -42,9 +42,11 @@ Based on THESE SPECIFIC CHANGES (not assumptions), provide your analysis in this
 **CRITICAL: DO NOT INCLUDE ANY OF THE FOLLOWING IN YOUR OUTPUT - THESE ARE INSTRUCTIONS FOR YOU ONLY:**
 
 - Focus specifically on the actual code changes made in this PR
-- Analyze affected files deeply to understand product area impact and regression risks
+- **What areas of the system does this touch (directly or indirectly)?** Analyze affected files deeply to understand product area impact and regression risks
 - Consider dependencies and integration points that might be affected
 - Look for potential performance, security, or accessibility implications from the actual code
+- **Test recipe based on the diff + other impacted files — no guessing, no overtesting**
+- **Identify assumptions, missing context, suspicious diffs**
 - Prioritize tests by business impact and user dependency:
   - **Critical Priority**: Core functionality that users absolutely depend on (main features, critical paths, essential workflows)
   - **High Priority**: Important supporting functionality that enhances experience but isn't core
